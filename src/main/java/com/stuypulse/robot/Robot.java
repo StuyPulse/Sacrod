@@ -1,4 +1,4 @@
-/************************ PROJECT DORCAS ************************/
+/************************ PROJECT SACROD ************************/
 /* Copyright (c) 2022 StuyPulse Robotics. All rights reserved.  */
 /* This work is licensed under the terms of the MIT license.    */
 /****************************************************************/
@@ -33,14 +33,16 @@ public class Robot extends TimedRobot {
   /*********************/
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /***********************/
   /*** AUTONOMOUS MODE ***/
-  /***********************/  
+  /***********************/
 
   @Override
   public void autonomousInit() {
@@ -52,10 +54,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+  }
 
   /*******************/
   /*** TELEOP MODE ***/
@@ -69,10 +73,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   @Override
-  public void teleopExit() {}
+  public void teleopExit() {
+  }
 
   /*****************/
   /*** TEST MODE ***/
@@ -84,8 +90,10 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void testExit() {}
+  public void testExit() {
+  }
 }
