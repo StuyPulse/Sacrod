@@ -17,9 +17,8 @@ public class ClimberMove extends CommandBase {
     
     private final Climber climber;
     private final IStream speed;
-    private final boolean movingUp;
 
-    public ClimberMove(Climber climber, Gamepad gamepad, boolean movingUp) {
+    public ClimberMove(Climber climber, Gamepad gamepad) {
         this.climber = climber;
         this.speed = 
                 IStream.create(() -> gamepad.getLeftY())
@@ -27,7 +26,6 @@ public class ClimberMove extends CommandBase {
                         x -> SLMath.deadband(x, Settings.Climber.SPEED_DEADBAND.get()),
                         new LowPassFilter(Settings.Climber.SPEED_RC.get())
                     );
-        this.movingUp = movingUp;
         
         addRequirements(climber);
     }
@@ -47,6 +45,6 @@ public class ClimberMove extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return movingUp;
+        return false;
     }
 }
