@@ -5,9 +5,13 @@ import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Climber.Stalling;
+import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.math.SLMath;
+import com.stuypulse.stuylib.streams.IStream;
+import com.stuypulse.stuylib.streams.booleans.BStream;
+import com.stuypulse.stuylib.streams.booleans.filters.BDebounceRC;
+import com.stuypulse.stuylib.streams.filters.LowPassFilter;
 
-import edu.wpi.first.math.filter.Debouncer;
-import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -20,28 +24,33 @@ public class Climber extends SubsystemBase {
     
     private final WPI_TalonSRX climber;
 
-    private final Debouncer stalling;
+    private final IStream speed;
+    private final BStream stalling;
 
-    public Climber() {
+    public Climber(Gamepad gamepad) {
+
         climber = new WPI_TalonSRX(Ports.Climber.MOTOR);
         Motors.CLIMBER.configure(climber);
 
-        stalling = new Debouncer(Stalling.DEBOUNCE_TIME, DebounceType.kBoth);
+        this.speed = 
+                IStream.create(() -> gamepad.getLeftY())
+                    .filtered(
+                        x -> SLMath.deadband(x, Settings.Climber.SPEED_DEADBAND.get()),
+                        new LowPassFilter(Settings.Climber.SPEED_RC.get()));
+        stalling = 
+                BStream.create(() -> isStalling())
+                        .filtered(new BDebounceRC.Both(Stalling.DEBOUNCE_TIME));
+
     }
 
     public void setMotor(double speed) {
-        if (speed != 0.0 && isStalling()) {
+        if (speed != 0.0 && stalling.get()) {
             DriverStation.reportError(
                     "[CRITICAL] Climber is stalling when attempting to move!", false);
-            stalling.calculate(true);
             stop();
         } else {
             climber.set(speed);
         }
-    }
-
-    public void forceLowerClimber() {
-        climber.set(-Settings.Climber.SLOW_SPEED.get());
     }
 
     public void stop() {
@@ -61,17 +70,19 @@ public class Climber extends SubsystemBase {
     public boolean isStalling() {
         boolean current = getCurrentAmps() > Stalling.CURRENT_THRESHOLD;
         boolean output = Math.abs(getDutyCycle()) > Stalling.DUTY_CYCLE_THRESHOLD;
-        return Stalling.ENABLED.get() && stalling.calculate(output && current);
+        return Stalling.ENABLED.get() && output && current;
     }
 
     @Override
     public void periodic() {
-        if (isStalling()) {
+        if (stalling.get()) {
             DriverStation.reportError("[CRITICAL] Climber is stalling.", false);
             stop();
+        } else {
+            setMotor(speed.get());
         }
 
-        SmartDashboard.putBoolean("Climber/Stalling", isStalling());
+        SmartDashboard.putBoolean("Climber/Stalling", stalling.get());
         SmartDashboard.putNumber("Climber/Current Amps", getCurrentAmps());
         SmartDashboard.putNumber("Climber/Speed", getDutyCycle());
     }
