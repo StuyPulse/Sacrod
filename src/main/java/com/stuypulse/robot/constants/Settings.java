@@ -26,16 +26,12 @@ public interface Settings {
         SmartNumber SPEED_RC = new SmartNumber("Climber/Speed RC", 0.2);
         
         public interface Stalling {
+
             SmartBoolean ENABLED = new SmartBoolean("Climber/Stall Detection", false);
-
-            // Motor will hit current limit when stalling
+            SmartNumber DUTY_CYCLE_THRESHOLD = new SmartNumber("Climber/Duty Cycle Threshold", 0.1);
+            SmartNumber DEBOUNCE_TIME = new SmartNumber("Climber/Debounce Time", 1.0);
             double CURRENT_THRESHOLD = Motors.CLIMBER.PEAK_CURRENT_LIMIT_AMPS - 10;
-
-            // If we are trying to go at full speed,
-            // it doesnt matter if our current draw isnt that high
-            double DUTY_CYCLE_THRESHOLD = 0.1;
-
-            double DEBOUNCE_TIME = 1.0;
+            
         }
 
     }

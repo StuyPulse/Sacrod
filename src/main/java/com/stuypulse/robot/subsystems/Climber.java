@@ -39,7 +39,7 @@ public class Climber extends SubsystemBase {
                         new LowPassFilter(Settings.Climber.SPEED_RC.get()));
         stalling = 
                 BStream.create(() -> isStalling())
-                        .filtered(new BDebounceRC.Both(Stalling.DEBOUNCE_TIME));
+                        .filtered(new BDebounceRC.Both(Stalling.DEBOUNCE_TIME.get()));
 
     }
 
@@ -69,7 +69,7 @@ public class Climber extends SubsystemBase {
 
     public boolean isStalling() {
         boolean current = getCurrentAmps() > Stalling.CURRENT_THRESHOLD;
-        boolean output = Math.abs(getDutyCycle()) > Stalling.DUTY_CYCLE_THRESHOLD;
+        boolean output = Math.abs(getDutyCycle()) > Stalling.DUTY_CYCLE_THRESHOLD.get();
         return Stalling.ENABLED.get() && output && current;
     }
 
