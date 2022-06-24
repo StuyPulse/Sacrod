@@ -21,7 +21,6 @@ public interface Settings {
     public interface Climber {
 
         SmartNumber NORMAL_SPEED = new SmartNumber("Climber/Speed", 1);
-        SmartNumber SLOW_SPEED = new SmartNumber("Climber/Slow Speed", 0.8);
 
         SmartNumber SPEED_DEADBAND = new SmartNumber("Climber/Speed Deadband", 0.001);
         SmartNumber SPEED_RC = new SmartNumber("Climber/Speed RC", 0.2);
