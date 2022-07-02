@@ -19,6 +19,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 public interface Settings {
 
     public interface Shooter{
+        
         public interface ShooterPID {
 
             double kP = 0;
