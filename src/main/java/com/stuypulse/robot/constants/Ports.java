@@ -6,10 +6,14 @@
 package com.stuypulse.robot.constants;
 
 /** This file contains the different ports of motors, solenoids and sensors */
-public final class Ports {
+public interface Ports {
     public interface Gamepad {
         int DRIVER = 0;
         int OPERATOR = 1;
         int DEBUGGER = 2;
+    }
+
+    public interface Climber {
+        int MOTOR = -1;
     }
 }
