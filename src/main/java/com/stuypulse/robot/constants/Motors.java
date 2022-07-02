@@ -21,6 +21,15 @@ import com.revrobotics.CANSparkMax.IdleMode;
  */
 public interface Motors {
 
+    public interface Shooter {
+        
+        CANSparkMaxConfig ShooterMotorConfig = new CANSparkMaxConfig(false, IdleMode.kCoast, 80);
+        CANSparkMaxConfig ShooterFollowerConfig = new CANSparkMaxConfig(true, IdleMode.kCoast, 80);
+
+        CANSparkMaxConfig FeederMotorConfig = new CANSparkMaxConfig(false, IdleMode.kCoast, 80);
+        
+    }
+
     /** Classes to store all of the values a motor needs */
 
     public static class TalonSRXConfig {

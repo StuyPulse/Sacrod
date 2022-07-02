@@ -2,6 +2,7 @@ package com.stuypulse.robot.subsystems;
 
 import static com.stuypulse.robot.constants.Ports.Shooter.*;
 import static com.stuypulse.robot.constants.Settings.Shooter.*;
+import static com.stuypulse.robot.constants.Motors.Shooter.*;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -34,22 +35,27 @@ public class Shooter extends SubsystemBase {
     private SimpleMotorFeedforward feederFF;
 
     public Shooter() {
+        targetRPM = new SmartNumber("Shooter/TargetRPM", 0.0);
+
         shooterMotor = new CANSparkMax(SHOOTER_MOTOR, MotorType.kBrushless);
+        ShooterMotorConfig.configure(shooterMotor);
+        
         shooterFollower = new CANSparkMax(SHOOTER_FOLLOWER, MotorType.kBrushless);
+        ShooterFollowerConfig.configure(shooterFollower);
 
         shooterMotorEncoder = shooterMotor.getEncoder();
         shooterFollowerEncoder = shooterFollower.getEncoder();
-
-        feederMotor = new CANSparkMax(FEEDER_MOTOR, MotorType.kBrushless);
-        feederMotorEncoder = feederMotor.getEncoder();
-
+        
         shooterPID = ShooterPID.PID;
         shooterFF = ShooterFF.FF;
 
+        feederMotor = new CANSparkMax(FEEDER_MOTOR, MotorType.kBrushless);
+        FeederMotorConfig.configure(feederMotor);
+        
+        feederMotorEncoder = feederMotor.getEncoder();
+
         feederPID = FeederPID.PID;
         feederFF = FeederFF.FF;
-
-        targetRPM = new SmartNumber("Shooter/TargetRPM", 0.0);
     }
 
     public double getShooterRPM() {
