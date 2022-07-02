@@ -15,6 +15,12 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * @author Eric lin (@cire694)
+ * @author Vincent Lin (@Shroomicus)
+ * @author Anthony Chen (@achen318)
+ * @author Reya Miller (@reyamiller)
+ */
 public class Shooter extends SubsystemBase {
 
     private SmartNumber targetRPM;

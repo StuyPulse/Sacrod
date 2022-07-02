@@ -15,9 +15,9 @@ public interface Ports {
     }
 
     public interface Shooter {
-        int SHOOTER_MOTOR = -1;
-        int SHOOTER_FOLLOWER = -1;
-        int FEEDER_MOTOR = -1;
+        int SHOOTER_MOTOR = 2;
+        int SHOOTER_FOLLOWER = 3;
+        int FEEDER_MOTOR = 4;
     }
     
 }
