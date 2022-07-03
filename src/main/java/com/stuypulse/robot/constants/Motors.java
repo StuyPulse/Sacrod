@@ -21,6 +21,10 @@ import com.revrobotics.CANSparkMax.IdleMode;
  */
 public interface Motors {
 
+    public interface Conveyor{
+        TalonSRXConfig MotorConfig = new TalonSRXConfig(false, NeutralMode.Brake, 40); 
+    }
+
     /** Classes to store all of the values a motor needs */
 
     public static class TalonSRXConfig {
