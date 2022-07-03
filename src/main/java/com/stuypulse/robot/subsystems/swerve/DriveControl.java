@@ -21,6 +21,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  *  - Controller
  *  - FeedForward
  *  - targetVelocity
+ * 
+ * @author Myles Pasetsky (myles@goldfisher.com)
+ * @author Vincent Wang (vincent@goldfisher.com)
+ * @author Benjamin Goldfisher (ben@goldfisher.com)
+ * @author Shaurya Sen (shaurya@goldfisher.com)
+ * @author Samuel Chen (sam@goldfisher.com)
+ * @author Ivan Chen (ivan@goldfisher.com)
  */
 public class DriveControl extends SubsystemBase {
 	private final CANSparkMax motor;

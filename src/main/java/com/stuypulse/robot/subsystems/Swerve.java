@@ -20,6 +20,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  *  - navX
  *  - Kinematics
  *  - Odometry
+ * 
+ * @author Myles Pasetsky (myles.pasetsky@gmail.com)
+ * @author Vincent Wang (vincent@goldfisher.com)
+ * @author Benjamin Goldfisher (ben@goldfisher.com)
+ * @author Shaurya Sen (shauryasen12@gmail.com)
+ * @author Samuel Chen (schen30@stuy.edu)
+ * @author Ivan Chen (ivanchen07@gmail.com)
 */
 public class Swerve extends SubsystemBase {
     
