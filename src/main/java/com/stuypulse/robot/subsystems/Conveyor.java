@@ -31,7 +31,7 @@ Logic:
  * @author Jason Zhou (independence106)
  * @author Andrew Liu (an6reww)
  * @author Tracey Lin (TracyLin)
- * @author Ambe       () r Shen (ambers7)
+ * @author Amber Shen (ambers7)
  * @author Yuchen Pan (Yuchen Pan) 
 */
 
@@ -58,7 +58,7 @@ public class Conveyor extends SubsystemBase {
         motor.set(REVERSE_SPEED.get());
     }
 
-    public boolean hasShooterBall(){
+    public boolean hasShooterBall(){ // HIVAN
         return !shooterIR.get();
     }
 
