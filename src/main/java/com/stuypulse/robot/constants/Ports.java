@@ -27,13 +27,13 @@ public interface Ports {
             int ENCODER = 2;
         }
 
-        public interface BottomLeft {
+        public interface BackLeft {
             int DRIVE_MOTOR = 0;
             int TURN_MOTOR = 1;
             int ENCODER = 2;
         }
 
-        public interface BottomRight {
+        public interface BackRight {
             int DRIVE_MOTOR = 0;
             int TURN_MOTOR = 1;
             int ENCODER = 2;
