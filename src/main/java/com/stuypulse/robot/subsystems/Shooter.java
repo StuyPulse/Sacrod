@@ -54,16 +54,16 @@ public class Shooter extends SubsystemBase {
         shooterMotorEncoder = shooterMotor.getEncoder();
         shooterFollowerEncoder = shooterFollower.getEncoder();
         
-        shooterPID = ShooterPID.PID;
-        shooterFF = ShooterFF.FF;
+        shooterPID = ShooterPID.PID();
+        shooterFF = ShooterFF.FF();
 
         feederMotor = new CANSparkMax(FEEDER_MOTOR, MotorType.kBrushless);
         FeederMotorConfig.configure(feederMotor);
         
         feederMotorEncoder = feederMotor.getEncoder();
 
-        feederPID = FeederPID.PID;
-        feederFF = FeederFF.FF;
+        feederPID = FeederPID.PID();
+        feederFF = FeederFF.FF();
     }
 
     public double getShooterRPM() {

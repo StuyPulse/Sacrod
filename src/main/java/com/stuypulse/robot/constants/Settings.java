@@ -5,9 +5,12 @@
 
 package com.stuypulse.robot.constants;
 
+import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDController;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*-
  * File containing tunable settings for every subsystem on the robot.
@@ -22,12 +25,13 @@ public interface Settings {
         
         public interface ShooterPID {
 
-            double kP = 0;
-            double kI = 0;
-            double kD = 0;
+            SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0);
+            SmartNumber kI = new SmartNumber("Shooter/Shooter kI", 0);
+            SmartNumber kD = new SmartNumber("Shooter/Shooter kD", 0);
 
-            PIDController PID = new PIDController(kP, kI, kD);
-
+            static PIDController PID(){
+                return new PIDController(kP, kI, kD);
+            }
         }
         
         public interface ShooterFF {
@@ -36,17 +40,21 @@ public interface Settings {
             double kV = 0;
             double kA = 0;
 
-            SimpleMotorFeedforward FF = new SimpleMotorFeedforward(kS, kV, kA);
+            static SimpleMotorFeedforward FF(){
+                return new SimpleMotorFeedforward(kS, kV, kA);
+            }
 
         }
         
         public interface FeederPID {
 
-            double kP = 0;
-            double kI = 0;
-            double kD = 0;
+            SmartNumber kP = new SmartNumber("Shooter/Feeder kP", 0);
+            SmartNumber kI = new SmartNumber("Shooter/Feeder kP", 0);
+            SmartNumber kD = new SmartNumber("Shooter/Feeder kP", 0);
             
-            PIDController PID = new PIDController(kP, kI, kD);
+            static PIDController PID(){
+                return new PIDController(kP, kI, kD);
+            }
           
         }
         
@@ -58,8 +66,9 @@ public interface Settings {
 
             double FEEDER_RPM_MULTIPLIER = 0.9;
 
-            SimpleMotorFeedforward FF = new SimpleMotorFeedforward(kS, kV, kA);
-            
+            static SimpleMotorFeedforward FF(){
+                return new SimpleMotorFeedforward(kS, kV, kA);
+            }
         }
     }
 }
