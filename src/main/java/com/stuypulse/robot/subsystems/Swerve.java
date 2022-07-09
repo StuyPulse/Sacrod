@@ -17,6 +17,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -48,16 +49,21 @@ public class Swerve extends SubsystemBase {
 
     private final SwerveDriveKinematics kinematics;
 	private final SwerveDriveOdometry odometry;
+    
+    private final Field2d field;
 
 	public Swerve() {
         modules = Modules.MODULES;		
         gyro = new AHRS(SPI.Port.kMXP);
-		kinematics =  new SwerveDriveKinematics(
+		
+        kinematics =  new SwerveDriveKinematics(
             Arrays.stream(modules)
                 .map(x -> x.getLocation())
-                .toArray(Translation2d[]::new)
-        );
+                .toArray(Translation2d[]::new));
         odometry = new SwerveDriveOdometry(kinematics, getGyroAngle());
+
+        field = new Field2d();
+        SmartDashboard.putData(field);
 	}
 
     /** GYROSCOPE */
@@ -84,7 +90,7 @@ public class Swerve extends SubsystemBase {
 		odometry.resetPosition(pose, getGyroAngle());
     }
 
-    private void update() {
+    private void updateOdometry() {
         odometry.update(getGyroAngle(), getModuleStates());
     }
 
@@ -129,7 +135,8 @@ public class Swerve extends SubsystemBase {
 	
     @Override
     public void periodic() {
-        update();
+        updateOdometry();
+        field.setRobotPose(getPose());
         
         SmartDashboard.putNumber("Swerve/Pose X", getTranslation().getX());
         SmartDashboard.putNumber("Swerve/Pose Y", getTranslation().getY());
