@@ -40,7 +40,7 @@ public class Module extends SubsystemBase {
     public Module(String id, Translation2d location, DriveControl driveControl, TurnControl turnControl) {
 
         this.targetState = new SwerveModuleState();
-        this.id = "Swerve/" + id;
+        this.id = id;
         this.driveControl = driveControl;
         this.turnControl = turnControl;
 
@@ -57,6 +57,10 @@ public class Module extends SubsystemBase {
 
     public Rotation2d getAngle() {
         return turnControl.getAngle();
+    }
+
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(getVelocity(), getAngle());
     }
 
     public String getId() {
