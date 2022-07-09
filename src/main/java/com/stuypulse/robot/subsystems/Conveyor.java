@@ -37,7 +37,7 @@ Logic:
 
 public class Conveyor extends SubsystemBase {
 
-    private WPI_TalonSRX motor;
+    private final WPI_TalonSRX motor;
 
     private final DigitalInput intakeIR;
     private final DigitalInput shooterIR;
@@ -58,18 +58,27 @@ public class Conveyor extends SubsystemBase {
         motor.set(REVERSE_SPEED.get());
     }
 
+    public void stop(){
+        motor.stopMotor();
+    }
+
     public boolean hasShooterBall(){ // HIVAN
         return !shooterIR.get();
     }
 
     public boolean hasIntakeBall(){
         return !intakeIR.get();
-    } 
+    }
+    
+    public double getMotorSpeed(){
+        return motor.get();
+    }
 
     @Override
     public void periodic() {
         SmartDashboard.putBoolean("Conveyor/Has Shooter Ball", hasShooterBall());
         SmartDashboard.putBoolean("Conveyor/Has Intake Ball", hasIntakeBall());    
+        SmartDashboard.putNumber("Conveyor/Motor Speed", getMotorSpeed());
     }
     
 }
