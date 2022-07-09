@@ -33,18 +33,18 @@ public class Module extends SubsystemBase {
     
     private final DriveControl driveControl;
     private final TurnControl turnControl;
-    private final Translation2d location;
+    private final Translation2d relativeLocation;
 
     private SwerveModuleState targetState;
     
-    public Module(String id, Translation2d location, DriveControl driveControl, TurnControl turnControl) {
+    public Module(String id, Translation2d relativeLocation, DriveControl driveControl, TurnControl turnControl) {
 
         this.targetState = new SwerveModuleState();
         this.id = id;
         this.driveControl = driveControl;
         this.turnControl = turnControl;
 
-        this.location = location;
+        this.relativeLocation = relativeLocation;
     }
 
     public void setTargetState(SwerveModuleState state) {
@@ -68,7 +68,7 @@ public class Module extends SubsystemBase {
     }
 
     public Translation2d getLocation() {
-        return location;
+        return relativeLocation;
     }
 
     @Override
