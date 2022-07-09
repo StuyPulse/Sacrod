@@ -5,6 +5,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.util.StopWatch;
+import com.stuypulse.robot.constants.Motors.CANSparkMaxConfig;
 import com.stuypulse.robot.constants.Settings.Swerve.DriveControl.*;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -40,8 +41,9 @@ public class DriveControl extends SubsystemBase {
 	private double prevTargetVelocity;
     private final StopWatch timer;
 
-	public DriveControl(int deviceId) {
+	public DriveControl(int deviceId, CANSparkMaxConfig motorConfig) {
         motor = new CANSparkMax(deviceId, MotorType.kBrushless);
+		motorConfig.configure(motor);
 		encoder = motor.getEncoder();
 
 		timer = new StopWatch();

@@ -2,6 +2,7 @@ package com.stuypulse.robot.subsystems.swerve;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.stuypulse.robot.constants.Motors.CANSparkMaxConfig;
 import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.network.SmartAngle;
 
@@ -34,16 +35,17 @@ public class TurnControl extends SubsystemBase {
 
     private final CANSparkMax turnMotor;
     private final DutyCycleEncoder encoder;
+    
     private final AngleController controller;
-
     private Rotation2d targetAngle;
 
     private SmartAngle offset; 
 
-    public TurnControl(int deviceId, int channel, SmartAngle offset) {
-
+    public TurnControl(int deviceId, int channel, SmartAngle offset, CANSparkMaxConfig motorConfig) {
         turnMotor = new CANSparkMax(deviceId, MotorType.kBrushless);
+        motorConfig.configure(turnMotor);
         encoder = new DutyCycleEncoder(channel);
+
         controller = Feedback.getFeedback();
         targetAngle = new Rotation2d();
 

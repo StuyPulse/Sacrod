@@ -92,5 +92,23 @@ public interface Motors {
             motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
             motor.burnFlash();
          }
-     }
+    }
+
+    public interface Swerve {
+        public interface Drive {
+            int CURRENT_LIMIT_AMPS = 80;
+
+            public static CANSparkMaxConfig getConfig() {
+                return new CANSparkMaxConfig(false, IdleMode.kCoast, CURRENT_LIMIT_AMPS);
+            }
+        }
+
+        public interface Turn {
+            int CURERNT_LIMIT_AMPS = 20;
+
+            public static CANSparkMaxConfig getConfig() {
+                return new CANSparkMaxConfig(false, IdleMode.kBrake, CURERNT_LIMIT_AMPS);
+            }
+        }
+    }
 }
