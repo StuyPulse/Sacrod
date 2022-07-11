@@ -1,8 +1,8 @@
 package com.stuypulse.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.stuypulse.robot.constants.Motors;
-import com.stuypulse.robot.constants.Ports;
+import static com.stuypulse.robot.constants.Motors.*;
+import static com.stuypulse.robot.constants.Ports.Climber.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,8 +22,8 @@ public class Climber extends SubsystemBase {
 
     public Climber() {
         
-        motor = new WPI_TalonSRX(Ports.Climber.MOTOR);
-        Motors.CLIMBER.configure(motor); 
+        motor = new WPI_TalonSRX(MOTOR);
+        CLIMBER.configure(motor); 
 
         this.speed = 0.0;
     
@@ -37,7 +37,7 @@ public class Climber extends SubsystemBase {
         motor.set(speed);
     }
 
-    public void stopMotor() {
+    public void stop() {
         motor.stopMotor();
     }
 
