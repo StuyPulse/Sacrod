@@ -30,11 +30,10 @@ public interface Motors {
         public final double OPEN_LOOP_RAMP_RATE;
 
         public TalonSRXConfig(
-            boolean inverted,
-            NeutralMode neutralMode,
-            int peakCurrentLimitAmps,
-            double openLoopRampRate
-        ) {
+                boolean inverted,
+                NeutralMode neutralMode,
+                int peakCurrentLimitAmps,
+                double openLoopRampRate) {
             this.INVERTED = inverted;
             this.NEUTRAL_MODE = neutralMode;
             this.PEAK_CURRENT_LIMIT_AMPS = peakCurrentLimitAmps;
@@ -91,7 +90,7 @@ public interface Motors {
             motor.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
             motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
             motor.burnFlash();
-         }
+        }
     }
 
     public interface Swerve {
@@ -99,7 +98,7 @@ public interface Motors {
             int CURRENT_LIMIT_AMPS = 80;
 
             public static CANSparkMaxConfig getConfig() {
-                return new CANSparkMaxConfig(false, IdleMode.kCoast, CURRENT_LIMIT_AMPS);
+                return new CANSparkMaxConfig(false, IdleMode.kBrake, CURRENT_LIMIT_AMPS);
             }
         }
 
