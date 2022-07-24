@@ -32,12 +32,12 @@ public interface Settings {
         public interface Deployment {
             SmartNumber MAX_ERROR = new SmartNumber("Intake/Deployment/Max Error", 3.0);
 
-            SmartNumber P = new SmartNumber("Intake/Deployment/P", 0.01);
-            SmartNumber I = new SmartNumber("Intake/Deployment/I", 0);
-            SmartNumber D = new SmartNumber("Intake/Deployment/D", 0);
+            SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.01);
+            SmartNumber kI = new SmartNumber("Intake/Deployment/I", 0);
+            SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0);
 
             static Controller getController() {
-                return new PIDController(P, I, D);
+                return new PIDController(kP, kI, kD);
             }
         }
     }
