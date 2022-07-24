@@ -7,6 +7,7 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.subsystems.Intake;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 
@@ -17,7 +18,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
 
   // Subsystem
-
+  public final Intake intake = new Intake();
   // Gamepads
   public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
   public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
@@ -37,13 +38,15 @@ public class RobotContainer {
   /*** DEFAULTS ***/
   /****************/
 
-  private void configureDefaultCommands() {}
+  private void configureDefaultCommands() {
+  }
 
   /***************/
   /*** BUTTONS ***/
   /***************/
 
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+  }
 
   /**************/
   /*** AUTONS ***/

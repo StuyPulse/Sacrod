@@ -1,0 +1,58 @@
+{
+  "HALProvider": {
+    "Other Devices": {
+      "SPARK MAX [1]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon SRX[0]": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon SRX[0]/Analog In": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon SRX[0]/Fwd Limit": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon SRX[0]/Pulse Width Input": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon SRX[0]/Quad Encoder": {
+        "header": {
+          "open": true
+        }
+      },
+      "Talon SRX[0]/Rev Limit": {
+        "header": {
+          "open": true
+        }
+      }
+    }
+  },
+  "NTProvider": {
+    "types": {
+      "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Intake": "Subsystem",
+      "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
+      "/LiveWindow/Ungrouped/Talon SRX [0]": "Motor Controller",
+      "/SmartDashboard/Autonomous": "String Chooser"
+    }
+  },
+  "NetworkTables": {
+    "SmartDashboard": {
+      "Intake": {
+        "open": true
+      },
+      "open": true
+    }
+  }
+}
