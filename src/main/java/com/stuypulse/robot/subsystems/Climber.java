@@ -38,7 +38,7 @@ public class Climber extends SubsystemBase {
     }
 
     public void stop() {
-        motor.stopMotor();
+        motor.stop();
     }
 
     public double getCurrentAmps() {
