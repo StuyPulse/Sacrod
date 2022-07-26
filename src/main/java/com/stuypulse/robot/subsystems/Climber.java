@@ -33,12 +33,8 @@ public class Climber extends SubsystemBase {
         this.speed = speed;
     }
 
-    private void setMotor(double speed) {
-        motor.set(speed);
-    }
-
     public void stop() {
-        motor.stop();
+        motor.stopMotor();
     }
 
     public double getCurrentAmps() {
@@ -51,7 +47,7 @@ public class Climber extends SubsystemBase {
 
     @Override
     public void periodic() {
-        setMotor(speed);
+        motor.set(speed);
 
         SmartDashboard.putNumber("Climber/Current Amps", getCurrentAmps());
         SmartDashboard.putNumber("Climber/Motor Speed", getMotorSpeed());
