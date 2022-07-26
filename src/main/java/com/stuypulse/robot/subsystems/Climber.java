@@ -7,7 +7,7 @@ import static com.stuypulse.robot.constants.Ports.Climber.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/*- 
+/**
 * @author Ivan Chen
 * @author Carmin Vuong
 * @author Jennifer Ye
