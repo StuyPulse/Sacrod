@@ -7,12 +7,19 @@ package com.stuypulse.robot.constants;
 
 /** This file contains the different ports of motors, solenoids and sensors */
 public interface Ports {
+
     public interface Gamepad {
         int DRIVER = 0;
         int OPERATOR = 1;
         int DEBUGGER = 2;
     }
 
+    public interface Shooter {
+        int SHOOTER_MOTOR = 2;
+        int SHOOTER_FOLLOWER = 3;
+        int FEEDER_MOTOR = 4;
+    }
+    
     public interface Intake {
         int DRIVER_MOTOR = 0;
         int DEPLOYMENT_MOTOR = 1;
