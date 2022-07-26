@@ -20,19 +20,6 @@ import com.revrobotics.CANSparkMax.IdleMode;
  *  - The Open Loop Ramp Rate
  */
 public interface Motors {
-    public interface Intake {
-        CANSparkMaxConfig DeploymentConfig = new CANSparkMaxConfig(false, IdleMode.kBrake, 40);
-        TalonSRXConfig DriverConfig = new TalonSRXConfig(false, NeutralMode.Coast, 40, 1.0 / 5.0);
-    }
-
-    public interface Shooter {
-        
-        CANSparkMaxConfig ShooterMotorConfig = new CANSparkMaxConfig(false, IdleMode.kCoast, 80);
-        CANSparkMaxConfig ShooterFollowerConfig = new CANSparkMaxConfig(true, IdleMode.kCoast, 80);
-
-        CANSparkMaxConfig FeederMotorConfig = new CANSparkMaxConfig(false, IdleMode.kCoast, 80);
-        
-    }
 
     public static TalonSRXConfig CLIMBER = new TalonSRXConfig(false, NeutralMode.Brake, 60);
     
@@ -45,10 +32,11 @@ public interface Motors {
         public final double OPEN_LOOP_RAMP_RATE;
 
         public TalonSRXConfig(
-                boolean inverted,
-                NeutralMode neutralMode,
-                int peakCurrentLimitAmps,
-                double openLoopRampRate) {
+            boolean inverted,
+            NeutralMode neutralMode,
+            int peakCurrentLimitAmps,
+            double openLoopRampRate
+        ) {
             this.INVERTED = inverted;
             this.NEUTRAL_MODE = neutralMode;
             this.PEAK_CURRENT_LIMIT_AMPS = peakCurrentLimitAmps;

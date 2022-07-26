@@ -7,7 +7,7 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.constants.Ports;
-import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.subsystems.Climber;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 
@@ -16,10 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class RobotContainer {
-  
+
   // Subsystem
-  public final Shooter shooter = new Shooter();
-  public final Intake intake = new Intake();
 
   public final Climber climber = new Climber();
 
@@ -42,15 +40,13 @@ public class RobotContainer {
   /*** DEFAULTS ***/
   /****************/
 
-  private void configureDefaultCommands() {
-  }
+  private void configureDefaultCommands() {}
 
   /***************/
   /*** BUTTONS ***/
   /***************/
 
-  private void configureButtonBindings() {
-  }
+  private void configureButtonBindings() {}
 
   /**************/
   /*** AUTONS ***/
