@@ -71,6 +71,7 @@ public interface Settings {
             static SimpleMotorFeedforward FF(){
                 return new SimpleMotorFeedforward(kS, kV, kA);
             }
+        }
     }
 
     public interface Intake {
