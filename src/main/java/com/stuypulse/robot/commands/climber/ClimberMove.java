@@ -32,10 +32,9 @@ public class ClimberMove extends CommandBase {
         
         this.climber = climber;
 
-        this.speed = IStream.create(() -> operator.getLeftX())
+        this.speed = IStream.create(() -> operator.getLeftY())
                         .filtered(
-                            x -> SLMath.deadband(x, DEADBAND.get()),
-                            new LowPassFilter(RC));
+                            x -> SLMath.deadband(x, DEADBAND.get()));
 
         addRequirements(climber);
     }
