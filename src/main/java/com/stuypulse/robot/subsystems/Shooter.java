@@ -66,10 +66,14 @@ public class Shooter extends SubsystemBase {
         feederFF = FeederFF.FF();
     }
 
+    public void setTargetRPM(double RPM){
+        targetRPM.set(RPM);
+    }
+
     public double getShooterRPM() {
         return (shooterMotorEncoder.getVelocity() + shooterFollowerEncoder.getVelocity()) / 2;
     }
-    
+
     public double getFeederRPM() {
         return feederMotorEncoder.getVelocity();
     }
