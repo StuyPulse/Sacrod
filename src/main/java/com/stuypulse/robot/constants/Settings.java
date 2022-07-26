@@ -8,6 +8,9 @@ package com.stuypulse.robot.constants;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.PIDController;
 import com.stuypulse.stuylib.network.SmartBoolean;
+import com.stuypulse.stuylib.math.Vector2D;
+import com.stuypulse.stuylib.math.interpolation.Interpolator;
+import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -25,6 +28,21 @@ public interface Settings {
 
     public interface Shooter{
         
+        public interface ShotMap {
+            /*
+             TODO: 
+              - find ring shot distance
+              - find (farthest) distance to driver station wall
+              - determine how many points we want to tune for
+              - calculate what distances we're tuning RPMS for
+            */
+            Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
+                new Vector2D(0.0, 0.0)
+            );
+        }
+
+        SmartNumber RING_RPM = new SmartNumber("Shooter/Ring RPM", 3000);
+
         public interface ShooterPID {
 
             SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0);
