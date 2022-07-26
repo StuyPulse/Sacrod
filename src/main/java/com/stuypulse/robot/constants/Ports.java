@@ -20,4 +20,8 @@ public interface Ports {
         int FEEDER_MOTOR = 4;
     }
     
+    public interface Intake {
+        int DRIVER_MOTOR = 0;
+        int DEPLOYMENT_MOTOR = 1;
+    }
 }
