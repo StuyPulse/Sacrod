@@ -14,6 +14,6 @@ public interface Ports {
     }
 
     public interface Climber {
-        int MOTOR = -1;
+        int MOTOR = 1;
     }
 }
