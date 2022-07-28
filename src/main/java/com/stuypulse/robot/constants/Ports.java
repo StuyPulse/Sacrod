@@ -15,6 +15,17 @@ public interface Ports {
     }
 
     public interface Climber {
-        int MOTOR = -1;
+        int MOTOR = 10;
+    }
+
+    public interface Intake {
+        int DRIVER_MOTOR = 0;
+        int DEPLOYMENT_MOTOR = 1;
+    }
+
+    public interface Shooter {
+        int SHOOTER_MOTOR = 2;
+        int SHOOTER_FOLLOWER = 3;
+        int FEEDER_MOTOR = 4;
     }
 }
