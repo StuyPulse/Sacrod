@@ -20,6 +20,7 @@ import com.revrobotics.CANSparkMax.IdleMode;
  *  - The Open Loop Ramp Rate
  */
 public interface Motors {
+
     public interface Intake {
         CANSparkMaxConfig DeploymentConfig = new CANSparkMaxConfig(false, IdleMode.kBrake, 40);
         TalonSRXConfig DriverConfig = new TalonSRXConfig(false, NeutralMode.Coast, 40, 1.0 / 5.0);
@@ -34,8 +35,12 @@ public interface Motors {
         
     }
 
-    public static TalonSRXConfig CLIMBER = new TalonSRXConfig(false, NeutralMode.Brake, 60);
+    public interface Conveyor{
+        TalonSRXConfig MotorConfig = new TalonSRXConfig(false, NeutralMode.Brake, 40); 
+    }
     
+    public static TalonSRXConfig CLIMBER = new TalonSRXConfig(false, NeutralMode.Brake, 60);
+
     /** Classes to store all of the values a motor needs */
 
     public static class TalonSRXConfig {
