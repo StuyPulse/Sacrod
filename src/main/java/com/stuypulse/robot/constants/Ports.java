@@ -15,9 +15,9 @@ public interface Ports {
     }
 
     public interface Conveyor {
-        int MOTOR = -1;
-        int INTAKE_IR = -1;
-        int SHOOTER_IR = -1;
+        int MOTOR = 20;
+        int INTAKE_IR = 21;
+        int SHOOTER_IR = 22;
     }
     
     public interface Climber {
