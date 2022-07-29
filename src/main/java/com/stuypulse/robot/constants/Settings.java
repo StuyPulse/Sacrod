@@ -25,6 +25,21 @@ public interface Settings {
         Translation2d SIZE = new Translation2d(Units.inchesToMeters(29.0), Units.inchesToMeters(29.0));
         
         double MAX_SPEED = Units.feetToMeters(14.420); 
+        double MAX_ANGULAR_SPEED = MAX_SPEED / (Math.pow(SIZE.getNorm(), 2));
+
+        public interface Controls {
+            public interface Turn {
+                SmartNumber DEADBAND = new SmartNumber("Controls/Turn/Deadband", 0.05);
+                SmartNumber RC = new SmartNumber("Controls/Turn/Smoothing", 0.05);
+                SmartNumber POWER = new SmartNumber("Controls/Turn/Power", 2);
+            }
+
+            public interface Drive {
+                SmartNumber DEADBAND = new SmartNumber("Controls/Drive/Deadband", 0.05);
+                SmartNumber RC = new SmartNumber("Controls/Drive/Smoothing", 0.05);
+                SmartNumber POWER = new SmartNumber("Controls/Drive/Power", 2);
+            }
+        }
 
         public interface DriveControl {
             public interface Encoder {
