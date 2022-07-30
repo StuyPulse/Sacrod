@@ -16,10 +16,10 @@ public interface Ports {
 
     public interface Conveyor {
         int MOTOR = -1;
-        int INTAKE_IR = -1;
-        int SHOOTER_IR = -1;
+        int INTAKE_IR = 0;
+        int SHOOTER_IR = 1;
     }
-    
+
     public interface Climber {
         int MOTOR = 10;
     }
