@@ -2,7 +2,7 @@ package com.stuypulse.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
+//import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -11,6 +11,9 @@ import static com.stuypulse.robot.constants.Ports.Intake.*;
 import static com.stuypulse.robot.constants.Settings.Intake.*;
 import static com.stuypulse.robot.constants.Motors.Intake.*;
 
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
+import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -42,7 +45,9 @@ public class Intake extends SubsystemBase {
 
     private WPI_TalonSRX driverMotor;
     private CANSparkMax deploymentMotor;
-    private RelativeEncoder deploymentEncoder;
+
+    private Encoder deploymentEncoder;
+    private EncoderSim encoderSim;
 
     private Controller controller;
     private SmartNumber targetAngle;
@@ -50,15 +55,20 @@ public class Intake extends SubsystemBase {
     public Intake() {
         driverMotor = new WPI_TalonSRX(DRIVER_MOTOR);
         deploymentMotor = new CANSparkMax(DEPLOYMENT_MOTOR, MotorType.kBrushless);
-        deploymentEncoder = deploymentMotor.getEncoder();
+        //deploymentEncoder = deploymentMotor.getEncoder();
+        deploymentEncoder = new Encoder(2, 3, false, EncodingType.k1X);
+
         DriverConfig.configure(driverMotor);
         DeploymentConfig.configure(deploymentMotor);
 
         controller = Deployment.getController();
 
-        deploymentEncoder.setPositionConversionFactor(POSITION_CONVERSION);
+        deploymentEncoder.setDistancePerPulse(POSITION_CONVERSION);
 
         targetAngle = new SmartNumber("Intake/Target Angle", 0.0);
+
+        encoderSim = new EncoderSim(deploymentEncoder);
+
         reset(RETRACT_ANGLE.get());
     }
 
@@ -75,7 +85,7 @@ public class Intake extends SubsystemBase {
     }
 
     private void reset(double position) {
-        deploymentEncoder.setPosition(position);
+        encoderSim.setDistance(position);
         targetAngle.set(position);
     }
 
@@ -92,7 +102,7 @@ public class Intake extends SubsystemBase {
     }
 
     public double getAngle() {
-        return deploymentEncoder.getPosition();
+        return encoderSim.getDistance();
     }
 
     @Override
