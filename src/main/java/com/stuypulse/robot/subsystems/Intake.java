@@ -2,6 +2,7 @@ package com.stuypulse.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 //import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.stuylib.control.Controller;
@@ -46,8 +47,7 @@ public class Intake extends SubsystemBase {
     private WPI_TalonSRX driverMotor;
     private CANSparkMax deploymentMotor;
 
-    private Encoder deploymentEncoder;
-    private EncoderSim encoderSim;
+    private RelativeEncoder deploymentEncoder;
 
     private Controller controller;
     private SmartNumber targetAngle;
@@ -55,19 +55,16 @@ public class Intake extends SubsystemBase {
     public Intake() {
         driverMotor = new WPI_TalonSRX(DRIVER_MOTOR);
         deploymentMotor = new CANSparkMax(DEPLOYMENT_MOTOR, MotorType.kBrushless);
-        //deploymentEncoder = deploymentMotor.getEncoder();
-        deploymentEncoder = new Encoder(2, 3, false, EncodingType.k1X);
+        deploymentEncoder = deploymentMotor.getEncoder();
 
         DriverConfig.configure(driverMotor);
         DeploymentConfig.configure(deploymentMotor);
 
         controller = Deployment.getController();
 
-        deploymentEncoder.setDistancePerPulse(POSITION_CONVERSION);
+        deploymentEncoder.setPositionConversionFactor(POSITION_CONVERSION);
 
         targetAngle = new SmartNumber("Intake/Target Angle", 0.0);
-
-        encoderSim = new EncoderSim(deploymentEncoder);
 
         reset(RETRACT_ANGLE.get());
     }
@@ -85,7 +82,7 @@ public class Intake extends SubsystemBase {
     }
 
     private void reset(double position) {
-        encoderSim.setDistance(position);
+        deploymentEncoder.setPosition(position);
         targetAngle.set(position);
     }
 
@@ -102,7 +99,7 @@ public class Intake extends SubsystemBase {
     }
 
     public double getAngle() {
-        return encoderSim.getDistance();
+        return deploymentEncoder.getPosition();
     }
 
     @Override
