@@ -5,9 +5,6 @@
 
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.constants.Settings.Intake;
-import com.stuypulse.robot.constants.Settings.RobotSim;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
@@ -17,10 +14,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
-  /** ROBOT SIMULATION */
-  Mechanism2d intakeMechanism;
-  MechanismRoot2d intakeRoot;
-  MechanismLigament2d intake;
 
   private RobotContainer robot;
   private Command auto;
@@ -32,22 +25,11 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     robot = new RobotContainer();
-
-    /** INTAKE SIMULATOR */
-    intakeMechanism = new Mechanism2d(RobotSim.MECHANISM_DIM.x, RobotSim.MECHANISM_DIM.y);
-    intakeRoot = intakeMechanism.getRoot("Root", RobotSim.ROOT.x, RobotSim.ROOT.y);
-    intake = intakeRoot.append(
-        new MechanismLigament2d("Intake", RobotSim.INTAKE_LENGTH, Intake.RETRACT_ANGLE.doubleValue()));
-
-    /** LOGGING */
-    SmartDashboard.putData("Intake", intakeMechanism);
   }
 
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
-
-    intake.setAngle(robot.intake.getAngle() + 100);
   }
 
   /*********************/

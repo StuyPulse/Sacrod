@@ -3,8 +3,10 @@ package com.stuypulse.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
-//import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.RobotSim;
+import com.stuypulse.robot.constants.Settings.RobotSim.IntakeSim;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -12,9 +14,15 @@ import static com.stuypulse.robot.constants.Ports.Intake.*;
 import static com.stuypulse.robot.constants.Settings.Intake.*;
 import static com.stuypulse.robot.constants.Motors.Intake.*;
 
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.CounterBase.EncodingType;
-import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.simulation.BatterySim;
+import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismRoot2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -43,6 +51,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 
 public class Intake extends SubsystemBase {
+    /** ROBOT SIMULATION */
+    Mechanism2d intakeMechanism;
+    MechanismRoot2d intakeRoot;
+    MechanismLigament2d intake;
+    MechanismLigament2d intakeSetPoint;
+    private LinearSystemSim<N2, N1, N1> deploySim;
+    private double deployOutput;
 
     private WPI_TalonSRX driverMotor;
     private CANSparkMax deploymentMotor;
@@ -66,6 +81,19 @@ public class Intake extends SubsystemBase {
 
         targetAngle = new SmartNumber("Intake/Target Angle", 0.0);
 
+        /** INTAKE SIMULATOR */
+        intakeMechanism = new Mechanism2d(RobotSim.MECHANISM_DIM.x, RobotSim.MECHANISM_DIM.y);
+        intakeRoot = intakeMechanism.getRoot("Root", IntakeSim.ROOT.x, IntakeSim.ROOT.y);
+        intake = intakeRoot.append(
+                new MechanismLigament2d("Intake", IntakeSim.INTAKE_LENGTH,
+                        Settings.Intake.RETRACT_ANGLE.doubleValue()));
+        deploySim = new LinearSystemSim<>(
+                LinearSystemId.identifyPositionSystem(IntakeSim.kV.get(), IntakeSim.kA.get()));
+        intakeSetPoint = intakeRoot.append(
+                new MechanismLigament2d("Intake Set Point", IntakeSim.INTAKE_LENGTH,
+                        targetAngle.get()));
+        deployOutput = 0.0;
+        SmartDashboard.putData("Intake", intakeMechanism);
         reset(RETRACT_ANGLE.get());
     }
 
@@ -104,16 +132,30 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (!controller.isDone(Deployment.MAX_ERROR.get())) {
-            deploymentMotor.set(controller.update(targetAngle.get(),
-                    getAngle()));
-        } else {
-            deploymentMotor.set(0);
+        deployOutput = controller.update(targetAngle.get(), getAngle());
+        if (getAngle() < RETRACT_ANGLE.get()) {
+            deploymentEncoder.setPosition(RETRACT_ANGLE.get());
+            deployOutput = Math.max(deployOutput, 0);
         }
-
+        if (getAngle() > EXTEND_ANGLE.get()) {
+            deploymentEncoder.setPosition(EXTEND_ANGLE.get());
+            deployOutput = Math.min(deployOutput, 0);
+        }
+        deploymentMotor.set(deployOutput);
         SmartDashboard.putNumber("Intake/Deployment Speed", deploymentMotor.get());
         SmartDashboard.putNumber("Intake/Deployment Angle", getAngle());
         SmartDashboard.putNumber("Intake/Driver speed", driverMotor.get());
     }
 
+    @Override
+    public void simulationPeriodic() {
+        deploySim.setInput(deployOutput * RoboRioSim.getVInVoltage());
+
+        deploySim.update(RobotSim.dT);
+        deploymentEncoder.setPosition(deploySim.getOutput(0));
+        RoboRioSim.setVInVoltage(BatterySim.calculateDefaultBatteryLoadedVoltage(
+                deploySim.getCurrentDrawAmps()));
+        intake.setAngle(getAngle());
+        intakeSetPoint.setAngle(targetAngle.get());
+    }
 }

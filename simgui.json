@@ -71,6 +71,9 @@
   "NetworkTables": {
     "SmartDashboard": {
       "Intake": {
+        "Deployment": {
+          "open": true
+        },
         "open": true
       },
       "open": true

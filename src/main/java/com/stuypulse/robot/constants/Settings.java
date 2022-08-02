@@ -23,10 +23,15 @@ public interface Settings {
 
     public interface RobotSim {
         Vector2D MECHANISM_DIM = new Vector2D(3.0, 3.0);
+        double dT = 0.01;
 
-        Vector2D ROOT = new Vector2D(2, 0);
+        public interface IntakeSim {
+            Vector2D ROOT = new Vector2D(2, 0);
+            double INTAKE_LENGTH = 2.0;
 
-        double INTAKE_LENGTH = 2.0;
+            SmartNumber kV = new SmartNumber("Intake/Intake Sim kV", 2);
+            SmartNumber kA = new SmartNumber("Intake/Intake Sim kA", 0.186);
+        }
     }
 
     public interface Conveyor {
@@ -100,9 +105,9 @@ public interface Settings {
         public interface Deployment {
             SmartNumber MAX_ERROR = new SmartNumber("Intake/Deployment/Max Error", 3.0);
 
-            SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.01);
-            SmartNumber kI = new SmartNumber("Intake/Deployment/I", 0);
-            SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0);
+            SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.5);
+            SmartNumber kI = new SmartNumber("Intake/Deployment/I", 0.);
+            SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0.);
 
             static Controller getController() {
                 return new PIDController(kP, kI, kD);
