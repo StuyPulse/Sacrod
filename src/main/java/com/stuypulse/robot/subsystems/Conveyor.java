@@ -1,6 +1,8 @@
 package com.stuypulse.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.stuypulse.robot.util.ConveyorMode;
+
 import static com.stuypulse.robot.constants.Ports.Conveyor.*;
 import static com.stuypulse.robot.constants.Settings.Conveyor.*;
 import static com.stuypulse.robot.constants.Motors.Conveyor.*;
@@ -36,11 +38,12 @@ Logic:
 */
 
 public class Conveyor extends SubsystemBase {
-
     private final WPI_TalonSRX motor;
 
     private final DigitalInput intakeIR;
     private final DigitalInput shooterIR;
+
+    private ConveyorMode mode;
 
     public Conveyor() {
         motor = new WPI_TalonSRX(MOTOR); 
@@ -48,8 +51,14 @@ public class Conveyor extends SubsystemBase {
 
         intakeIR = new DigitalInput(INTAKE_IR); 
         shooterIR = new DigitalInput(SHOOTER_IR);
+
+        mode = ConveyorMode.DEFAULT;
     } 
-        
+
+    public void setMode(ConveyorMode conveyorMode){
+        mode = conveyorMode;
+    }
+
     public void runForward() {
         motor.set(FORWARD_SPEED.get());
     }
@@ -58,27 +67,33 @@ public class Conveyor extends SubsystemBase {
         motor.set(REVERSE_SPEED.get());
     }
 
-    public void stop(){
+    public void stop() {
         motor.stopMotor();
     }
 
-    public boolean hasShooterBall(){ // HIVAN
+    public boolean hasShooterBall() { 
         return !shooterIR.get();
     }
 
-    public boolean hasIntakeBall(){
+    public boolean hasIntakeBall() {
         return !intakeIR.get();
     }
-    
-    public double getMotorSpeed(){
+
+    public boolean isEmpty() {
+        return !hasIntakeBall() && !hasShooterBall();
+    }
+
+    public double getMotorSpeed() {
         return motor.get();
     }
 
     @Override
     public void periodic() {
+        mode.run(this);
+
         SmartDashboard.putBoolean("Conveyor/Has Shooter Ball", hasShooterBall());
         SmartDashboard.putBoolean("Conveyor/Has Intake Ball", hasIntakeBall());    
         SmartDashboard.putNumber("Conveyor/Motor Speed", getMotorSpeed());
     }
-    
+
 }
