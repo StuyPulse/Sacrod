@@ -22,6 +22,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public interface Settings {
 
+   public interface Climber {
+        
+        SmartNumber DEADBAND = new SmartNumber("Climber/Deadband", 0.05);
+        SmartNumber RC = new SmartNumber("Climber/RC", 0.05);
+        
+    }
+  
     public interface Conveyor {
         SmartNumber FORWARD_SPEED = new SmartNumber("Conveyor/Forward Speed", 1.0);
         SmartNumber REVERSE_SPEED = new SmartNumber("Conveyor/Reverse Speed", -1.0);
