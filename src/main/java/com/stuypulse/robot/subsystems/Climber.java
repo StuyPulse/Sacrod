@@ -36,8 +36,9 @@ public class Climber extends SubsystemBase {
         motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         motor.setSensorPhase(false);
 
-        controller = new PIDController();
+        controller = new PIDController(Feedback.kP, Feedback.kI, Feedback.kD);
         target = new SmartNumber("Climber/Target Height", MIN_HEIGHT);
+        reset(MIN_HEIGHT);
     }
 
     public void setTargetHeight(double height) {
@@ -56,6 +57,10 @@ public class Climber extends SubsystemBase {
         return motor.get();
     }
 
+    public void reset(double position) {
+        motor.setSelectedSensorPosition(position / Encoder.CONVERSION_FACTOR);
+    }
+
     @Override
     public void periodic() {
         motor.setVoltage(controller.update(target.get(), getHeight()));
@@ -64,6 +69,5 @@ public class Climber extends SubsystemBase {
         SmartDashboard.putNumber("Climber/Controller Output", controller.getOutput());
 
         SmartDashboard.putNumber("Climber/Current Amps", getCurrentAmps());
-        SmartDashboard.putNumber("Climber/Motor Speed", getMotorSpeed());
     }
 }

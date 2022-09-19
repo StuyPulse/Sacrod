@@ -13,6 +13,7 @@ import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.util.Units;
 
 /*-
  * File containing tunable settings for every subsystem on the robot.
@@ -34,13 +35,20 @@ public interface Settings {
             SmartNumber kD = new SmartNumber("Climber/D", 0.0);
         }
         
-        double MIN_HEIGHT = 0.0;
-        double MAX_HEIGHT = 1.0;
+        double MIN_HEIGHT = Units.inchesToMeters(40.475);
+        double MAX_HEIGHT = Units.inchesToMeters(64.1);
+        // double HOOK_HEIGHT = 3.5 in;
+        // double HOOKHEIGHT = 60.6 in to top;
 
         public interface Encoder {
-            int COUNTERS_PER_REVOLUTION = 1024;
-            double GEAR_RATIO = 9.0 / 1.0;
-            double CONVERSION_FACTOR = 1.0;
+            int COUNTS_PER_REVOLUTION = 1024;
+            double GEAR_RATIO = 25.0 / 1.0; // Encoder is after gearing
+            double OUTPUT_TO_SPOOL = 1.0 / 1.0; // There is ratio between gearbox output turns and spool turns
+
+            double SPOOL_DIAMETER = Units.inchesToMeters(1.25);
+            double SPOOL_CIRCUMFERENCE = SPOOL_DIAMETER * Math.PI; // Distance travelled by spool is the height travelled by the climber
+
+            double CONVERSION_FACTOR = SPOOL_CIRCUMFERENCE / OUTPUT_TO_SPOOL / COUNTS_PER_REVOLUTION;
         }
 
     }
