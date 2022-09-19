@@ -7,14 +7,12 @@ package com.stuypulse.robot.constants;
 
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
-import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
 import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /*-
  * File containing tunable settings for every subsystem on the robot.
@@ -29,7 +27,22 @@ public interface Settings {
         
         SmartNumber DEADBAND = new SmartNumber("Climber/Deadband", 0.05);
         SmartNumber RC = new SmartNumber("Climber/RC", 0.05);
+
+        public interface Feedback {
+            SmartNumber kP = new SmartNumber("Climber/P", 0.0);
+            SmartNumber kI = new SmartNumber("Climber/I", 0.0);
+            SmartNumber kD = new SmartNumber("Climber/D", 0.0);
+        }
         
+        double MIN_HEIGHT = 0.0;
+        double MAX_HEIGHT = 1.0;
+
+        public interface Encoder {
+            int COUNTERS_PER_REVOLUTION = 1024;
+            double GEAR_RATIO = 9.0 / 1.0;
+            double CONVERSION_FACTOR = 1.0;
+        }
+
     }
   
     public interface Conveyor {

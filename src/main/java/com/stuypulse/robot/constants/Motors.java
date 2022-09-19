@@ -39,8 +39,9 @@ public interface Motors {
         TalonSRXConfig MotorConfig = new TalonSRXConfig(false, NeutralMode.Brake, 40); 
     }
     
-    public static TalonSRXConfig CLIMBER = new TalonSRXConfig(false, NeutralMode.Brake, 60);
-
+    
+    TalonSRXConfig CLIMBER = new TalonSRXConfig(false, NeutralMode.Brake, 60);
+    
     /** Classes to store all of the values a motor needs */
 
     public static class TalonSRXConfig {
