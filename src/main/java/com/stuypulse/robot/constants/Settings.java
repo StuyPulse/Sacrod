@@ -29,7 +29,7 @@ public interface Settings {
         SmartNumber RC = new SmartNumber("Climber/RC", 0.05);
 
         public interface Feedback {
-            SmartNumber kP = new SmartNumber("Climber/P", 0.0);
+            SmartNumber kP = new SmartNumber("Climber/P", 10.0);
             SmartNumber kI = new SmartNumber("Climber/I", 0.0);
             SmartNumber kD = new SmartNumber("Climber/D", 0.0);
         }
