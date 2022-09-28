@@ -3,7 +3,6 @@ package com.stuypulse.robot.commands.climber;
 import com.stuypulse.robot.subsystems.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 
 public class ClimberToHeight extends CommandBase{
     
