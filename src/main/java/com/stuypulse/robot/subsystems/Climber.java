@@ -46,6 +46,14 @@ public class Climber extends SubsystemBase {
         target.set(MathUtil.clamp(height, MIN_HEIGHT, MAX_HEIGHT));
     }
 
+    public double getTargetHeight() {
+        return target.doubleValue();
+    }
+
+    public void addTargetHeight(double delta) {
+        setTargetHeight(getTargetHeight() + delta);
+    }
+
     public double getHeight() {
         return motor.getSelectedSensorPosition() * Encoder.CONVERSION_FACTOR;
     }

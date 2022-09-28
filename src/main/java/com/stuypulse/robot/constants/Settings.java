@@ -29,6 +29,7 @@ public interface Settings {
         SmartNumber ERROR = new SmartNumber("Climber/Error", 0.01);
         SmartNumber DEADBAND = new SmartNumber("Climber/Deadband", 0.05);
         SmartNumber RC = new SmartNumber("Climber/RC", 0.05);
+        SmartNumber MAX_VELOCITY = new SmartNumber("Climber/Max Velocity", 5);
 
         public interface Feedback {
             SmartNumber kP = new SmartNumber("Climber/P", 10.0);
