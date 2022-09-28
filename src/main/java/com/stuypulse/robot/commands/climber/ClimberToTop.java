@@ -6,22 +6,10 @@ import com.stuypulse.robot.subsystems.Climber;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 
-public class ClimberToTop extends CommandBase{
-
-    private final Climber climber;
+public class ClimberToTop extends ClimberToHeight {
     
     public ClimberToTop(Climber climber){
-        this.climber = climber;
-        addRequirements(climber);
+        super(climber, Settings.Climber.MAX_HEIGHT);
     }
 
-    @Override
-    public void initialize(){
-        climber.setTargetHeight(Settings.Climber.MAX_HEIGHT);
-    }
-
-    @Override
-    public boolean isFinished(){
-        return climber.atHeight();
-    }
 }
