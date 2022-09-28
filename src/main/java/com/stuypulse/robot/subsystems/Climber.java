@@ -2,6 +2,7 @@ package com.stuypulse.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -45,6 +46,14 @@ public class Climber extends SubsystemBase {
         target.set(MathUtil.clamp(height, MIN_HEIGHT, MAX_HEIGHT));
     }
 
+    public double getTargetHeight() {
+        return target.doubleValue();
+    }
+
+    public void addTargetHeight(double delta) {
+        setTargetHeight(getTargetHeight() + delta);
+    }
+
     public double getHeight() {
         return motor.getSelectedSensorPosition() * Encoder.CONVERSION_FACTOR;
     }
@@ -59,6 +68,10 @@ public class Climber extends SubsystemBase {
 
     public void reset(double position) {
         motor.setSelectedSensorPosition(position / Encoder.CONVERSION_FACTOR);
+    }
+
+    public boolean atHeight(){
+        return controller.isDone(Settings.Climber.ERROR.get());
     }
 
     @Override
