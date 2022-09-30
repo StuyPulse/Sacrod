@@ -56,7 +56,6 @@ public class Intake extends SubsystemBase {
         DriverConfig.configure(driverMotor);
         DeploymentConfig.configure(deploymentMotor);
 
-        //controller = Deployment.getController();
         controller = new PIDController(kP, kI, kD);
         deploymentEncoder.setPositionConversionFactor(POSITION_CONVERSION);
 

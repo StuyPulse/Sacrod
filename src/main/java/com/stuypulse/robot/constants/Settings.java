@@ -104,7 +104,7 @@ public interface Settings {
             SmartNumber kV = new SmartNumber("Shooter/Feeder kV", 0);
             SmartNumber kA = new SmartNumber("Shooter/Feeder kA", 0);
 
-            SmartNumber FEEDER_RPM_MULTIPLIER = new SmartNumber("Shooter/Feeder RPM Multiplier", 0);
+            SmartNumber FEEDER_RPM_MULTIPLIER = new SmartNumber("Shooter/Feeder RPM Multiplier", 1);
 
               
             
