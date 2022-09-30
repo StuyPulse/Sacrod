@@ -7,10 +7,11 @@ import static com.stuypulse.robot.constants.Motors.Shooter.*;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
+import com.stuypulse.stuylib.control.feedforward.Feedforward;
 import com.stuypulse.stuylib.network.SmartNumber;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,14 +34,11 @@ public class Shooter extends SubsystemBase {
     private RelativeEncoder shooterMotorEncoder;
     private RelativeEncoder shooterFollowerEncoder;
 
-    private PIDController shooterPID;
-    private SimpleMotorFeedforward shooterFF;
+    private Controller shooterController;
+    private Controller feederController;
 
     private CANSparkMax feederMotor;
     private RelativeEncoder feederMotorEncoder;
-
-    private PIDController feederPID;
-    private SimpleMotorFeedforward feederFF;
 
     public Shooter() {
         targetRPM = new SmartNumber("Shooter/TargetRPM", 0.0);
@@ -53,17 +51,17 @@ public class Shooter extends SubsystemBase {
 
         shooterMotorEncoder = shooterMotor.getEncoder();
         shooterFollowerEncoder = shooterFollower.getEncoder();
-        
-        shooterPID = ShooterPID.PID();
-        shooterFF = ShooterFF.FF();
+
+        shooterController = new PIDController(ShooterPID.kP, ShooterPID.kI, ShooterPID.kD)
+            .add(new Feedforward.Flywheel(ShooterFF.kS, ShooterFF.kV, ShooterFF.kA ).velocity());
+        feederController = new PIDController(FeederPID.kP, FeederPID.kI, FeederPID.kD)
+            .add(new Feedforward.Flywheel(FeederFF.kS, FeederFF.kV, FeederFF.kA).velocity());
 
         feederMotor = new CANSparkMax(FEEDER_MOTOR, MotorType.kBrushless);
         FeederMotorConfig.configure(feederMotor);
         
         feederMotorEncoder = feederMotor.getEncoder();
 
-        feederPID = FeederPID.PID();
-        feederFF = FeederFF.FF();
     }
 
     public void setTargetRPM(double RPM){
@@ -79,13 +77,12 @@ public class Shooter extends SubsystemBase {
     }
 
     private double getShooterVoltage() {
-        return shooterFF.calculate(targetRPM.get()) + shooterPID.update(targetRPM.get(), getShooterRPM());
+        return shooterController.update(targetRPM.get(), getShooterRPM());
     }
 
     private double getFeederVoltage() {
-        final double feederTargetRPM = targetRPM.get() * FeederFF.FEEDER_RPM_MULTIPLIER;
-
-        return feederFF.calculate(feederTargetRPM) + feederPID.update(feederTargetRPM, getFeederRPM());
+        final double feederTargetRPM = targetRPM.get() * FeederFF.FEEDER_RPM_MULTIPLIER.get();
+        return feederController.update(feederTargetRPM, getFeederRPM());   
     }
     
     @Override
