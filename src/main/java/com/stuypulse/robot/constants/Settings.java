@@ -5,14 +5,11 @@
 
 package com.stuypulse.robot.constants;
 
-import com.stuypulse.stuylib.control.Controller;
-import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
 import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
 import com.stuypulse.stuylib.network.SmartNumber;
 
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 
 /*-
@@ -83,20 +80,14 @@ public interface Settings {
             SmartNumber kI = new SmartNumber("Shooter/Shooter kI", 0);
             SmartNumber kD = new SmartNumber("Shooter/Shooter kD", 0);
 
-            static PIDController PID(){
-                return new PIDController(kP, kI, kD);
-            }
         }
         
         public interface ShooterFF {
 
-            double kS = 0;
-            double kV = 0;
-            double kA = 0;
+            SmartNumber kS = new SmartNumber("Shooter/ Shooter kS", 0);
+            SmartNumber kV = new SmartNumber("Shooter/ Shooter kV", 0);
+            SmartNumber kA = new SmartNumber("Shooter/ Shooter kA", 0);
 
-            static SimpleMotorFeedforward FF(){
-                return new SimpleMotorFeedforward(kS, kV, kA);
-            }
 
         }
         
@@ -106,23 +97,19 @@ public interface Settings {
             SmartNumber kI = new SmartNumber("Shooter/Feeder kP", 0);
             SmartNumber kD = new SmartNumber("Shooter/Feeder kP", 0);
             
-            static PIDController PID(){
-                return new PIDController(kP, kI, kD);
-            }
           
         }
         
         public interface FeederFF{
 
-            double kS = 0;
-            double kV = 0;
-            double kA = 0;
+            SmartNumber kS = new SmartNumber("Shooter/Feeder kS", 0);
+            SmartNumber kV = new SmartNumber("Shooter/Feeder kV", 0);
+            SmartNumber kA = new SmartNumber("Shooter/Feeder kA", 0);
 
-            double FEEDER_RPM_MULTIPLIER = 0.9;
+            SmartNumber FEEDER_RPM_MULTIPLIER = new SmartNumber("Shooter/Feeder RPM Multiplier", 1);
 
-            static SimpleMotorFeedforward FF(){
-                return new SimpleMotorFeedforward(kS, kV, kA);
-            }
+              
+            
         }
     }
 
@@ -144,10 +131,6 @@ public interface Settings {
             SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.01);
             SmartNumber kI = new SmartNumber("Intake/Deployment/I", 0);
             SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0);
-
-            static Controller getController() {
-                return new PIDController(kP, kI, kD);
-            }
         }
     }
 }

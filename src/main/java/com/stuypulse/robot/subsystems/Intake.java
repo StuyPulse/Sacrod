@@ -5,10 +5,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import static com.stuypulse.robot.constants.Ports.Intake.*;
 import static com.stuypulse.robot.constants.Settings.Intake.*;
+import static com.stuypulse.robot.constants.Settings.Intake.Deployment.*;
 import static com.stuypulse.robot.constants.Motors.Intake.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -54,8 +56,7 @@ public class Intake extends SubsystemBase {
         DriverConfig.configure(driverMotor);
         DeploymentConfig.configure(deploymentMotor);
 
-        controller = Deployment.getController();
-
+        controller = new PIDController(kP, kI, kD);
         deploymentEncoder.setPositionConversionFactor(POSITION_CONVERSION);
 
         targetAngle = new SmartNumber("Intake/Target Angle", 0.0);

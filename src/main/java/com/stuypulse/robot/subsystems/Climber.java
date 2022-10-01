@@ -10,6 +10,7 @@ import com.stuypulse.stuylib.network.SmartNumber;
 import static com.stuypulse.robot.constants.Motors.*;
 import static com.stuypulse.robot.constants.Ports.Climber.*;
 import static com.stuypulse.robot.constants.Settings.Climber.*;
+import static com.stuypulse.robot.constants.Settings.Climber.Feedback.*;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -37,7 +38,8 @@ public class Climber extends SubsystemBase {
         motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
         motor.setSensorPhase(false);
 
-        controller = new PIDController(Feedback.kP, Feedback.kI, Feedback.kD);
+        controller = new PIDController(kP, kI, kD);
+
         target = new SmartNumber("Climber/Target Height", MIN_HEIGHT);
         reset(MIN_HEIGHT);
     }
