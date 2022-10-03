@@ -21,13 +21,17 @@ public class EncoderSim implements Sendable {
 
     private boolean inverted;
 
-    protected EncoderSim() {
+    private final MotorSim motorSim;
+
+    protected EncoderSim(MotorSim motorSim) {
         position = 0;
         positionConversion = 1;
+
+        this.motorSim = motorSim;
     }
 
-    protected void update(double dtSeconds, double vel) {
-        position += dtSeconds * vel;
+    protected void update(double dtSeconds) {
+        position += dtSeconds * motorSim.getRadPerSecond();
     }
 
     public double getDistance() {
@@ -48,6 +52,10 @@ public class EncoderSim implements Sendable {
     // distance is by default in radians
     public void setPositionConversion(double conversion) {
         this.positionConversion = conversion;
+    }
+
+    public double getRadPerSecond() {
+        return motorSim.getRadPerSecond() * (inverted ? -1 : 1);
     }
 
     public void reset(double position) {

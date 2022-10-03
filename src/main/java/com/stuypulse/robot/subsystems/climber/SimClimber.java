@@ -1,47 +1,45 @@
-package com.stuypulse.robot.subsystems;
+package com.stuypulse.robot.subsystems.climber;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.stuypulse.robot.subsystems.IClimber;
+import com.stuypulse.robot.util.EncoderSim;
+import com.stuypulse.robot.util.MotorSim;
+import com.stuypulse.robot.util.MotorSim.MotorType;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
-import static com.stuypulse.robot.constants.Motors.*;
-import static com.stuypulse.robot.constants.Ports.Climber.*;
 import static com.stuypulse.robot.constants.Settings.Climber.*;
 import static com.stuypulse.robot.constants.Settings.Climber.Feedback.*;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
+import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-/**
-* @author Ivan Chen
-* @author Carmin Vuong
-* @author Jennifer Ye
-* @author Jiayu Yan
-* @author Niki Chen
-*/
+public class SimClimber extends IClimber {
 
-public class Climber extends SubsystemBase {
-
-    private final WPI_TalonSRX motor;
+    private final MotorSim motor;
+    private final EncoderSim encoder;
 
     private final Controller controller;
     private final SmartNumber target;
 
-    public Climber() {
-        motor = new WPI_TalonSRX(MOTOR);
-        CLIMBER.configure(motor);
+    private final MechanismLigament2d climber;
 
-        motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        motor.setSensorPhase(false);
+    public SimClimber() {
+        motor = new MotorSim(MotorType.CIM, 1, 1.0, 1.0);
+        encoder = motor.getEncoder();
+
+        encoder.setPositionConversion(Encoder.CONVERSION_FACTOR);
 
         controller = new PIDController(kP, kI, kD);
 
         target = new SmartNumber("Climber/Target Height", MIN_HEIGHT);
         reset(MIN_HEIGHT);
+
+        climber = new Mechanism2d(50, 50).getRoot("Elevator Root", 10, 0).append(
+            new MechanismLigament2d("Elevator", 0, 0));
     }
 
     public void setTargetHeight(double height) {
@@ -57,19 +55,19 @@ public class Climber extends SubsystemBase {
     }
 
     public double getHeight() {
-        return motor.getSelectedSensorPosition() * Encoder.CONVERSION_FACTOR;
+        return encoder.getDistance();
     }
 
     public double getCurrentAmps() {
-        return motor.getSupplyCurrent();
+        return motor.getCurrentDrawAmps();
     }
 
     public double getMotorSpeed() {
-        return motor.get();
+        return encoder.getRadPerSecond();
     }
 
     public void reset(double position) {
-        motor.setSelectedSensorPosition(position / Encoder.CONVERSION_FACTOR);
+        encoder.reset(position);
     }
 
     public boolean atHeight(){
@@ -79,6 +77,8 @@ public class Climber extends SubsystemBase {
     @Override
     public void periodic() {
         motor.setVoltage(controller.update(target.get(), getHeight()));
+
+        climber.setLength(encoder.getDistance());
 
         SmartDashboard.putNumber("Climber/Height", getHeight());
         SmartDashboard.putNumber("Climber/Controller Output", controller.getOutput());

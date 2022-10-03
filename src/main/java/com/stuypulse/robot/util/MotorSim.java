@@ -2,15 +2,12 @@ package com.stuypulse.robot.util;
 
 import java.util.function.Function;
 
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
-import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 
 /**
  * A simulated motor intended to be a simple replacement for
@@ -50,7 +47,7 @@ public class MotorSim implements MotorController, Sendable {
     public MotorSim(MotorType motor, int motorCount, double gearing, double momentOfInertia) {
         sim = new DCMotorSim(motor.getMotor(motorCount), gearing, momentOfInertia);
 
-        encoder = new EncoderSim();
+        encoder = new EncoderSim(this);
     }
 
     @Override
@@ -102,16 +99,15 @@ public class MotorSim implements MotorController, Sendable {
 
     public void update(double dtSeconds) {
         sim.update(dtSeconds);
-        encoder.update(dtSeconds, getRadPerSecond());
-    }
-
-    // returns motor's angular velocity
-    public double getRadPerSecond() {
-        return sim.getOutput(1) * (inverted ? -1 : 1);
+        encoder.update(dtSeconds);
     }
 
     public double getCurrentDrawAmps() {
         return sim.getCurrentDrawAmps();
+    }
+
+    protected double getRadPerSecond() {
+        return sim.getAngularVelocityRadPerSec();
     }
 
     public EncoderSim getEncoder() {
