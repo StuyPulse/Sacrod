@@ -20,8 +20,9 @@ import edu.wpi.first.math.util.Units;
  */
 
 public interface Settings {
-
-   public interface Climber {
+    double DT = 0.02;
+    
+    public interface Climber {
         
         SmartNumber ERROR = new SmartNumber("Climber/Error", 0.01);
         SmartNumber DEADBAND = new SmartNumber("Climber/Deadband", 0.05);
@@ -32,6 +33,11 @@ public interface Settings {
             SmartNumber kP = new SmartNumber("Climber/P", 10.0);
             SmartNumber kI = new SmartNumber("Climber/I", 0.0);
             SmartNumber kD = new SmartNumber("Climber/D", 0.0);
+        }
+
+        public interface SysId {
+            double kV = -1.0;
+            double kA = -1.0;
         }
         
         double MIN_HEIGHT = Units.inchesToMeters(40.475);

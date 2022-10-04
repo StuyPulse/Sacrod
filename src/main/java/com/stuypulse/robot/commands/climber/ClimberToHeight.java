@@ -1,5 +1,6 @@
 package com.stuypulse.robot.commands.climber;
 
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.IClimber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -31,7 +32,7 @@ public class ClimberToHeight extends CommandBase{
     @Override
     public boolean isFinished(){
         if(!instant){
-            return climber.atHeight();
+            return climber.atHeight(Settings.Climber.ERROR.get());
         }
         return true;
     }

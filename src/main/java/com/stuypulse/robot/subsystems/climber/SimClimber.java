@@ -1,9 +1,6 @@
 package com.stuypulse.robot.subsystems.climber;
 
 import com.stuypulse.robot.subsystems.IClimber;
-import com.stuypulse.robot.util.EncoderSim;
-import com.stuypulse.robot.util.MotorSim;
-import com.stuypulse.robot.util.MotorSim.MotorType;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
@@ -13,14 +10,18 @@ import static com.stuypulse.robot.constants.Settings.Climber.*;
 import static com.stuypulse.robot.constants.Settings.Climber.Feedback.*;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SimClimber extends IClimber {
 
-    private final MotorSim motor;
-    private final EncoderSim encoder;
+    private final LinearSystemSim<N2, N1, N1> sim;
+    private double position;
 
     private final Controller controller;
     private final SmartNumber target;
@@ -28,10 +29,8 @@ public class SimClimber extends IClimber {
     private final MechanismLigament2d climber;
 
     public SimClimber() {
-        motor = new MotorSim(MotorType.CIM, 1, 1.0, 1.0);
-        encoder = motor.getEncoder();
-
-        encoder.setPositionConversion(Encoder.CONVERSION_FACTOR);
+        sim = new LinearSystemSim<>(
+            LinearSystemId.identifyPositionSystem(SysId.kV, SysId.kA));
 
         controller = new PIDController(kP, kI, kD);
 
@@ -42,32 +41,24 @@ public class SimClimber extends IClimber {
             new MechanismLigament2d("Elevator", 0, 0));
     }
 
+    @Override
     public void setTargetHeight(double height) {
         target.set(MathUtil.clamp(height, MIN_HEIGHT, MAX_HEIGHT));
     }
 
+    @Override
     public double getTargetHeight() {
         return target.doubleValue();
     }
 
-    public void addTargetHeight(double delta) {
-        setTargetHeight(getTargetHeight() + delta);
-    }
-
+    @Override
     public double getHeight() {
-        return encoder.getDistance();
+        return position * (Encoder.SPOOL_CIRCUMFERENCE / Encoder.OUTPUT_TO_SPOOL);
     }
 
-    public double getCurrentAmps() {
-        return motor.getCurrentDrawAmps();
-    }
-
-    public double getMotorSpeed() {
-        return encoder.getRadPerSecond();
-    }
-
+    @Override
     public void reset(double position) {
-        encoder.reset(position);
+        this.position = position;
     }
 
     public boolean atHeight(){
@@ -76,13 +67,18 @@ public class SimClimber extends IClimber {
 
     @Override
     public void periodic() {
-        motor.setVoltage(controller.update(target.get(), getHeight()));
-
-        climber.setLength(encoder.getDistance());
+        climber.setLength(getHeight());
 
         SmartDashboard.putNumber("Climber/Height", getHeight());
         SmartDashboard.putNumber("Climber/Controller Output", controller.getOutput());
 
-        SmartDashboard.putNumber("Climber/Current Amps", getCurrentAmps());
+        SmartDashboard.putNumber("Climber/Current Amps", sim.getCurrentDrawAmps());
+    }
+
+    @Override
+    public void simulationPeriodic() {
+        sim.setInput(controller.update(target.get(), getHeight()));
+
+        position += sim.getOutput(0) * Settings.DT;
     }
 }
