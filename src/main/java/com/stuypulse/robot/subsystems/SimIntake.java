@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
-import com.stuypulse.stuylib.network.SmartBoolean;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import static com.stuypulse.robot.constants.Settings.Intake.Simulation.*;
@@ -54,6 +53,10 @@ public class SimIntake extends IIntake {
         targetAngle = new SmartNumber("Intake/Angle", 0);
 
         currentAngle = new SmartNumber("Intake/Angle", 0);
+    }
+
+    public void reset() {
+        currentAngle.set(0);
     }
 
     @Override
