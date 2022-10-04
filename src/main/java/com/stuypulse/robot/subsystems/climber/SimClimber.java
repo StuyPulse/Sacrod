@@ -1,7 +1,6 @@
 package com.stuypulse.robot.subsystems.climber;
 
 import com.stuypulse.robot.subsystems.IClimber;
-import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -10,6 +9,7 @@ import static com.stuypulse.robot.constants.Settings.Climber.*;
 import static com.stuypulse.robot.constants.Settings.Climber.Feedback.*;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -21,7 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SimClimber extends IClimber {
 
     private final LinearSystemSim<N2, N1, N1> sim;
-    private double position;
 
     private final Controller controller;
     private final SmartNumber target;
@@ -53,16 +52,12 @@ public class SimClimber extends IClimber {
 
     @Override
     public double getHeight() {
-        return position * (Encoder.SPOOL_CIRCUMFERENCE / Encoder.OUTPUT_TO_SPOOL);
+        return sim.getOutput(1);
     }
 
     @Override
     public void reset(double position) {
-        this.position = position;
-    }
-
-    public boolean atHeight(){
-        return controller.isDone(Settings.Climber.ERROR.get());
+        sim.setState(VecBuilder.fill(position, 0));
     }
 
     @Override
@@ -78,7 +73,5 @@ public class SimClimber extends IClimber {
     @Override
     public void simulationPeriodic() {
         sim.setInput(controller.update(target.get(), getHeight()));
-
-        position += sim.getOutput(0) * Settings.DT;
     }
 }

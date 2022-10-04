@@ -6,7 +6,7 @@ public abstract class IClimber extends SubsystemBase {
 
     public abstract void setTargetHeight(double height);
 
-    public void addTargetHeight(double delta) {
+    public final void addTargetHeight(double delta) {
         setTargetHeight(getTargetHeight() + delta);
     }
 
@@ -14,7 +14,7 @@ public abstract class IClimber extends SubsystemBase {
 
     public abstract double getHeight();
 
-    public boolean atHeight(double maxError) {
+    public final boolean atHeight(double maxError) {
         return Math.abs(getHeight() - getTargetHeight()) < maxError;
     }
 
