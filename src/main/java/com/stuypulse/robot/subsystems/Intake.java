@@ -40,7 +40,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * @author Zixi Feng (zixifeng12)
  */
 
-public class Intake extends SubsystemBase {
+public class Intake extends IIntake {
 
     private WPI_TalonSRX driverMotor;
     private CANSparkMax deploymentMotor;
