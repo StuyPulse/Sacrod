@@ -42,13 +42,30 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Intake": "Subsystem",
+      "/LiveWindow/SimClimber": "Subsystem",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon SRX [0]": "Motor Controller",
-      "/SmartDashboard/Autonomous": "String Chooser"
+      "/SmartDashboard/Autonomous": "String Chooser",
+      "/SmartDashboard/Climber View": "Mechanism2d"
+    },
+    "windows": {
+      "/LiveWindow/SimClimber": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Climber View": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
     "SmartDashboard": {
+      "Climber": {
+        "open": true
+      },
       "Intake": {
         "open": true
       },
