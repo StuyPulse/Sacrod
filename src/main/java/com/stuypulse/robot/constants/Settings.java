@@ -30,14 +30,14 @@ public interface Settings {
         SmartNumber MAX_VELOCITY = new SmartNumber("Climber/Max Velocity", 1);
 
         public interface Feedback {
-            SmartNumber kP = new SmartNumber("Climber/P", 20);
+            SmartNumber kP = new SmartNumber("Climber/P", 25);
             SmartNumber kI = new SmartNumber("Climber/I", 0.0);
             SmartNumber kD = new SmartNumber("Climber/D", 7.5);
         }
 
         public interface SysId {
-            double kV = 12.0 / (1.0 / 3.0);
-            double kA = 12.0 / ((1.0 / 3.0) / 0.1);
+            double kV = 12.0 / (1.0 / 2.0);
+            double kA = 12.0 / ((1.0 / 2.0) / 0.05);
         }
         
         double MIN_HEIGHT = Units.inchesToMeters(40.475);
