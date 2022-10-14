@@ -35,7 +35,7 @@ public interface Settings {
             SmartNumber kD = new SmartNumber("Climber/D", 7.5);
         }
 
-        public interface SysId {
+        public interface Feedforward {
             double kV = 12.0 / (1.0 / 2.0);
             double kA = 12.0 / ((1.0 / 2.0) / 0.05);
         }
