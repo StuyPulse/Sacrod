@@ -6,10 +6,16 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.intake.IntakeAcquire;
+import com.stuypulse.robot.commands.intake.IntakeDeacquire;
+import com.stuypulse.robot.commands.intake.IntakeExtend;
+import com.stuypulse.robot.commands.intake.IntakeRetract;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.subsystems.intake.SimIntake;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
+import com.stuypulse.stuylib.input.gamepads.keyboard.SimKeyGamepad;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -20,11 +26,11 @@ public class RobotContainer {
   // Subsystem
   public final Conveyor conveyor = new Conveyor();
   public final Shooter shooter = new Shooter();
-  public final Intake intake = new Intake();
+  public final IIntake intake = new SimIntake();
   public final Climber climber = new Climber();
 
     // Gamepads
-    public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
+    public final Gamepad driver = new SimKeyGamepad(); //new AutoGamepad(Ports.Gamepad.DRIVER);
     public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
 
     // Autons
@@ -51,6 +57,12 @@ public class RobotContainer {
     /***************/
 
   private void configureButtonBindings() {
+    driver.getRightTriggerButton()
+      .whenPressed(new IntakeExtend(intake))
+      .whileHeld(new IntakeAcquire(intake))
+      .whenReleased(new IntakeRetract(intake));
+
+    driver.getLeftTriggerButton().whileHeld(new IntakeDeacquire(intake))
   }
 
     /**************/

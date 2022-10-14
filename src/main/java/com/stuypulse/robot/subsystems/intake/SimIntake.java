@@ -1,5 +1,7 @@
-package com.stuypulse.robot.subsystems;
+package com.stuypulse.robot.subsystems.intake;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -16,22 +18,21 @@ import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import static com.stuypulse.robot.constants.Settings.Intake.Simulation.*;
+
+import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.IIntake;
+
 import static com.stuypulse.robot.constants.Settings.Intake.Deployment.*;
 import static com.stuypulse.robot.constants.Settings.Intake.*;
 
 public class SimIntake extends IIntake {
     // SIMULATION HARDWARE
     private final LinearSystemSim<N2, N1, N1> intakeSim;
-
     private final MechanismLigament2d intakeArm;
-
-    private final SmartNumber currentAngle;
-
     private final SmartNumber driverState;
 
     // CONTROL
     private final Controller controller;
-
     private final SmartNumber targetAngle;
 
     public SimIntake() {
@@ -42,21 +43,19 @@ public class SimIntake extends IIntake {
 
         driverState = new SmartNumber("Intake/Driver Simulation State", 0);
 
-        Mechanism2d intake = new Mechanism2d(3, 4);
-        MechanismRoot2d intakeRoot = intake.getRoot("Intake Root", 2, 0);
-        intakeArm = new MechanismLigament2d("Intake Arm", 1, 0);
+        Mechanism2d intake = new Mechanism2d(2, 2);
+        MechanismRoot2d intakeRoot = intake.getRoot("Intake Root", 1, 1);
+        intakeArm = new MechanismLigament2d("Intake Arm", 1, 2);
         intakeRoot.append(intakeArm);
         addChild("Intake Mechanism2d", intake);
 
         // CONTROL
         controller = new PIDController(kP, kI, kD);
-        targetAngle = new SmartNumber("Intake/Angle", 0);
-
-        currentAngle = new SmartNumber("Intake/Angle", 0);
+        targetAngle = new SmartNumber("Intake/Target Angle", 0);
     }
 
     public void reset() {
-        currentAngle.set(0);
+        intakeSim.setState(VecBuilder.fill(0, 0));
     }
 
     @Override
@@ -75,42 +74,44 @@ public class SimIntake extends IIntake {
     }
 
     @Override
+    public void extend() {
+        pointAtAngle(EXTEND_ANGLE.get());
+    }
+
+    @Override
+    public void retract() {
+        pointAtAngle(RETRACT_ANGLE.get());
+    }
+
     public void pointAtAngle(double angle) {
         targetAngle.set(angle);
     }
 
-    @Override
-    public double getAngle() {
-        return currentAngle.get();
+    public double getAngleDegrees() {
+        return intakeSim.getOutput(0) * 360.0;
     }
 
     public double getTargetAngle() {
         return targetAngle.get();
     }
 
-    private double getOutput() {
-        double output = controller.update(getTargetAngle(), getAngle());
-
-        if (getAngle() < RETRACT_ANGLE.get()) {
-            currentAngle.set(RETRACT_ANGLE.get());
-            output = Math.max(output, 0);
-        }
-        if (getAngle() > EXTEND_ANGLE.get()) {
-            currentAngle.set(EXTEND_ANGLE.get());
-            output = Math.min(0, output);
-        }
-        SmartDashboard.putNumber("Intake/Sim Output", output);
-        return output;
-    }
-
     @Override
     public void periodic() {
-        intakeSim.setInput(getOutput() * RoboRioSim.getVInVoltage());
+        intakeSim.setInput(MathUtil.clamp(
+            controller.update(getTargetAngle(), getAngleDegrees()),
+            -12, +12));
 
-        intakeSim.update(0.02);
-        currentAngle.set(intakeSim.getOutput(0));
-        intakeArm.setAngle(getAngle());
+        intakeSim.update(Settings.DT);
+
+        if (getAngleDegrees() < RETRACT_ANGLE.get() || getAngleDegrees() > EXTEND_ANGLE.get())
+            intakeSim.setState(VecBuilder.fill(
+                MathUtil.clamp(getAngleDegrees(), RETRACT_ANGLE.get(), EXTEND_ANGLE.get()), 0));
+
+        intakeArm.setAngle(getAngleDegrees() + 90);
         RoboRioSim.setVInCurrent(BatterySim.calculateDefaultBatteryLoadedVoltage(
                 intakeSim.getCurrentDrawAmps()));
+        
+        SmartDashboard.putNumber("Intake/Angle", getAngleDegrees());
+        SmartDashboard.putNumber("Intake/Voltage", controller.getOutput());
     }
 }

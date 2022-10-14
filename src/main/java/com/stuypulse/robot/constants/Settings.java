@@ -20,6 +20,7 @@ import edu.wpi.first.math.util.Units;
  */
 
 public interface Settings {
+    double DT = 0.02;
 
     public interface Climber {
 
@@ -124,14 +125,16 @@ public interface Settings {
         public interface Deployment {
             SmartNumber MAX_ERROR = new SmartNumber("Intake/Deployment/Max Error", 3.0);
 
-            SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.01);
+            SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.5);
             SmartNumber kI = new SmartNumber("Intake/Deployment/I", 0);
             SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0);
         }
 
         public interface Simulation {
-            SmartNumber kV = new SmartNumber("Intake/Simulation/V", 0.001);
-            SmartNumber kA = new SmartNumber("Intake/Simulation/A", 0);
+            double MAX_ROTATIONS_PER_SECOND = 1.851;
+
+            SmartNumber kV = new SmartNumber("Intake/Simulation/V", 12.0 / MAX_ROTATIONS_PER_SECOND);
+            SmartNumber kA = new SmartNumber("Intake/Simulation/A", 0.01);
         }
     }
 }

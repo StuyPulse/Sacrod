@@ -13,7 +13,7 @@ public abstract class IIntake extends SubsystemBase {
 
     // deployment
 
-    public abstract void pointAtAngle(double angle);
+    public abstract void retract();
 
-    public abstract double getAngle();
+    public abstract void extend();
 }
