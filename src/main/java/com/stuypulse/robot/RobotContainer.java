@@ -8,6 +8,7 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.subsystems.climber.SimClimber;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 
@@ -18,10 +19,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   
   // Subsystem
-  public final Conveyor conveyor = new Conveyor();
-  public final Shooter shooter = new Shooter();
-  public final Intake intake = new Intake();
-  public final Climber climber = new Climber();
+  // public final Conveyor conveyor = new Conveyor();
+  // public final Shooter shooter = new Shooter();
+  // public final Intake intake = new Intake();
+  public final IClimber climber = new SimClimber();
 
     // Gamepads
     public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
