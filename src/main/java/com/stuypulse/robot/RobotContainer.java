@@ -19,9 +19,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   
   // Subsystem
-  public final Conveyor conveyor = new Conveyor();
-  public final Shooter shooter = new Shooter();
-  public final Intake intake = new Intake();
+  // public final Conveyor conveyor = new Conveyor();
+  // public final Shooter shooter = new Shooter();
+  // public final Intake intake = new Intake();
   public final IClimber climber = new SimClimber();
 
     // Gamepads

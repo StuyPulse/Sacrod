@@ -8,12 +8,16 @@ import com.stuypulse.stuylib.network.SmartNumber;
 import static com.stuypulse.robot.constants.Settings.Climber.*;
 import static com.stuypulse.robot.constants.Settings.Climber.Feedback.*;
 
+import com.stuypulse.robot.constants.Settings;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.wpilibj.simulation.BatterySim;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
+import edu.wpi.first.wpilibj.simulation.RoboRioSim;
 import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,7 +29,7 @@ public class SimClimber extends IClimber {
     private final Controller controller;
     private final SmartNumber target;
 
-    private final MechanismLigament2d climber;
+    private final MechanismLigament2d climber2d;
 
     public SimClimber() {
         sim = new LinearSystemSim<>(
@@ -36,8 +40,11 @@ public class SimClimber extends IClimber {
         target = new SmartNumber("Climber/Target Height", MIN_HEIGHT);
         reset(MIN_HEIGHT);
 
-        climber = new Mechanism2d(50, 50).getRoot("Elevator Root", 10, 0).append(
-            new MechanismLigament2d("Elevator", 0, 0));
+        Mechanism2d mechanism = new Mechanism2d(150, 300);
+        climber2d = new MechanismLigament2d("Climber", 0, 90.0);
+        mechanism.getRoot("Climber Root", 75, 0).append(climber2d);
+
+        SmartDashboard.putData("Climber View", mechanism);
     }
 
     @Override
@@ -52,7 +59,7 @@ public class SimClimber extends IClimber {
 
     @Override
     public double getHeight() {
-        return sim.getOutput(1);
+        return sim.getOutput(0);
     }
 
     @Override
@@ -62,7 +69,20 @@ public class SimClimber extends IClimber {
 
     @Override
     public void periodic() {
-        climber.setLength(getHeight());
+        sim.setInput(MathUtil.clamp(
+            controller.update(target.get(), getHeight()),
+            -RoboRioSim.getVInVoltage(),
+            +RoboRioSim.getVInVoltage()
+        ));
+
+        sim.update(Settings.DT);
+        RoboRioSim.setVInCurrent(BatterySim.calculateDefaultBatteryLoadedVoltage(sim.getCurrentDrawAmps()));
+
+        if (getHeight() < MIN_HEIGHT || getHeight() > MAX_HEIGHT) {
+            reset(MathUtil.clamp(getHeight(), MIN_HEIGHT, MAX_HEIGHT));
+        }
+
+        climber2d.setLength(25 + 275 * (getHeight() - MIN_HEIGHT)/(MAX_HEIGHT - MIN_HEIGHT));
 
         SmartDashboard.putNumber("Climber/Height", getHeight());
         SmartDashboard.putNumber("Climber/Controller Output", controller.getOutput());
@@ -70,8 +90,4 @@ public class SimClimber extends IClimber {
         SmartDashboard.putNumber("Climber/Current Amps", sim.getCurrentDrawAmps());
     }
 
-    @Override
-    public void simulationPeriodic() {
-        sim.setInput(controller.update(target.get(), getHeight()));
-    }
 }
