@@ -62,7 +62,8 @@ public class RobotContainer {
       .whileHeld(new IntakeAcquire(intake))
       .whenReleased(new IntakeRetract(intake));
 
-    driver.getLeftTriggerButton().whileHeld(new IntakeDeacquire(intake))
+    driver.getLeftTriggerButton()
+      .whileHeld(new IntakeDeacquire(intake));
   }
 
     /**************/

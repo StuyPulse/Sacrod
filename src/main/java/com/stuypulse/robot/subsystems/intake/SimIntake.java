@@ -54,8 +54,8 @@ public class SimIntake extends IIntake {
         targetAngle = new SmartNumber("Intake/Target Angle", 0);
     }
 
-    public void reset() {
-        intakeSim.setState(VecBuilder.fill(0, 0));
+    public void reset(double degrees) {
+        intakeSim.setState(VecBuilder.fill(degrees / 360.0, 0));
     }
 
     @Override
@@ -99,7 +99,8 @@ public class SimIntake extends IIntake {
     public void periodic() {
         intakeSim.setInput(MathUtil.clamp(
             controller.update(getTargetAngle(), getAngleDegrees()),
-            -12, +12));
+            -RoboRioSim.getVInVoltage(),
+            +RoboRioSim.getVInVoltage()));
 
         intakeSim.update(Settings.DT);
 
