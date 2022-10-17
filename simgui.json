@@ -41,14 +41,36 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Conveyor": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
+      "/LiveWindow/Shooter": "Subsystem",
+      "/LiveWindow/SimClimber": "Subsystem",
+      "/LiveWindow/Ungrouped/DigitalInput[21]": "Digital Input",
+      "/LiveWindow/Ungrouped/DigitalInput[22]": "Digital Input",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon SRX [0]": "Motor Controller",
-      "/SmartDashboard/Autonomous": "String Chooser"
+      "/LiveWindow/Ungrouped/Talon SRX [20]": "Motor Controller",
+      "/SmartDashboard/Autonomous": "String Chooser",
+      "/SmartDashboard/Climber View": "Mechanism2d"
+    },
+    "windows": {
+      "/LiveWindow/SimClimber": {
+        "window": {
+          "visible": true
+        }
+      },
+      "/SmartDashboard/Climber View": {
+        "window": {
+          "visible": true
+        }
+      }
     }
   },
   "NetworkTables": {
     "SmartDashboard": {
+      "Climber": {
+        "open": true
+      },
       "Intake": {
         "open": true
       },

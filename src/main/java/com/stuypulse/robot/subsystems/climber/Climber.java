@@ -1,8 +1,8 @@
-package com.stuypulse.robot.subsystems;
+package com.stuypulse.robot.subsystems.climber;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.IClimber;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -14,7 +14,6 @@ import static com.stuypulse.robot.constants.Settings.Climber.Feedback.*;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
 * @author Ivan Chen
@@ -24,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 * @author Niki Chen
 */
 
-public class Climber extends SubsystemBase {
+public class Climber extends IClimber {
 
     private final WPI_TalonSRX motor;
 
@@ -44,36 +43,28 @@ public class Climber extends SubsystemBase {
         reset(MIN_HEIGHT);
     }
 
+    @Override
     public void setTargetHeight(double height) {
         target.set(MathUtil.clamp(height, MIN_HEIGHT, MAX_HEIGHT));
     }
 
+    @Override
     public double getTargetHeight() {
         return target.doubleValue();
     }
 
-    public void addTargetHeight(double delta) {
-        setTargetHeight(getTargetHeight() + delta);
-    }
-
+    @Override
     public double getHeight() {
         return motor.getSelectedSensorPosition() * Encoder.CONVERSION_FACTOR;
     }
 
-    public double getCurrentAmps() {
-        return motor.getSupplyCurrent();
-    }
-
-    public double getMotorSpeed() {
-        return motor.get();
-    }
-
+    @Override
     public void reset(double position) {
         motor.setSelectedSensorPosition(position / Encoder.CONVERSION_FACTOR);
     }
 
-    public boolean atHeight(){
-        return controller.isDone(Settings.Climber.ERROR.get());
+    public double getCurrentAmps() {
+        return motor.getSupplyCurrent();
     }
 
     @Override
