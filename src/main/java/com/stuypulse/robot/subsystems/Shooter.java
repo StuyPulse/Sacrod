@@ -12,20 +12,10 @@ import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.control.feedforward.Feedforward;
 import com.stuypulse.stuylib.network.SmartNumber;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-/**
- * Shooter subsystem controlled using Feedforward and PID. 
- * 
- * @author Eric lin (@cire694)
- * @author Vincent Lin (@Shroomicus)
- * @author Anthony Chen (@achen318)
- * @author Reya Miller (@reyamiller)
- */
-public class Shooter extends SubsystemBase {
-
+public class Shooter extends IShooter{
+    
     private SmartNumber targetRPM;
 
     private CANSparkMax shooterMotor;
@@ -64,31 +54,27 @@ public class Shooter extends SubsystemBase {
 
     }
 
-    public void setTargetRPM(double RPM){
-        targetRPM.set(RPM);
+    public double getShooterRPM(){
+        return (shooterMotorEncoder.getVelocity() + shooterFollowerEncoder.getVelocity()) /2;
     }
-
-    public double getShooterRPM() {
-        return (shooterMotorEncoder.getVelocity() + shooterFollowerEncoder.getVelocity()) / 2;
-    }
-
-    public double getFeederRPM() {
+    
+    public double getFeederRPM(){
         return feederMotorEncoder.getVelocity();
     }
 
-    private double getShooterVoltage() {
-        return shooterController.update(targetRPM.get(), getShooterRPM());
+    public double getDesiredShooterVoltage(){
+        return shooterController.update(targetRPM.get(), getShooterRPM()); 
     }
 
-    private double getFeederVoltage() {
+    public double getDesiredFeederVoltage(){
         final double feederTargetRPM = targetRPM.get() * FeederFF.FEEDER_RPM_MULTIPLIER.get();
-        return feederController.update(feederTargetRPM, getFeederRPM());   
+        return feederController.update(feederTargetRPM, getFeederRPM());
     }
-    
+
     @Override
     public void periodic() {
-        final double shooterVoltage = getShooterVoltage();
-        final double feederVoltage = getFeederVoltage();
+        final double shooterVoltage = getDesiredShooterVoltage();
+        final double feederVoltage = getDesiredFeederVoltage();
 
         shooterMotor.setVoltage(shooterVoltage);
         shooterFollower.setVoltage(shooterVoltage);
@@ -101,4 +87,7 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
         SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
     }
+
+
+    
 }
