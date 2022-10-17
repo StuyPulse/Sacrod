@@ -55,7 +55,7 @@ public class SimIntake extends IIntake {
     }
 
     public void reset(double degrees) {
-        intakeSim.setState(VecBuilder.fill(degrees / 360.0, 0));
+        intakeSim.setState(VecBuilder.fill(degrees, 0));
     }
 
     @Override
@@ -88,7 +88,7 @@ public class SimIntake extends IIntake {
     }
 
     public double getAngleDegrees() {
-        return intakeSim.getOutput(0) * 360.0;
+        return intakeSim.getOutput(0);
     }
 
     public double getTargetAngle() {

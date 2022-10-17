@@ -125,15 +125,15 @@ public interface Settings {
         public interface Deployment {
             SmartNumber MAX_ERROR = new SmartNumber("Intake/Deployment/Max Error", 3.0);
 
-            SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.5);
+            SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.2);
             SmartNumber kI = new SmartNumber("Intake/Deployment/I", 0);
             SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0);
         }
 
         public interface Simulation {
-            double MAX_ROTATIONS_PER_SECOND = 1.851;
+            double MAX_DEGREES_PER_SECOND = 666.36;
 
-            SmartNumber kV = new SmartNumber("Intake/Simulation/V", 12.0 / MAX_ROTATIONS_PER_SECOND);
+            SmartNumber kV = new SmartNumber("Intake/Simulation/V", 12.0 / MAX_DEGREES_PER_SECOND);
             SmartNumber kA = new SmartNumber("Intake/Simulation/A", 0.01);
         }
     }
