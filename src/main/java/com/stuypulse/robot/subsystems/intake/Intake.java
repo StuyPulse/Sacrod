@@ -1,9 +1,10 @@
-package com.stuypulse.robot.subsystems;
+package com.stuypulse.robot.subsystems.intake;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.stuypulse.robot.subsystems.IIntake;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -14,7 +15,6 @@ import static com.stuypulse.robot.constants.Settings.Intake.Deployment.*;
 import static com.stuypulse.robot.constants.Motors.Intake.*;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /**
  * An intake subsystem controlled by a drive and deployment motor.
@@ -40,7 +40,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  * @author Zixi Feng (zixifeng12)
  */
 
-public class Intake extends SubsystemBase {
+public class Intake extends IIntake {
 
     private WPI_TalonSRX driverMotor;
     private CANSparkMax deploymentMotor;
@@ -98,12 +98,7 @@ public class Intake extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (!controller.isDone(Deployment.MAX_ERROR.get())) {
-            deploymentMotor.set(controller.update(targetAngle.get(),
-                    getAngle()));
-        } else {
-            deploymentMotor.set(0);
-        }
+        deploymentMotor.set(controller.update(targetAngle.get(), getAngle()));
 
         SmartDashboard.putNumber("Intake/Deployment Speed", deploymentMotor.get());
         SmartDashboard.putNumber("Intake/Deployment Angle", getAngle());
