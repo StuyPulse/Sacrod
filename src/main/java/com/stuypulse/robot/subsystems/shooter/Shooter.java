@@ -1,4 +1,4 @@
-package com.stuypulse.robot.subsystems;
+package com.stuypulse.robot.subsystems.shooter;
 
 import static com.stuypulse.robot.constants.Ports.Shooter.*;
 import static com.stuypulse.robot.constants.Settings.Shooter.*;
@@ -7,6 +7,7 @@ import static com.stuypulse.robot.constants.Motors.Shooter.*;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.stuypulse.robot.subsystems.IShooter;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.control.feedforward.Feedforward;
@@ -24,12 +25,13 @@ public class Shooter extends IShooter{
     private RelativeEncoder shooterMotorEncoder;
     private RelativeEncoder shooterFollowerEncoder;
 
-    private Controller shooterController;
-    private Controller feederController;
-
     private CANSparkMax feederMotor;
     private RelativeEncoder feederMotorEncoder;
 
+    private Controller shooterController;
+    private Controller feederController;
+
+    
     public Shooter() {
         targetRPM = new SmartNumber("Shooter/TargetRPM", 0.0);
 
@@ -55,7 +57,7 @@ public class Shooter extends IShooter{
     }
 
     public double getShooterRPM(){
-        return (shooterMotorEncoder.getVelocity() + shooterFollowerEncoder.getVelocity()) /2;
+        return (shooterMotorEncoder.getVelocity() + shooterFollowerEncoder.getVelocity()) / 2;
     }
     
     public double getFeederRPM(){

@@ -64,6 +64,9 @@ public interface Settings {
     }
     
     public interface Shooter{
+
+        double shooterGearing = 1.0;
+        double feederGearing = 1.0; // shooter is 1:1, but it's connected to top rollers, which are 2:1
         
         public interface ShotMap {
             /*
