@@ -139,4 +139,8 @@ public interface Settings {
             SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0);
         }
     }
+
+    public interface Field {
+        double HUB_HEIGHT = Units.feetToMeters(8.6);
+    }
 }
