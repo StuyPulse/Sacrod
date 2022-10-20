@@ -1,8 +1,6 @@
 package com.stuypulse.robot.subsystems.shooter;
 
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 
 import static com.stuypulse.robot.constants.Settings.Shooter.*;
@@ -20,18 +18,10 @@ public class SimShooter extends IShooter{
 
     // simulation
     private final FlywheelSim shooterSim;
-    private final EncoderSim shooterEncoderSim;
 
     private final FlywheelSim shooterFollowerSim;
-    private final EncoderSim shooterFollowerEncoderSim;
     
     private final FlywheelSim feederSim;
-    private final EncoderSim feederEncoderSim;
-
-    // encoders
-    private Encoder shooterEncoder;
-    private Encoder shooterFollowerEncoder;
-    private Encoder feederEncoder;
 
     private SmartNumber targetRPM;
     
@@ -58,10 +48,6 @@ public class SimShooter extends IShooter{
             DCMotor.getNEO(1),
             feederGearing
             );
-
-        this.shooterEncoderSim = new EncoderSim(shooterEncoder);
-        this.shooterFollowerEncoderSim = new EncoderSim(shooterFollowerEncoder);
-        this.feederEncoderSim = new EncoderSim(feederEncoder);
         
         targetRPM = new SmartNumber("Shooter/TargetRPM", 0.0);
 
@@ -71,12 +57,15 @@ public class SimShooter extends IShooter{
             .add(new Feedforward.Flywheel(FeederFF.kS, FeederFF.kV, FeederFF.kA).velocity());
     }
 
+    public void setTargetRPM(double targetRPM){
+        this.targetRPM.set(targetRPM);
+    }
     public double getShooterRPM(){
-        return (shooterEncoderSim.getRate() + shooterFollowerEncoderSim.getRate()) /2;
+        return (shooterSim.getAngularVelocityRPM() + shooterFollowerSim.getAngularVelocityRPM()) /2;
     }
     
     public double getFeederRPM(){
-        return feederEncoderSim.getRate();
+        return feederSim.getAngularVelocityRPM();
     }
 
     public double getDesiredShooterVoltage(){

@@ -55,6 +55,10 @@ public class Shooter extends IShooter{
         feederMotorEncoder = feederMotor.getEncoder();
 
     }
+    
+    public void setTargetRPM(double targetRPM){
+        this.targetRPM.set(targetRPM);
+    }
 
     public double getShooterRPM(){
         return (shooterMotorEncoder.getVelocity() + shooterFollowerEncoder.getVelocity()) / 2;
