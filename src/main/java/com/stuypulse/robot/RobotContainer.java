@@ -18,11 +18,15 @@ import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import com.stuypulse.stuylib.input.gamepads.keyboard.SimKeyGamepad;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class RobotContainer {
+  private static Gamepad getGamepad(int port) {
+    return RobotBase.isReal() ? new AutoGamepad(port) : new SimKeyGamepad();
+  }
 
   // Subsystem
   public final Conveyor conveyor = new Conveyor();
@@ -31,8 +35,8 @@ public class RobotContainer {
   public final IClimber climber = new SimClimber();
 
   // Gamepads
-  public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-  public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
+  public final Gamepad driver = getGamepad(Ports.Gamepad.DRIVER);
+  public final Gamepad operator = getGamepad(Ports.Gamepad.OPERATOR);
 
   // Autons
   private static SendableChooser<Command> autonChooser = new SendableChooser<>();
