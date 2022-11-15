@@ -36,7 +36,7 @@ public interface Motors {
     }
 
     public interface Conveyor{
-        TalonSRXConfig MotorConfig = new TalonSRXConfig(false, NeutralMode.Brake, 40); 
+        VictorSPXConfig MotorConfig = new VictorSPXConfig(false, NeutralMode.Brake, 40); 
     }
     
     
