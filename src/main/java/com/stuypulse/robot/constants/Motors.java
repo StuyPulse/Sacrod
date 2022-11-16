@@ -24,7 +24,7 @@ public interface Motors {
 
     public interface Intake {
         CANSparkMaxConfig DeploymentConfig = new CANSparkMaxConfig(false, IdleMode.kBrake, 40);
-        CTREConfig DriverConfig = new CTREConfig(false, NeutralMode.Coast, 40, 1.0 / 5.0);
+        TalonSRXConfig DriverConfig = new TalonSRXConfig(false, NeutralMode.Coast, 40, 1.0 / 5.0);
     }
 
     public interface Shooter {
@@ -37,21 +37,21 @@ public interface Motors {
     }
 
     public interface Conveyor{
-        CTREConfig MotorConfig = new CTREConfig(false, NeutralMode.Brake, 40); 
+        VictorSPXConfig MotorConfig = new VictorSPXConfig(false, NeutralMode.Brake); 
     }
     
     
-    CTREConfig CLIMBER = new CTREConfig(false, NeutralMode.Brake, 60);
+    TalonSRXConfig CLIMBER = new TalonSRXConfig(false, NeutralMode.Brake, 60);
     
     /** Classes to store all of the values a motor needs */
 
-    public static class CTREConfig {
+    public static class TalonSRXConfig {
         public final boolean INVERTED;
         public final NeutralMode NEUTRAL_MODE;
         public final int PEAK_CURRENT_LIMIT_AMPS;
         public final double OPEN_LOOP_RAMP_RATE;
 
-        public CTREConfig(
+        public TalonSRXConfig(
                 boolean inverted,
                 NeutralMode neutralMode,
                 int peakCurrentLimitAmps,
@@ -62,11 +62,11 @@ public interface Motors {
             this.OPEN_LOOP_RAMP_RATE = openLoopRampRate;
         }
 
-        public CTREConfig(boolean inverted, NeutralMode neutralMode, int peakCurrentLimitAmps) {
+        public TalonSRXConfig(boolean inverted, NeutralMode neutralMode, int peakCurrentLimitAmps) {
             this(inverted, neutralMode, peakCurrentLimitAmps, 0.0);
         }
 
-        public CTREConfig(boolean inverted, NeutralMode neutralMode) {
+        public TalonSRXConfig(boolean inverted, NeutralMode neutralMode) {
             this(inverted, neutralMode, 80);
         }
 
@@ -78,6 +78,25 @@ public interface Motors {
             motor.configPeakCurrentDuration(100, 0);
             motor.enableCurrentLimit(true);
             motor.configOpenloopRamp(OPEN_LOOP_RAMP_RATE);
+        }
+    }
+
+    public static class VictorSPXConfig {
+        public final boolean INVERTED;
+        public final NeutralMode NEUTRAL_MODE;
+        public final double OPEN_LOOP_RAMP_RATE;
+
+        public VictorSPXConfig(
+                boolean inverted,
+                NeutralMode neutralMode,
+                double openLoopRampRate) {
+            this.INVERTED = inverted;
+            this.NEUTRAL_MODE = neutralMode;
+            this.OPEN_LOOP_RAMP_RATE = openLoopRampRate;
+        }
+
+        public VictorSPXConfig(boolean inverted, NeutralMode neutralMode) {
+            this(inverted, neutralMode, 0.0);
         }
 
         public void configure(WPI_VictorSPX motor) {
