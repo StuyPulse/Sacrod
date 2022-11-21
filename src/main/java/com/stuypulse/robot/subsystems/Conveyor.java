@@ -1,6 +1,7 @@
 package com.stuypulse.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.stuypulse.robot.util.ConveyorMode;
 
 import static com.stuypulse.robot.constants.Ports.Conveyor.*;
@@ -38,7 +39,7 @@ Logic:
 */
 
 public class Conveyor extends SubsystemBase {
-    private final WPI_TalonSRX motor;
+    private final WPI_VictorSPX motor;
 
     private final DigitalInput intakeIR;
     private final DigitalInput shooterIR;
@@ -46,7 +47,7 @@ public class Conveyor extends SubsystemBase {
     private ConveyorMode mode;
 
     public Conveyor() {
-        motor = new WPI_TalonSRX(MOTOR); 
+        motor = new WPI_VictorSPX(MOTOR); 
         MotorConfig.configure(motor);
 
         intakeIR = new DigitalInput(INTAKE_IR); 
