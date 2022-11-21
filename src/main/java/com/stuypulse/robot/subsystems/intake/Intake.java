@@ -51,13 +51,14 @@ public class Intake extends IIntake {
 
     public Intake() {
         driverMotor = new WPI_TalonSRX(DRIVER_MOTOR);
+        DriverConfig.configure(driverMotor);
+
         deploymentMotor = new CANSparkMax(DEPLOYMENT_MOTOR, MotorType.kBrushless);
         deploymentEncoder = deploymentMotor.getEncoder();
-        DriverConfig.configure(driverMotor);
+        // deploymentEncoder.setPositionConversionFactor(POSITION_CONVERSION);
         DeploymentConfig.configure(deploymentMotor);
 
         controller = new PIDController(kP, kI, kD);
-        deploymentEncoder.setPositionConversionFactor(POSITION_CONVERSION);
 
         targetAngle = new SmartNumber("Intake/Target Angle", 0.0);
         reset(RETRACT_ANGLE.get());
@@ -75,7 +76,7 @@ public class Intake extends IIntake {
         driverMotor.set(0);
     }
 
-    private void reset(double position) {
+    public void reset(double position) {
         deploymentEncoder.setPosition(position);
         targetAngle.set(position);
     }
@@ -92,8 +93,9 @@ public class Intake extends IIntake {
         this.targetAngle.set(angle);
     }
 
+
     public double getAngle() {
-        return deploymentEncoder.getPosition();
+        return deploymentEncoder.getPosition() * 360.0 / 28.0;
     }
 
     @Override

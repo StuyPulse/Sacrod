@@ -122,9 +122,10 @@ public interface Settings {
         SmartNumber ACQUIRE_SPEED = new SmartNumber("Intake/Acquire Speed", 1);
         SmartNumber DEACQUIRE_SPEED = new SmartNumber("Intake/Deacquire Speed", -1);
 
-        double GEAR_RATIO = 1. / 28;
+        double GEAR_RATIO = 28.0 / 1.0;
 
-        double POSITION_CONVERSION = GEAR_RATIO * 360;
+        // double POSITION_CONVERSION = 360.0 / GEAR_RATIO;
+        double POSITION_CONVERSION = 1.0;
 
         public interface Deployment {
             SmartNumber MAX_ERROR = new SmartNumber("Intake/Deployment/Max Error", 3.0);
