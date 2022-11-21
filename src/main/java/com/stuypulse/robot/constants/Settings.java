@@ -97,17 +97,17 @@ public interface Settings {
 
         public interface FeederPID {
 
-            SmartNumber kP = new SmartNumber("Shooter/Feeder kP", 0);
-            SmartNumber kI = new SmartNumber("Shooter/Feeder kP", 0);
-            SmartNumber kD = new SmartNumber("Shooter/Feeder kP", 0);
+            SmartNumber kP = new SmartNumber("Shooter/Feeder kP", 0.008743);
+            SmartNumber kI = new SmartNumber("Shooter/Feeder kI", 0);
+            SmartNumber kD = new SmartNumber("Shooter/Feeder kD", 0);
 
         }
 
         public interface FeederFF {
 
-            SmartNumber kS = new SmartNumber("Shooter/Feeder kS", 0);
-            SmartNumber kV = new SmartNumber("Shooter/Feeder kV", 0);
-            SmartNumber kA = new SmartNumber("Shooter/Feeder kA", 0);
+            SmartNumber kS = new SmartNumber("Shooter/Feeder kS", 0.16826);
+            SmartNumber kV = new SmartNumber("Shooter/Feeder kV", 0.0021141);
+            SmartNumber kA = new SmartNumber("Shooter/Feeder kA", 0.00020526);
 
             SmartNumber FEEDER_RPM_MULTIPLIER = new SmartNumber("Shooter/Feeder RPM Multiplier", 1);
 
