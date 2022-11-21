@@ -22,9 +22,8 @@ import edu.wpi.first.math.util.Units;
 public interface Settings {
     double DT = 0.02;
 
-    
     public interface Climber {
-        
+
         SmartNumber ERROR = new SmartNumber("Climber/Error", 0.01);
         SmartNumber DEADBAND = new SmartNumber("Climber/Deadband", 0.05);
         SmartNumber RC = new SmartNumber("Climber/RC", 0.05);
@@ -83,33 +82,32 @@ public interface Settings {
 
         public interface ShooterPID {
 
-            SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0);
+            // TODO: auto pid tune this
+            SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0.0050642);
             SmartNumber kI = new SmartNumber("Shooter/Shooter kI", 0);
             SmartNumber kD = new SmartNumber("Shooter/Shooter kD", 0);
 
         }
 
         public interface ShooterFF {
-
-            SmartNumber kS = new SmartNumber("Shooter/ Shooter kS", 0);
-            SmartNumber kV = new SmartNumber("Shooter/ Shooter kV", 0);
-            SmartNumber kA = new SmartNumber("Shooter/ Shooter kA", 0);
-
+            SmartNumber kS = new SmartNumber("Shooter/Shooter kS", 0.28656);
+            SmartNumber kV = new SmartNumber("Shooter/Shooter kV", 0.0021618);
+            SmartNumber kA = new SmartNumber("Shooter/Shooter kA", 0.00012967);
         }
 
         public interface FeederPID {
 
-            SmartNumber kP = new SmartNumber("Shooter/Feeder kP", 0);
-            SmartNumber kI = new SmartNumber("Shooter/Feeder kP", 0);
-            SmartNumber kD = new SmartNumber("Shooter/Feeder kP", 0);
+            SmartNumber kP = new SmartNumber("Shooter/Feeder kP", 0.008743);
+            SmartNumber kI = new SmartNumber("Shooter/Feeder kI", 0);
+            SmartNumber kD = new SmartNumber("Shooter/Feeder kD", 0);
 
         }
 
         public interface FeederFF {
 
-            SmartNumber kS = new SmartNumber("Shooter/Feeder kS", 0);
-            SmartNumber kV = new SmartNumber("Shooter/Feeder kV", 0);
-            SmartNumber kA = new SmartNumber("Shooter/Feeder kA", 0);
+            SmartNumber kS = new SmartNumber("Shooter/Feeder kS", 0.16826);
+            SmartNumber kV = new SmartNumber("Shooter/Feeder kV", 0.0021141);
+            SmartNumber kA = new SmartNumber("Shooter/Feeder kA", 0.00020526);
 
             SmartNumber FEEDER_RPM_MULTIPLIER = new SmartNumber("Shooter/Feeder RPM Multiplier", 1);
 
