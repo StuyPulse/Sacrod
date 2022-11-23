@@ -38,9 +38,11 @@ public class Climber extends IClimber {
         motor.setSensorPhase(false);
 
         controller = new PIDController(kP, kI, kD);
+        motor.enableVoltageCompensation(true);
+        motor.configVoltageCompSaturation(12);
 
-        target = new SmartNumber("Climber/Target Height", MIN_HEIGHT);
-        reset(MIN_HEIGHT);
+        target = new SmartNumber("Climber/Target Height", MAX_HEIGHT);
+        reset(MAX_HEIGHT);
     }
 
     @Override
@@ -69,7 +71,8 @@ public class Climber extends IClimber {
 
     @Override
     public void periodic() {
-        motor.setVoltage(controller.update(target.get(), getHeight()));
+        setTargetHeight(getTargetHeight());
+        motor.set(controller.update(target.get(), getHeight()));
 
         SmartDashboard.putNumber("Climber/Height", getHeight());
         SmartDashboard.putNumber("Climber/Controller Output", controller.getOutput());
