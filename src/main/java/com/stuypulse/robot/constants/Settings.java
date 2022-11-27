@@ -30,9 +30,9 @@ public interface Settings {
         SmartNumber MAX_VELOCITY = new SmartNumber("Climber/Max Velocity", 1);
 
         public interface Feedback {
-            SmartNumber kP = new SmartNumber("Climber/P", 25);
+            SmartNumber kP = new SmartNumber("Climber/P", 1.0 / 48.0);
             SmartNumber kI = new SmartNumber("Climber/I", 0.0);
-            SmartNumber kD = new SmartNumber("Climber/D", 7.5);
+            SmartNumber kD = new SmartNumber("Climber/D", 0.0);
         }
 
         public interface Feedforward {
@@ -40,8 +40,8 @@ public interface Settings {
             double kA = 12.0 / ((1.0 / 2.0) / 0.05);
         }
 
-        double MIN_HEIGHT = Units.inchesToMeters(40.475);
-        double MAX_HEIGHT = Units.inchesToMeters(64.1);
+        double MIN_HEIGHT = 40.475;
+        double MAX_HEIGHT = 64.1;
         // double HOOK_HEIGHT = 3.5 in;
         // double CLIMBER_HEIGHT = 60.6 in to top;
 
@@ -50,7 +50,7 @@ public interface Settings {
             double GEAR_RATIO = 25.0 / 1.0; // Encoder is after gearing
             double OUTPUT_TO_SPOOL = 1.0 / 1.0; // There is ratio between gearbox output turns and spool turns
 
-            double SPOOL_DIAMETER = Units.inchesToMeters(1.25);
+            double SPOOL_DIAMETER = 1.25;
             double SPOOL_CIRCUMFERENCE = SPOOL_DIAMETER * Math.PI; // Distance travelled by spool is the height
                                                                    // travelled by the climber
 
@@ -116,7 +116,7 @@ public interface Settings {
 
     public interface Intake {
 
-        SmartNumber EXTEND_ANGLE = new SmartNumber("Intake/Extend Angle", 100);
+        SmartNumber EXTEND_ANGLE = new SmartNumber("Intake/Extend Angle", 99);
         SmartNumber RETRACT_ANGLE = new SmartNumber("Intake/Retract Angle", 0);
 
         SmartNumber ACQUIRE_SPEED = new SmartNumber("Intake/Acquire Speed", 1);
@@ -124,15 +124,15 @@ public interface Settings {
 
         double GEAR_RATIO = 28.0 / 1.0;
 
-        // double POSITION_CONVERSION = 360.0 / GEAR_RATIO;
-        double POSITION_CONVERSION = 1.0;
+        double POSITION_CONVERSION = 360.0 / GEAR_RATIO;
+        // double POSITION_CONVERSION = 1.0;
 
         public interface Deployment {
             SmartNumber MAX_ERROR = new SmartNumber("Intake/Deployment/Max Error", 3.0);
 
-            SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.2);
+            SmartNumber kP = new SmartNumber("Intake/Deployment/P", 0.012);
             SmartNumber kI = new SmartNumber("Intake/Deployment/I", 0);
-            SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0);
+            SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0.00035);
         }
 
         public interface Simulation {

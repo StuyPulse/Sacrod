@@ -14,6 +14,7 @@ import static com.stuypulse.robot.constants.Settings.Intake.*;
 import static com.stuypulse.robot.constants.Settings.Intake.Deployment.*;
 import static com.stuypulse.robot.constants.Motors.Intake.*;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -55,7 +56,7 @@ public class Intake extends IIntake {
 
         deploymentMotor = new CANSparkMax(DEPLOYMENT_MOTOR, MotorType.kBrushless);
         deploymentEncoder = deploymentMotor.getEncoder();
-        // deploymentEncoder.setPositionConversionFactor(POSITION_CONVERSION);
+        deploymentEncoder.setPositionConversionFactor(POSITION_CONVERSION);
         DeploymentConfig.configure(deploymentMotor);
 
         controller = new PIDController(kP, kI, kD);
@@ -90,16 +91,17 @@ public class Intake extends IIntake {
     }
 
     public void pointAtAngle(double angle) {
-        this.targetAngle.set(angle);
+        this.targetAngle.set(MathUtil.clamp(angle, RETRACT_ANGLE.get(), EXTEND_ANGLE.get()));
     }
 
 
     public double getAngle() {
-        return deploymentEncoder.getPosition() * 360.0 / 28.0;
+        return deploymentEncoder.getPosition();// * 360.0 / 28.0;
     }
 
     @Override
     public void periodic() {
+        pointAtAngle(targetAngle.get());
         deploymentMotor.set(controller.update(targetAngle.get(), getAngle()));
 
         SmartDashboard.putNumber("Intake/Deployment Speed", deploymentMotor.get());
