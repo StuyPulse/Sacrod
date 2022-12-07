@@ -12,13 +12,10 @@ import com.stuypulse.robot.commands.intake.IntakeExtend;
 import com.stuypulse.robot.commands.intake.IntakeRetract;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.*;
-<<<<<<< HEAD
 import com.stuypulse.robot.subsystems.climber.SimClimber;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
-=======
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.climber.Climber;
->>>>>>> 1ef4c6d9801c1ca7496ca496ed83159d831e2289
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import com.stuypulse.stuylib.input.gamepads.keyboard.SimKeyGamepad;
