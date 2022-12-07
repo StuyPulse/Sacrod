@@ -63,9 +63,12 @@ public interface Settings {
         SmartNumber FORWARD_SPEED = new SmartNumber("Conveyor/Forward Speed", 1.0);
         SmartNumber REVERSE_SPEED = new SmartNumber("Conveyor/Reverse Speed", -1.0);
     }
+    
+    public interface Shooter{
 
-    public interface Shooter {
-
+        double shooterGearing = 1.0;
+        double feederGearing = 1.0; // shooter is 1:1, but it's connected to top rollers, which are 2:1
+        
         public interface ShotMap {
             /*
              * TODO:
