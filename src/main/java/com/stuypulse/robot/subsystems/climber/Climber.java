@@ -34,7 +34,7 @@ public class Climber extends IClimber {
         motor = new WPI_TalonSRX(MOTOR);
         CLIMBER.configure(motor);
 
-        motor.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        motor.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         motor.setSensorPhase(false);
 
         controller = new PIDController(kP, kI, kD);
