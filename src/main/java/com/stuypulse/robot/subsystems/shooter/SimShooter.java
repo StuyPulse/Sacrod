@@ -40,7 +40,7 @@ public class SimShooter extends IShooter{
             feederGearing
         );
         
-        targetRPM = new SmartNumber("Shooter/TargetRPM", 0.0);
+        targetRPM = new SmartNumber("Shooter/Target RPM", 0.0);
 
         shooterController = new PIDController(ShooterPID.kP, ShooterPID.kI, ShooterPID.kD)
             .add(new Feedforward.Flywheel(ShooterFF.kS, ShooterFF.kV, ShooterFF.kA ).velocity());

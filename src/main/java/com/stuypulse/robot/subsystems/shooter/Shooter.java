@@ -33,7 +33,7 @@ public class Shooter extends IShooter{
 
     
     public Shooter() {
-        targetRPM = new SmartNumber("Shooter/TargetRPM", 0.0);
+        targetRPM = new SmartNumber("Shooter/Target RPM", 0.0);
 
         shooterMotor = new CANSparkMax(SHOOTER_MOTOR, MotorType.kBrushless);
         ShooterMotorConfig.configure(shooterMotor);
