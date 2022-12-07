@@ -12,6 +12,7 @@ import com.stuypulse.robot.subsystems.IShooter;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class SparkMaxShooter extends IShooter {
     
@@ -111,6 +112,9 @@ public class SparkMaxShooter extends IShooter {
         );
 
         lastTarget = target.get();
+
+        SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
+        SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
     }
     
 }
