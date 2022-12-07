@@ -6,28 +6,46 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.intake.IntakeAcquire;
+import com.stuypulse.robot.commands.intake.IntakeDeacquire;
+import com.stuypulse.robot.commands.intake.IntakeExtend;
+import com.stuypulse.robot.commands.intake.IntakeRetract;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.*;
+<<<<<<< HEAD
 import com.stuypulse.robot.subsystems.climber.SimClimber;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
+=======
+import com.stuypulse.robot.subsystems.intake.Intake;
+import com.stuypulse.robot.subsystems.climber.Climber;
+>>>>>>> 1ef4c6d9801c1ca7496ca496ed83159d831e2289
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
+import com.stuypulse.stuylib.input.gamepads.keyboard.SimKeyGamepad;
+import com.stuypulse.stuylib.network.SmartBoolean;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 
 public class RobotContainer {
+  private static Gamepad getGamepad(int port) {
+    return RobotBase.isReal() ? new AutoGamepad(port) : new SimKeyGamepad();
+  }
 
   // Subsystem
-  public final Conveyor conveyor = new Conveyor();
+  // public final Conveyor conveyor = new Conveyor();
   public final Shooter shooter = new Shooter();
   public final Intake intake = new Intake();
-  public final IClimber climber = new SimClimber();
+  public final Climber climber = new Climber();
+  public final Swerve swerve = new Swerve();
 
   // Gamepads
-  public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-  public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
+  public final Gamepad driver = getGamepad(Ports.Gamepad.DRIVER);
+  public final Gamepad operator = getGamepad(Ports.Gamepad.OPERATOR);
 
   // Autons
   private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -51,7 +69,18 @@ public class RobotContainer {
   /*** BUTTONS ***/
   /***************/
 
+  SmartBoolean resetIntake = new SmartBoolean("Intake/Reset Me", false);
+
   private void configureButtonBindings() {
+    driver.getRightTriggerButton()
+      .whenPressed(new IntakeExtend(intake))
+      .whileHeld(new IntakeAcquire(intake))
+      .whenReleased(new IntakeRetract(intake));
+
+    driver.getLeftTriggerButton()
+      .whileHeld(new IntakeDeacquire(intake));
+
+    new Button(resetIntake::get).whenPressed(new InstantCommand(() -> intake.reset(0.0), intake));
   }
 
   /**************/

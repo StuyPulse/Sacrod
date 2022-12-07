@@ -15,23 +15,24 @@ public interface Ports {
     }
 
     public interface Conveyor {
-        int MOTOR = 20;
-        int INTAKE_IR = 21;
-        int SHOOTER_IR = 22;
+        int MOTOR = 30;
+        // NOT INSTALLED YET
+        int INTAKE_IR = 3;
+        int SHOOTER_IR = 4;
     }
     
     public interface Climber {
-        int MOTOR = 10;
+        int MOTOR = 50;
     }
 
     public interface Intake {
-        int DRIVER_MOTOR = 0;
-        int DEPLOYMENT_MOTOR = 1;
+        int DRIVER_MOTOR = 40;
+        int DEPLOYMENT_MOTOR = 41;
     }
 
     public interface Shooter {
-        int SHOOTER_MOTOR = 2;
-        int SHOOTER_FOLLOWER = 3;
-        int FEEDER_MOTOR = 4;
+        int SHOOTER_MOTOR = 20;
+        int SHOOTER_FOLLOWER = 21;
+        int FEEDER_MOTOR = 22;
     }
 }

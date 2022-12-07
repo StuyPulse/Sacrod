@@ -33,7 +33,7 @@ public class SimClimber extends IClimber {
 
     public SimClimber() {
         sim = new LinearSystemSim<>(
-            LinearSystemId.identifyPositionSystem(SysId.kV, SysId.kA));
+            LinearSystemId.identifyPositionSystem(Feedforward.kV, Feedforward.kA));
 
         controller = new PIDController(kP, kI, kD);
 
