@@ -2,9 +2,11 @@ package com.stuypulse.robot.subsystems.shooter;
 
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 
 import static com.stuypulse.robot.constants.Settings.Shooter.*;
 
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.IShooter;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
@@ -12,13 +14,14 @@ import com.stuypulse.stuylib.control.feedforward.Feedforward;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.system.plant.DCMotor;
 
 public class SimShooter extends IShooter{
 
     // simulation
-    private final FlywheelSim shooterSim;    
-    private final FlywheelSim feederSim;
+    private final LinearSystemSim<N1, N1, N1> shooterSim;    
+    private final LinearSystemSim<N1, N1, N1> feederSim;
 
     private SmartNumber targetRPM;
     
@@ -28,17 +31,9 @@ public class SimShooter extends IShooter{
 
     public SimShooter() {
 
-        shooterSim = new FlywheelSim(
-            LinearSystemId.identifyVelocitySystem(ShooterFF.kV.get(), ShooterFF.kA.get()), 
-            DCMotor.getNEO(2), 
-            shooterGearing
-        );
+        shooterSim = new LinearSystemSim<>(LinearSystemId.identifyVelocitySystem(ShooterFF.kV.get(), ShooterFF.kA.get()));
         
-        feederSim = new FlywheelSim(
-            LinearSystemId.identifyVelocitySystem(FeederFF.kV.get(), FeederFF.kA.get()),
-            DCMotor.getNEO(1),
-            feederGearing
-        );
+        feederSim = new LinearSystemSim<>(LinearSystemId.identifyVelocitySystem(FeederFF.kV.get(), FeederFF.kA.get()));
         
         targetRPM = new SmartNumber("Shooter/Target RPM", 0.0);
 
@@ -52,11 +47,11 @@ public class SimShooter extends IShooter{
         this.targetRPM.set(targetRPM);
     }
     public double getShooterRPM(){
-        return shooterSim.getAngularVelocityRPM();
+        return shooterSim.getOutput(0);
     }
     
     public double getFeederRPM(){
-        return feederSim.getAngularVelocityRPM();
+        return feederSim.getOutput(0);
     }
 
     public double getDesiredShooterVoltage(){
@@ -73,8 +68,11 @@ public class SimShooter extends IShooter{
         final double shooterVoltage = getDesiredShooterVoltage();
         final double feederVoltage = getDesiredFeederVoltage();
 
-        shooterSim.setInputVoltage(shooterVoltage);
-        feederSim.setInputVoltage(feederVoltage);
+        shooterSim.setInput(shooterVoltage);
+        feederSim.setInput(feederVoltage);
+        
+        shooterSim.update(Settings.DT);
+        feederSim.update(Settings.DT);
 
         SmartDashboard.putNumber("Shooter/Shooter Voltage", shooterVoltage);
         SmartDashboard.putNumber("Shooter/Feeder Voltage", feederVoltage);

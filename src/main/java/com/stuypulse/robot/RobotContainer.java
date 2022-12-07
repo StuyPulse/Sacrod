@@ -14,6 +14,7 @@ import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.climber.SimClimber;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
+import com.stuypulse.robot.subsystems.shooter.SimShooter;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.climber.Climber;
 import com.stuypulse.stuylib.input.Gamepad;
@@ -35,7 +36,7 @@ public class RobotContainer {
 
   // Subsystem
   // public final Conveyor conveyor = new Conveyor();
-  public final Shooter shooter = new Shooter();
+  public final IShooter shooter = new SimShooter();
   public final Intake intake = new Intake();
   public final Climber climber = new Climber();
   public final Swerve swerve = new Swerve();
