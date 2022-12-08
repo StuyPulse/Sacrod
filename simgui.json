@@ -43,8 +43,12 @@
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Conveyor": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
+      "/LiveWindow/Intake/Intake Mechanism2d": "Mechanism2d",
+      "/LiveWindow/Intake/SimIntake": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
       "/LiveWindow/SimClimber": "Subsystem",
+      "/LiveWindow/SimShooter": "Subsystem",
+      "/LiveWindow/Swerve": "Subsystem",
       "/LiveWindow/Ungrouped/DigitalInput[21]": "Digital Input",
       "/LiveWindow/Ungrouped/DigitalInput[22]": "Digital Input",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
@@ -54,6 +58,11 @@
       "/SmartDashboard/Climber View": "Mechanism2d"
     },
     "windows": {
+      "/LiveWindow/Intake/Intake Mechanism2d": {
+        "window": {
+          "visible": true
+        }
+      },
       "/LiveWindow/SimClimber": {
         "window": {
           "visible": true
