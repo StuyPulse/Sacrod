@@ -30,14 +30,14 @@ public interface Settings {
         SmartNumber MAX_VELOCITY = new SmartNumber("Climber/Max Velocity", 1);
 
         public interface Feedback {
-            SmartNumber kP = new SmartNumber("Climber/P", 1.0 / 48.0);
+            SmartNumber kP = new SmartNumber("Climber/P", 0.5);
             SmartNumber kI = new SmartNumber("Climber/I", 0.0);
             SmartNumber kD = new SmartNumber("Climber/D", 0.0);
         }
 
         public interface Feedforward {
-            double kV = 12.0 / (1.0 / 2.0);
-            double kA = 12.0 / ((1.0 / 2.0) / 0.05);
+            double kV = 12.0 / 3.0;
+            double kA = 12.0 / (3.0 / 0.05);
         }
 
         double MIN_HEIGHT = 40.475;
@@ -139,7 +139,7 @@ public interface Settings {
         }
 
         public interface Simulation {
-            double MAX_DEGREES_PER_SECOND = 666.36;
+            double MAX_DEGREES_PER_SECOND = 2000.0;
 
             SmartNumber kV = new SmartNumber("Intake/Simulation/V", 12.0 / MAX_DEGREES_PER_SECOND);
             SmartNumber kA = new SmartNumber("Intake/Simulation/A", 0.01);
