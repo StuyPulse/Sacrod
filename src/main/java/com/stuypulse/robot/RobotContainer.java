@@ -14,11 +14,7 @@ import com.stuypulse.robot.subsystems.shooter.*;
 import com.stuypulse.robot.subsystems.intake.*;
 import com.stuypulse.robot.subsystems.climber.*;
 import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 import com.stuypulse.stuylib.input.gamepads.Xbox;
-import com.stuypulse.stuylib.input.gamepads.keyboard.SimKeyGamepad;
-
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,7 +25,7 @@ public class RobotContainer {
   }
 
   // Subsystem
-  // public final Conveyor conveyor = new Conveyor();
+  public final Conveyor conveyor = new Conveyor();
   public final IShooter shooter = new SimShooter();
   public final IIntake intake = new SimIntake();
   public final IClimber climber = new SimClimber();
