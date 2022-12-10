@@ -24,7 +24,7 @@ public interface Motors {
 
     public interface Intake {
         CANSparkMaxConfig DeploymentConfig = new CANSparkMaxConfig(false, IdleMode.kBrake, 40);
-        TalonSRXConfig DriverConfig = new TalonSRXConfig(false, NeutralMode.Coast, 40, 1.0 / 5.0);
+        TalonSRXConfig DriverConfig = new TalonSRXConfig(true, NeutralMode.Coast, 40, 1.0 / 5.0);
     }
 
     public interface Shooter {
@@ -37,7 +37,7 @@ public interface Motors {
     }
 
     public interface Conveyor{
-        VictorSPXConfig MotorConfig = new VictorSPXConfig(false, NeutralMode.Brake); 
+        VictorSPXConfig MotorConfig = new VictorSPXConfig(true, NeutralMode.Brake); 
     }
     
     
