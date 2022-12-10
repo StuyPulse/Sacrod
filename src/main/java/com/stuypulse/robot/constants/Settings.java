@@ -86,7 +86,7 @@ public interface Settings {
         public interface ShooterPID {
 
             // TODO: auto pid tune this
-            SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0.0050642);
+            SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0); // 0.0050642);
             SmartNumber kI = new SmartNumber("Shooter/Shooter kI", 0);
             SmartNumber kD = new SmartNumber("Shooter/Shooter kD", 0);
 
@@ -100,7 +100,7 @@ public interface Settings {
 
         public interface FeederPID {
 
-            SmartNumber kP = new SmartNumber("Shooter/Feeder kP", 0.008743);
+            SmartNumber kP = new SmartNumber("Shooter/Feeder kP", 0); // 0.008743);
             SmartNumber kI = new SmartNumber("Shooter/Feeder kI", 0);
             SmartNumber kD = new SmartNumber("Shooter/Feeder kD", 0);
 
