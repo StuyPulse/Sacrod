@@ -11,6 +11,7 @@ import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 
 /*-
  * File containing tunable settings for every subsystem on the robot.
@@ -21,6 +22,10 @@ import edu.wpi.first.math.util.Units;
 
 public interface Settings {
     double DT = 0.02;
+
+    public static void reportWarning(String warning) {
+        DriverStation.reportWarning(warning, false);
+    }
     
     public interface Climber {
         
@@ -138,6 +143,10 @@ public interface Settings {
             SmartNumber kI = new SmartNumber("Intake/Deployment/I", 0);
             SmartNumber kD = new SmartNumber("Intake/Deployment/D", 0);
         }
+    }
+
+    public interface Limelight {
+        int[] PORTS = {5800, 5801, 5802, 5803, 5804, 5805};
     }
 
     public interface Field {
