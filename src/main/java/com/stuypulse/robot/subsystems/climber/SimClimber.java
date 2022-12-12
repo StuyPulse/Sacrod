@@ -69,11 +69,10 @@ public class SimClimber extends IClimber {
 
     @Override
     public void periodic() {
-        sim.setInput(MathUtil.clamp(
-            controller.update(target.get(), getHeight()),
-            -RoboRioSim.getVInVoltage(),
-            +RoboRioSim.getVInVoltage()
-        ));
+        sim.setInput(
+            RoboRioSim.getVInVoltage() * 
+            MathUtil.clamp(controller.update(target.get(), getHeight()), -1, +1)
+        );
 
         sim.update(Settings.DT);
         RoboRioSim.setVInCurrent(BatterySim.calculateDefaultBatteryLoadedVoltage(sim.getCurrentDrawAmps()));

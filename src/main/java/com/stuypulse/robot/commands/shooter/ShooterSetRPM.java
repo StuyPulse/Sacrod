@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands.shooter;
 
-import com.stuypulse.robot.subsystems.Shooter;
+import com.stuypulse.robot.subsystems.IShooter;
+import com.stuypulse.robot.subsystems.shooter.Shooter;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 /**
@@ -42,10 +43,10 @@ new ShooterSetRPM(shooter, new SmartNumber("Shooter/Best RPM", 6940));
  * 
  */
 public class ShooterSetRPM extends InstantCommand {
-    private Shooter shooter;
+    private IShooter shooter;
     private Number targetRPM;
 
-    public ShooterSetRPM(Shooter shooter, Number targetRPM) {
+    public ShooterSetRPM(IShooter shooter, Number targetRPM) {
         this.shooter = shooter;
         this.targetRPM = targetRPM;
         addRequirements(shooter);
