@@ -46,6 +46,7 @@ public class Shooter extends IShooter{
 
         shooterController = new PIDController(ShooterPID.kP, ShooterPID.kI, ShooterPID.kD)
             .add(new Feedforward.Flywheel(ShooterFF.kS, ShooterFF.kV, ShooterFF.kA ).velocity());
+
         feederController = new PIDController(FeederPID.kP, FeederPID.kI, FeederPID.kD)
             .add(new Feedforward.Flywheel(FeederFF.kS, FeederFF.kV, FeederFF.kA).velocity());
 
@@ -53,7 +54,6 @@ public class Shooter extends IShooter{
         FeederMotorConfig.configure(feederMotor);
         
         feederMotorEncoder = feederMotor.getEncoder();
-
     }
     
     public void setTargetRPM(double targetRPM){
@@ -92,8 +92,5 @@ public class Shooter extends IShooter{
 
         SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
         SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
-    }
-
-
-    
+    }    
 }

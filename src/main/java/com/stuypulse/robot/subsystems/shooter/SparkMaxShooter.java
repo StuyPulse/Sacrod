@@ -39,6 +39,8 @@ public class SparkMaxShooter extends IShooter {
         shooterB = new CANSparkMax(Ports.Shooter.SHOOTER_FOLLOWER, MotorType.kBrushless);
         
         shooterA.enableVoltageCompensation(12.0);
+        shooterB.enableVoltageCompensation(12.0);
+        
         shooterPID = shooterA.getPIDController();
         shooterPID.setP(Settings.Shooter.ShooterPID.kP.doubleValue());
         shooterPID.setI(Settings.Shooter.ShooterPID.kI.doubleValue());
