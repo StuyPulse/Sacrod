@@ -90,10 +90,10 @@ public class RobotContainer {
     operator.getLeftButton()
       .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
 
-    operator.getDPadDown().whenPressed(new ShooterStop(shooter));
-    operator.getDPadLeft().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.SECONDARY_RPM));
+    operator.getDPadUp().whenPressed(new ShooterStop(shooter));
     operator.getDPadRight().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.PRIMARY_RPM));
-    operator.getDPadUp().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.TUNING_RPM));
+    operator.getDPadLeft().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.SECONDARY_RPM));
+    operator.getDPadDown().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.TUNING_RPM));
   }
 
   /**************/
