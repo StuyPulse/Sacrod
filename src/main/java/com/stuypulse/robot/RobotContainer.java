@@ -5,6 +5,7 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.commands.AutoShoot;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.climber.*;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
@@ -71,6 +72,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     driver.getTopButton().whenPressed(new SwerveDriveHome(swerve));
+    driver.getBottomButton().whenPressed(new AutoShoot(this, driver));
 
     operator.getLeftTriggerButton()
       .whileHeld(new IntakeDeacquire(intake))

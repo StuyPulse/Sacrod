@@ -26,6 +26,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 public interface Settings {
     double DT = 0.02;
 
+    public static Vector2D vpow(Vector2D vec, double power) {
+        return vec.mul(Math.pow(vec.magnitude(), power - 1));
+    }
+    
+
     public static void reportWarning(String warning) {
         DriverStation.reportWarning(warning, false);
     }
@@ -48,20 +53,31 @@ public interface Settings {
     }
 
     public interface Scoring {
-        SmartNumber PRIMARY_DISTANCE = new SmartNumber("Shooter/Primary Distance", 3.71);
-        SmartNumber PRIMARY_RPM = new SmartNumber("Shooter/Primary RPM", 1750);
+        SmartNumber PRIMARY_DISTANCE = new SmartNumber("Scoring/Primary Distance", 3.71);
+        SmartNumber PRIMARY_RPM = new SmartNumber("Scoring/Primary RPM", 1750);
         
-        SmartNumber SECONDARY_DISTANCE = new SmartNumber("Shooter/Secondary Distance", 4.55);
-        SmartNumber SECONDARY_RPM = new SmartNumber("Shooter/Secondary RPM", 2000);
+        SmartNumber SECONDARY_DISTANCE = new SmartNumber("Scoring/Secondary Distance", 4.55);
+        SmartNumber SECONDARY_RPM = new SmartNumber("Scoring/Secondary RPM", 2000);
 
         Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
             new Vector2D(PRIMARY_DISTANCE.get(), PRIMARY_RPM.get()),
             new Vector2D(SECONDARY_DISTANCE.get(), SECONDARY_RPM.get())
         );
 
+        SmartNumber ACCEPTABLE_RPM = new SmartNumber("Scoring/Acceptable RPM Error", 150);
+        SmartNumber ACCEPTABLE_VELOCITY = new SmartNumber("Scoring/Acceptable Shot Velocity", Units.inchesToMeters(6));
+        SmartNumber ACCEPTABLE_TURN_ERROR = new SmartNumber("Scoring/Acceptable Turn Error (deg)", 5);
+        SmartNumber READY_TIME = new SmartNumber("Scoring/Ready Time", 0.2);
+
         // TODO: make shooting and alignment command specifically for testing
-        SmartNumber TUNING_RPM = new SmartNumber("Shooter/Tuning RPM", 0.0);
-        SmartNumber TUNING_DISTANCE = new SmartNumber("Shooter/Tuning Distance", 0.0);
+        SmartNumber TUNING_RPM = new SmartNumber("Scoring/Tuning RPM", 0.0);
+        SmartNumber TUNING_DISTANCE = new SmartNumber("Scoring/Tuning Distance", 0.0);
+
+        public interface AutoShot {
+            SmartNumber kP = new SmartNumber("Scoring/Auto Shot/kP", 1.0);
+            SmartNumber kI = new SmartNumber("Scoring/Auto Shot/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Scoring/Auto Shot/kD", 0.2);
+        }
     }
 
     public interface Limelight {
@@ -74,6 +90,7 @@ public interface Settings {
     public interface Field {
         double HUB_HEIGHT = Units.feetToMeters(8) + Units.inchesToMeters(9);
         double HUB_TO_CENTER = Units.feetToMeters(2.0);
+        Translation2d HUB = new Translation2d(Units.feetToMeters(10), 0);
     }
 
     public interface Climber {

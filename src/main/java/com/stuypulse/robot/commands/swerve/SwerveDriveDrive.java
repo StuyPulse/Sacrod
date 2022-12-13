@@ -14,9 +14,6 @@ import com.stuypulse.stuylib.streams.vectors.filters.VLowPassFilter;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class SwerveDriveDrive extends CommandBase {
-    private static Vector2D vpow(Vector2D vec, double power) {
-        return vec.mul(Math.pow(vec.magnitude(), power - 1));
-    }
     
     private SwerveDrive swerve;
 
@@ -30,7 +27,7 @@ public class SwerveDriveDrive extends CommandBase {
             .filtered(
                 new VDeadZone(Settings.Driver.DEADBAND),
                 x -> x.clamp(1.0),
-                x -> vpow(x, Settings.Driver.Drive.POWER.get()),
+                x -> Settings.vpow(x, Settings.Driver.Drive.POWER.get()),
                 x -> x.mul(Settings.Driver.MAX_TELEOP_SPEED.get()),
                 new VLowPassFilter(Settings.Driver.Drive.RC)
                 // new VRateLimit(Settings.Driver.MAX_ACCELERATION)

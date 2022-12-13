@@ -98,6 +98,15 @@ public class SwerveDrive extends SubsystemBase {
         throw new IllegalArgumentException("Couldn't find module with ID \"" + id + "\"");
     }
 
+    public ChassisSpeeds getChassisSpeeds() {
+        return getKinematics().toChassisSpeeds(getModuleStates());
+    }
+
+    public Translation2d getVelocity() {
+        var speeds = getChassisSpeeds();
+        return new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+    }
+
     public SwerveModule[] getModules() {
         return modules;
     }
