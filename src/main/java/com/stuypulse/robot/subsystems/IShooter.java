@@ -12,9 +12,15 @@ public abstract class IShooter extends SubsystemBase {
     }
 
     public abstract void setTargetRPM(double targetRPM);
+    public abstract double getShooterTargetRPM();
+    public abstract double getFeederTargetRPM();
 
     public abstract double getShooterRPM();
 
     public abstract double getFeederRPM();
+
+    public final boolean isReady(double acceptableError) {
+        return Math.abs(getShooterTargetRPM() - getShooterRPM()) < acceptableError;
+    }
 
 }

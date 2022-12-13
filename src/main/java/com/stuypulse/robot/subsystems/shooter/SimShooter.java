@@ -49,6 +49,12 @@ public class SimShooter extends IShooter{
     public double getShooterRPM(){
         return shooterSim.getOutput(0);
     }
+    public double getShooterTargetRPM() {
+        return this.targetRPM.get();
+    }
+    public double getFeederTargetRPM() {
+        return this.targetRPM.get() * FeederFF.FEEDER_RPM_MULTIPLIER.get();
+    }
     
     public double getFeederRPM(){
         return feederSim.getOutput(0);

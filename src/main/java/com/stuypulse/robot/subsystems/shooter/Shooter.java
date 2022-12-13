@@ -60,6 +60,13 @@ public class Shooter extends IShooter{
         this.targetRPM.set(targetRPM);
     }
 
+    public double getShooterTargetRPM() {
+        return this.targetRPM.get();
+    }
+    public double getFeederTargetRPM() {
+        return this.targetRPM.get() * FeederFF.FEEDER_RPM_MULTIPLIER.get();
+    }
+
     public double getShooterRPM(){
         return (shooterMotorEncoder.getVelocity() + shooterFollowerEncoder.getVelocity()) / 2;
     }
@@ -73,8 +80,7 @@ public class Shooter extends IShooter{
     }
 
     public double getDesiredFeederVoltage(){
-        final double feederTargetRPM = targetRPM.get() * FeederFF.FEEDER_RPM_MULTIPLIER.get();
-        return feederController.update(feederTargetRPM, getFeederRPM());
+        return feederController.update(getFeederTargetRPM(), getFeederRPM());
     }
 
     @Override
