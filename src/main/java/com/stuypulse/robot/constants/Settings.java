@@ -30,9 +30,24 @@ public interface Settings {
         DriverStation.reportWarning(warning, false);
     }
 
-    
+    public interface Driver {
+        SmartNumber DEADBAND = new SmartNumber("Driver Settings/Deadband", 0.05);
+        SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 4.2);
+        SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 6.1);
+
+        public interface Drive {
+            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.02);
+            SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
+        }
+
+        public interface Turn {
+            SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.1);
+            SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
+        }
+
+    }
+
     public interface Scoring {
-        
         SmartNumber PRIMARY_DISTANCE = new SmartNumber("Shooter/Primary Distance", 3.71);
         SmartNumber PRIMARY_RPM = new SmartNumber("Shooter/Primary RPM", 1750);
         
@@ -170,7 +185,7 @@ public interface Settings {
             SmartNumber kS = new SmartNumber("Swerve/Drive/kS", 0.17335);
             SmartNumber kV = new SmartNumber("Swerve/Drive/kV", 2.7274);
             SmartNumber kA = new SmartNumber("Swerve/Drive/kA", 0.456);
-            
+
             SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 1.0);
             SmartNumber kI = new SmartNumber("Swerve/Drive/kI", 0.0);
             SmartNumber kD = new SmartNumber("Swerve/Drive/kD", 0.0);
