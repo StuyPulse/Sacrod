@@ -81,7 +81,7 @@ public class SL_SimModule extends SwerveModule {
    }
 
    public void setTargetState(SwerveModuleState state) {
-       targetState = SwerveModuleState.optimize(state, getAngle().getRotation2d());
+        targetState = SwerveModuleState.optimize(state, getAngle().getRotation2d());
    }
 
    public SwerveModuleState getState() {

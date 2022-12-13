@@ -45,6 +45,11 @@ public interface Settings {
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
         }
 
+        public interface GyroFeedback {
+            SmartNumber kP = new SmartNumber("Driver Settings/Gyro FB/kP", 0.04);
+            SmartNumber kI = new SmartNumber("Driver Settings/Gyro FB/kI", 0.00);
+            SmartNumber kD = new SmartNumber("Driver Settings/Gyro FB/kD", 0.008);
+        }
     }
 
     public interface Scoring {

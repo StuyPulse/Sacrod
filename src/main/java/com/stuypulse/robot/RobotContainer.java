@@ -12,6 +12,7 @@ import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDriveGyroFeedback;
 import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
@@ -64,7 +65,8 @@ public class RobotContainer {
   /****************/
 
   private void configureDefaultCommands() {
-    swerve.setDefaultCommand(new SwerveDriveDrive(swerve, driver));
+    // swerve.setDefaultCommand(new SwerveDriveDrive(swerve, driver));
+    swerve.setDefaultCommand(new SwerveDriveDriveGyroFeedback(swerve, driver));
   }
 
   /***************/
