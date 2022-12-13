@@ -10,9 +10,11 @@ import com.stuypulse.robot.commands.climber.*;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
+import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.shooter.*;
 import com.stuypulse.robot.util.ConveyorMode;
@@ -30,7 +32,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class RobotContainer {
   private static Gamepad getGamepad(int port) {
-    return RobotBase.isReal() ? new Xbox(port) : new SimKeyGamepad();
+    return new Xbox(port);
   }
 
   // Subsystem
@@ -88,10 +90,10 @@ public class RobotContainer {
     operator.getLeftButton()
       .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
 
-    operator.getDPadDown().whenPressed(new ShooterSetRPM(shooter, 0));
-    operator.getDPadLeft().whenPressed(new ShooterSetRPM(shooter, 1100));
-    operator.getDPadRight().whenPressed(new ShooterSetRPM(shooter, 3000));
-    operator.getDPadUp().whenPressed(new ShooterSetRPM(shooter, new SmartNumber("Shooter/Tuned", 2000)));
+    operator.getDPadDown().whenPressed(new ShooterStop(shooter));
+    operator.getDPadLeft().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.SECONDARY_RPM));
+    operator.getDPadRight().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.PRIMARY_RPM));
+    operator.getDPadUp().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.TUNING_RPM));
   }
 
   /**************/
