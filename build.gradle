@@ -12,7 +12,7 @@ allprojects {
 
 // Set this to the latest version of StuyLib.
 // You can check here: https://github.com/StuyPulse/StuyLib/releases.
-final String STUYLIB_VERSION = 'v2022.8.0'
+final String STUYLIB_VERSION = 'v2022.8.1'
 
 def ROBOT_MAIN_CLASS = "com.stuypulse.robot.Main"
 
@@ -56,7 +56,7 @@ def deployArtifact = deploy.targets.roborio.artifacts.frcJava
 wpi.java.debugJni = false
 
 // Set this to true to enable desktop support.
-def includeDesktopSupport = false
+def includeDesktopSupport = true
 
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
@@ -84,8 +84,8 @@ dependencies {
 }
 
 // Simulation configuration (e.g. environment variables).
-wpi.sim.addGui().defaultEnabled = false
-wpi.sim.addDriverstation()
+wpi.sim.addGui().defaultEnabled = true
+wpi.sim.addDriverstation().defaultEnabled = true
 
 spotless {
     enforceCheck = false
