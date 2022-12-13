@@ -17,6 +17,7 @@ import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.shooter.*;
+import com.stuypulse.robot.util.BootlegXbox;
 import com.stuypulse.robot.util.ConveyorMode;
 import com.stuypulse.robot.subsystems.intake.*;
 import com.stuypulse.robot.subsystems.climber.*;
@@ -31,9 +32,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class RobotContainer {
-  private static Gamepad getGamepad(int port) {
-    return new Xbox(port);
-  }
 
   // Subsystem
   public final Conveyor conveyor = new Conveyor();
@@ -45,8 +43,8 @@ public class RobotContainer {
   public final Camera camera = new Camera();
 
   // Gamepads
-  public final Gamepad driver = getGamepad(Ports.Gamepad.DRIVER);
-  public final Gamepad operator = getGamepad(Ports.Gamepad.OPERATOR);
+  public final Gamepad driver = new BootlegXbox(Ports.Gamepad.DRIVER);
+  public final Gamepad operator = new BootlegXbox(Ports.Gamepad.OPERATOR);
 
   // Autons
   private static SendableChooser<Command> autonChooser = new SendableChooser<>();
