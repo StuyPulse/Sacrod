@@ -23,7 +23,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.wpilibj.SPI;
 
-public class Swerve extends SubsystemBase {
+public class SwerveDrive extends SubsystemBase {
     
     /** MODULES **/
     private final SwerveModule[] modules;
@@ -39,7 +39,7 @@ public class Swerve extends SubsystemBase {
     private final FieldObject2d[] module2ds;
 
 
-    public Swerve() {
+    public SwerveDrive() {
         modules = new SwerveModule[] {
         };
 
