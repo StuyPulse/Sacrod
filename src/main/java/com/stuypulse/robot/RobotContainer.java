@@ -10,6 +10,8 @@ import com.stuypulse.robot.commands.climber.*;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
+import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
+import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.shooter.*;
@@ -34,7 +36,7 @@ public class RobotContainer {
   public final IShooter shooter = new Shooter();
   public final IIntake intake = new Intake();
   public final IClimber climber = new Climber();
-  public final Swerve swerve = new Swerve();
+  public final SwerveDrive swerve = new SwerveDrive();
 
   public final Camera camera = new Camera();
 
@@ -58,6 +60,7 @@ public class RobotContainer {
   /****************/
 
   private void configureDefaultCommands() {
+    swerve.setDefaultCommand(new SwerveDriveDrive(swerve, driver));
   }
 
   /***************/
@@ -65,6 +68,7 @@ public class RobotContainer {
   /***************/
 
   private void configureButtonBindings() {
+    driver.getTopButton().whenPressed(new SwerveDriveHome(swerve));
 
     operator.getLeftTriggerButton()
       .whileHeld(new IntakeDeacquire(intake))
@@ -75,12 +79,12 @@ public class RobotContainer {
       .whenPressed(new IntakeExtend(intake))
       .whenReleased(new IntakeRetract(intake));
 
-    operator.getBottomButton()
+    operator.getTopButton()
       .whenPressed(new ConveyorSetMode(conveyor, ConveyorMode.INDEXING));  
     operator.getRightButton()
-      .whenPressed(new ConveyorSetMode(conveyor, ConveyorMode.SHOOTING));
+      .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.SHOOTING));
     operator.getLeftButton()
-      .whenPressed(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
+      .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
 
     operator.getDPadDown().whenPressed(new ShooterSetRPM(shooter, 0));
     operator.getDPadLeft().whenPressed(new ShooterSetRPM(shooter, 1100));
