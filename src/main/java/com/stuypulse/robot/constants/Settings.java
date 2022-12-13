@@ -145,7 +145,7 @@ public interface Settings {
         }
     }
     
-    public interface Shooter{        
+    public interface Shooter{    
         public interface ShooterPID {
             // TODO: auto pid tune this
             SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0); // 0.0050642);
@@ -175,6 +175,8 @@ public interface Settings {
     }
 
     public interface Swerve {
+        double MIN_MODULE_VELOCITY = 0.05;
+
         public interface Chassis {
             double WIDTH = Units.inchesToMeters(29.0);
             double HEIGHT = Units.inchesToMeters(29.0);

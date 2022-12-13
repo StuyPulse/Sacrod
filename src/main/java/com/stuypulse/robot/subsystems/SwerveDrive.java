@@ -150,8 +150,9 @@ public class SwerveDrive extends SubsystemBase {
         var moduleStates = kinematics.toSwerveModuleStates(robotSpeed);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Chassis.MAX_SPEED);
         for (int i = 0; i < modules.length; ++i) {
+            // TODO: put this code in SwerveModule.setTargetState
             var currentState = modules[i].getState();
-            if (moduleStates[i].speedMetersPerSecond < 0.1) {
+            if (Math.abs(moduleStates[i].speedMetersPerSecond) < Settings.Swerve.MIN_MODULE_VELOCITY) {
                 modules[i].setTargetState(new SwerveModuleState(
                     moduleStates[i].speedMetersPerSecond, 
                     currentState.angle
@@ -160,7 +161,6 @@ public class SwerveDrive extends SubsystemBase {
                 modules[i].setTargetState(moduleStates[i]);
             }
         }
-        // setStates(robotSpeed);
     }
 
     public void setStates(Vector2D velocity, double omega) {
