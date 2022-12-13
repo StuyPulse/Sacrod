@@ -12,7 +12,9 @@ import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 
+import edu.wpi.first.math.MatBuilder;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -35,14 +37,12 @@ public class SL_SimModule extends SwerveModule {
    /** TURNING **/
    
    private final LinearSystemSim<N2, N1, N1> turnSim;
-   private double turnVoltage;
 
    private final AngleController turnController;
    
    /** DRIVING */
    
    private final LinearSystemSim<N1, N1, N1> driveSim;
-   private double driveVoltage;
 
    private final Controller driveController;
 
@@ -54,16 +54,20 @@ public class SL_SimModule extends SwerveModule {
        targetState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(0.0));
 
        // Turning
-       turnSim = new LinearSystemSim<>(LinearSystemId.identifyPositionSystem(Turn.kV, Turn.kA));
-       turnVoltage = 0.0;
-       
+       turnSim = new LinearSystemSim<>(
+           LinearSystemId.identifyPositionSystem(Turn.kV, Turn.kA),
+           new MatBuilder<>(Nat.N1(), Nat.N1()).fill(Math.random())
+        );
+
        turnController = new AnglePIDController(Turn.kP, Turn.kI, Turn.kD)
            // .add(new Feedforward.Motor(Turn.kS, Turn.kV, Turn.kA).angle())
-       ;
+        ;
 
        // Driving
-       driveSim = new LinearSystemSim<>(LinearSystemId.identifyVelocitySystem(Drive.kV.get(), Drive.kA.get()));
-       driveVoltage = 0.0;
+       driveSim = new LinearSystemSim<>(
+           LinearSystemId.identifyVelocitySystem(Drive.kV.get(), Drive.kA.get()),
+           new MatBuilder<>(Nat.N1(), Nat.N1()).fill(Math.random() * 0.25)
+        );
 
        driveController = new PIDController(Drive.kP, Drive.kI, Drive.kD)
            .add(new Feedforward.Motor(Drive.kS, Drive.kV, Drive.kA).velocity());
@@ -105,8 +109,8 @@ public class SL_SimModule extends SwerveModule {
    public void periodic() {
 
        // Control Loops
-       turnVoltage = turnController.update(Angle.fromRotation2d(targetState.angle), getAngle());
-       driveVoltage = driveController.update(targetState.speedMetersPerSecond, getSpeed());
+        turnController.update(Angle.fromRotation2d(targetState.angle), getAngle());
+        driveController.update(targetState.speedMetersPerSecond, getSpeed());
 
        // Network Logging
        SmartDashboard.putNumber("Swerve/" + id + "/Angle", MathUtil.inputModulus(getAngle().toDegrees(), -180, +180));
@@ -119,12 +123,12 @@ public class SL_SimModule extends SwerveModule {
    @Override
    public void simulationPeriodic() {
        // Drive Simulation
-       driveSim.setInput(driveVoltage);
+       driveSim.setInput(driveController.getOutput());
 
        driveSim.update(Settings.DT);
 
        // Turn Simulation
-       turnSim.setInput(turnVoltage);
+       turnSim.setInput(turnController.getOutput());
 
        turnSim.update(Settings.DT);
 

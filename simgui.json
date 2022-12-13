@@ -93,6 +93,12 @@
       "Climber": {
         "open": true
       },
+      "Driver Settings": {
+        "Gyro FB": {
+          "open": true
+        },
+        "open": true
+      },
       "Intake": {
         "open": true
       },
