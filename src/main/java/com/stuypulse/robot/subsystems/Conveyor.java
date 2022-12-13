@@ -9,6 +9,7 @@ import static com.stuypulse.robot.constants.Settings.Conveyor.*;
 import static com.stuypulse.robot.constants.Motors.Conveyor.*;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -92,6 +93,9 @@ public class Conveyor extends SubsystemBase {
     public void periodic() {
         mode.run(this);
 
+        if (RobotBase.isSimulation()) {
+            SmartDashboard.putString("Conveyor/Mode", mode.name());
+        }
         SmartDashboard.putBoolean("Conveyor/Has Shooter Ball", hasShooterBall());
         SmartDashboard.putBoolean("Conveyor/Has Intake Ball", hasIntakeBall());    
         SmartDashboard.putNumber("Conveyor/Motor Speed", getMotorSpeed());
