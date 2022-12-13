@@ -36,6 +36,8 @@ public class RobotContainer {
   public final IClimber climber = new Climber();
   public final Swerve swerve = new Swerve();
 
+  public final Camera camera = new Camera();
+
   // Gamepads
   public final Gamepad driver = getGamepad(Ports.Gamepad.DRIVER);
   public final Gamepad operator = getGamepad(Ports.Gamepad.OPERATOR);

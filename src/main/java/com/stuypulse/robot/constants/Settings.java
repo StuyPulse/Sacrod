@@ -5,6 +5,7 @@
 
 package com.stuypulse.robot.constants;
 
+import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
 import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
@@ -153,9 +154,13 @@ public interface Settings {
 
     public interface Limelight {
         int[] PORTS = {5800, 5801, 5802, 5803, 5804, 5805};
+        double CAMERA_TO_CENTER = Units.inchesToMeters(14.0);
+        Angle CAMERA_PITCH = Angle.fromDegrees(28);
+        double CAMERA_HEIGHT = Units.inchesToMeters(32);
     }
 
     public interface Field {
-        double HUB_HEIGHT = Units.feetToMeters(8.6);
+        double HUB_HEIGHT = Units.feetToMeters(8) + Units.inchesToMeters(9);
+        double HUB_TO_CENTER = Units.feetToMeters(2.0);
     }
 }

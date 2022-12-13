@@ -1,7 +1,6 @@
 package com.stuypulse.robot.subsystems;
 
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Settings.Field;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
@@ -25,6 +24,10 @@ public class Camera extends SubsystemBase {
 	}
 
 	public Angle getHorizontalOffset() {
+		if (!hasAnyTarget()) {
+            Settings.reportWarning("Unable To Find Target! [getHorizontal() was called]");
+            return Angle.kZero;
+        }
 		double txDegrees = limelight.getTargetXAngle();
 
 		Angle txAngle = Angle.fromDegrees(txDegrees);
@@ -33,6 +36,10 @@ public class Camera extends SubsystemBase {
 	}
 
 	public Angle getVerticalOffset() {
+		if (!hasAnyTarget()) {
+            Settings.reportWarning("Unable To Find Target! [getVerticalOffset() was called]");
+            return Angle.kZero;
+        }
 		double tyDegrees = limelight.getTargetYAngle();
 		
 		Angle tyAngle = Angle.fromDegrees(tyDegrees);
@@ -41,11 +48,11 @@ public class Camera extends SubsystemBase {
 	}
 
 	public double getDistance() {
-		Angle ty = getVerticalOffset();
+		Angle ty = getVerticalOffset().add(Settings.Limelight.CAMERA_PITCH);
 
-		double distance = Field.HUB_HEIGHT / ty.tan();
+		double distance = (Settings.Field.HUB_HEIGHT-Settings.Limelight.CAMERA_HEIGHT) / ty.tan();
 
-		return distance;
+		return distance + Settings.Field.HUB_TO_CENTER + Settings.Limelight.CAMERA_TO_CENTER;
 	}
 
 	
