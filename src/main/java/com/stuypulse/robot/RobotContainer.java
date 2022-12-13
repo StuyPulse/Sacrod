@@ -20,23 +20,25 @@ import com.stuypulse.robot.subsystems.intake.*;
 import com.stuypulse.robot.subsystems.climber.*;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.Xbox;
+import com.stuypulse.stuylib.input.gamepads.keyboard.SimKeyGamepad;
 import com.stuypulse.stuylib.network.SmartNumber;
 
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class RobotContainer {
   private static Gamepad getGamepad(int port) {
-    return new Xbox(port);
+    return RobotBase.isReal() ? new Xbox(port) : new SimKeyGamepad();
   }
 
   // Subsystem
   public final Conveyor conveyor = new Conveyor();
-  public final IShooter shooter = new Shooter();
-  public final IIntake intake = new Intake();
-  public final IClimber climber = new Climber();
-  public final SwerveDrive swerve = new SwerveDrive();
+  public final IShooter shooter = IShooter.getInstance();
+  public final IIntake intake = IIntake.getInstance();
+  public final IClimber climber = IClimber.getInstance();
+  public final SwerveDrive swerve = SwerveDrive.getInstance();
 
   public final Camera camera = new Camera();
 

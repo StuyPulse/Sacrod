@@ -44,43 +44,27 @@ public interface Ports {
 
     public interface Swerve {
         public interface FrontRight {
-            String ID = "Front Right";
             int DRIVE = 10;
-            int PIVOT = 11;
-
+            int TURN = 11;
             int ENCODER = 1;
-
-            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(143));
-            Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * -0.5);
         }
 
         public interface FrontLeft  {
-            String ID = "Front Left";
             int DRIVE = 12;
-            int PIVOT = 13;
-
+            int TURN = 13;
             int ENCODER = 3;
-
-            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(36));
-            Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * +0.5);
         }
 
         public interface BackLeft {
-            String ID = "Back Left";
-            int DRIVE_PORT = 14;
-            int TURN_PORT = 15;
-            int ENCODER_PORT = 2;
-            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(-80.5));
-            Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * +0.5);
+            int DRIVE = 14;
+            int TURN = 15;
+            int ENCODER = 2;
         }
         
         public interface BackRight {
-            String ID = "Back Right";
-            int DRIVE_PORT = 16;
-            int TURN_PORT = 17;
-            int ENCODER_PORT = 0;
-            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(142.3));
-            Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * -0.5);
+            int DRIVE = 16;
+            int TURN = 17;
+            int ENCODER = 0;
         }
     }
 }

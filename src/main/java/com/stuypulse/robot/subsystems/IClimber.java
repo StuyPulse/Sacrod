@@ -1,8 +1,15 @@
 package com.stuypulse.robot.subsystems;
 
+import com.stuypulse.robot.subsystems.climber.*;
+
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class IClimber extends SubsystemBase {
+
+    public static IClimber getInstance() {
+        return RobotBase.isReal() ? new Climber() : new SimClimber();
+    }
 
     public abstract void setTargetHeight(double height);
 
