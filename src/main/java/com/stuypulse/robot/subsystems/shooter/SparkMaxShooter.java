@@ -8,6 +8,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Shooter.FeederFF;
 import com.stuypulse.robot.subsystems.IShooter;
 import com.stuypulse.stuylib.network.SmartNumber;
 
@@ -76,6 +77,12 @@ public class SparkMaxShooter extends IShooter {
 
         Motors.Shooter.FeederMotorConfig.configure(feeder);
     }
+    public double getShooterTargetRPM() {
+        return this.target.get();
+    }
+    public double getFeederTargetRPM() {
+        return this.target.get() * FeederFF.FEEDER_RPM_MULTIPLIER.get();
+    }
 
     @Override
     public void setTargetRPM(double targetRPM) {
@@ -107,7 +114,7 @@ public class SparkMaxShooter extends IShooter {
             lastTarget, 
             ControlType.kVelocity, 
             0, 
-            feederFeedforward.calculate(lastTarget, target.get(), Settings.DT), 
+            feederFeedforward.calculate(lastTarget, getFeederTargetRPM(), Settings.DT), 
             ArbFFUnits.kVoltage
         );
 
