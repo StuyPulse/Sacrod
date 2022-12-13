@@ -40,6 +40,10 @@ public interface Motors {
         VictorSPXConfig MotorConfig = new VictorSPXConfig(true, NeutralMode.Brake); 
     }
     
+    public interface Swerve {
+        CANSparkMaxConfig Drive = new CANSparkMaxConfig(false, IdleMode.kBrake, 40, 0.0);
+        CANSparkMaxConfig Turn = new CANSparkMaxConfig(false, IdleMode.kBrake, 20, 0.0);
+    }    
     
     TalonSRXConfig CLIMBER = new TalonSRXConfig(false, NeutralMode.Brake, 60);
     

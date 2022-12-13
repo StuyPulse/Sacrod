@@ -9,8 +9,10 @@ import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
 import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
+import com.stuypulse.stuylib.network.SmartAngle;
 import com.stuypulse.stuylib.network.SmartNumber;
 
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -27,7 +29,38 @@ public interface Settings {
     public static void reportWarning(String warning) {
         DriverStation.reportWarning(warning, false);
     }
+
     
+    public interface Scoring {
+        
+        SmartNumber PRIMARY_DISTANCE = new SmartNumber("Shooter/Primary Distance", 3.71);
+        SmartNumber PRIMARY_RPM = new SmartNumber("Shooter/Primary RPM", 1750);
+        
+        SmartNumber SECONDARY_DISTANCE = new SmartNumber("Shooter/Secondary Distance", 4.55);
+        SmartNumber SECONDARY_RPM = new SmartNumber("Shooter/Secondary RPM", 2000);
+
+        Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
+            new Vector2D(PRIMARY_DISTANCE.get(), PRIMARY_RPM.get()),
+            new Vector2D(SECONDARY_DISTANCE.get(), SECONDARY_RPM.get())
+        );
+
+        // TODO: make shooting and alignment command specifically for testing
+        SmartNumber TUNING_RPM = new SmartNumber("Shooter/Tuning RPM", 0.0);
+        SmartNumber TUNING_DISTANCE = new SmartNumber("Shooter/Tuning Distance", 0.0);
+    }
+
+    public interface Limelight {
+        int[] PORTS = {5800, 5801, 5802, 5803, 5804, 5805};
+        double CAMERA_TO_CENTER = Units.inchesToMeters(14.0);
+        Angle CAMERA_PITCH = Angle.fromDegrees(28);
+        double CAMERA_HEIGHT = Units.inchesToMeters(32);
+    }
+
+    public interface Field {
+        double HUB_HEIGHT = Units.feetToMeters(8) + Units.inchesToMeters(9);
+        double HUB_TO_CENTER = Units.feetToMeters(2.0);
+    }
+
     public interface Climber {
 
         SmartNumber ERROR = new SmartNumber("Climber/Error", 0.01);
@@ -62,69 +95,14 @@ public interface Settings {
 
             double CONVERSION_FACTOR = SPOOL_CIRCUMFERENCE / OUTPUT_TO_SPOOL / COUNTS_PER_REVOLUTION;
         }
-
     }
 
     public interface Conveyor {
         SmartNumber FORWARD_SPEED = new SmartNumber("Conveyor/Forward Speed", 1.0);
         SmartNumber REVERSE_SPEED = new SmartNumber("Conveyor/Reverse Speed", -1.0);
     }
-    
-    public interface Shooter{
-
-        double shooterGearing = 1.0;
-        double feederGearing = 1.0; // shooter is 1:1, but it's connected to top rollers, which are 2:1
-        
-        public interface ShotMap {
-            /*
-             * TODO:
-             * - find ring shot distance
-             * - find (farthest) distance to driver station wall
-             * - determine how many points we want to tune for
-             * - calculate what distances we're tuning RPMS for
-             */
-            Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
-                    new Vector2D(0.0, 0.0));
-        }
-
-        SmartNumber RING_RPM = new SmartNumber("Shooter/Ring RPM", 3000);
-
-        public interface ShooterPID {
-
-            // TODO: auto pid tune this
-            SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0); // 0.0050642);
-            SmartNumber kI = new SmartNumber("Shooter/Shooter kI", 0);
-            SmartNumber kD = new SmartNumber("Shooter/Shooter kD", 0);
-
-        }
-
-        public interface ShooterFF {
-            SmartNumber kS = new SmartNumber("Shooter/Shooter kS", 0.28656);
-            SmartNumber kV = new SmartNumber("Shooter/Shooter kV", 0.0021618);
-            SmartNumber kA = new SmartNumber("Shooter/Shooter kA", 0.00012967);
-        }
-
-        public interface FeederPID {
-
-            SmartNumber kP = new SmartNumber("Shooter/Feeder kP", 0); // 0.008743);
-            SmartNumber kI = new SmartNumber("Shooter/Feeder kI", 0);
-            SmartNumber kD = new SmartNumber("Shooter/Feeder kD", 0);
-
-        }
-
-        public interface FeederFF {
-
-            SmartNumber kS = new SmartNumber("Shooter/Feeder kS", 0.16826);
-            SmartNumber kV = new SmartNumber("Shooter/Feeder kV", 0.0021141);
-            SmartNumber kA = new SmartNumber("Shooter/Feeder kA", 0.00020526);
-
-            SmartNumber FEEDER_RPM_MULTIPLIER = new SmartNumber("Shooter/Feeder RPM Multiplier", 1);
-
-        }
-    }
 
     public interface Intake {
-
         SmartNumber EXTEND_ANGLE = new SmartNumber("Intake/Extend Angle", 99);
         SmartNumber RETRACT_ANGLE = new SmartNumber("Intake/Retract Angle", 0);
 
@@ -151,16 +129,110 @@ public interface Settings {
             SmartNumber kA = new SmartNumber("Intake/Simulation/A", 0.01);
         }
     }
+    
+    public interface Shooter{        
+        public interface ShooterPID {
+            // TODO: auto pid tune this
+            SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0); // 0.0050642);
+            SmartNumber kI = new SmartNumber("Shooter/Shooter kI", 0);
+            SmartNumber kD = new SmartNumber("Shooter/Shooter kD", 0);
+        }
 
-    public interface Limelight {
-        int[] PORTS = {5800, 5801, 5802, 5803, 5804, 5805};
-        double CAMERA_TO_CENTER = Units.inchesToMeters(14.0);
-        Angle CAMERA_PITCH = Angle.fromDegrees(28);
-        double CAMERA_HEIGHT = Units.inchesToMeters(32);
+        public interface ShooterFF {
+            SmartNumber kS = new SmartNumber("Shooter/Shooter kS", 0.28656);
+            SmartNumber kV = new SmartNumber("Shooter/Shooter kV", 0.0021618);
+            SmartNumber kA = new SmartNumber("Shooter/Shooter kA", 0.00012967);
+        }
+
+        public interface FeederPID {
+            SmartNumber kP = new SmartNumber("Shooter/Feeder kP", 0); // 0.008743);
+            SmartNumber kI = new SmartNumber("Shooter/Feeder kI", 0);
+            SmartNumber kD = new SmartNumber("Shooter/Feeder kD", 0);
+        }
+
+        public interface FeederFF {
+            SmartNumber kS = new SmartNumber("Shooter/Feeder kS", 0.16826);
+            SmartNumber kV = new SmartNumber("Shooter/Feeder kV", 0.0021141);
+            SmartNumber kA = new SmartNumber("Shooter/Feeder kA", 0.00020526);
+
+            SmartNumber FEEDER_RPM_MULTIPLIER = new SmartNumber("Shooter/Feeder RPM Multiplier", 1);
+        }
     }
 
-    public interface Field {
-        double HUB_HEIGHT = Units.feetToMeters(8) + Units.inchesToMeters(9);
-        double HUB_TO_CENTER = Units.feetToMeters(2.0);
+    public interface Swerve {
+        public interface Chassis {
+            double WIDTH = Units.inchesToMeters(29.0);
+            double HEIGHT = Units.inchesToMeters(29.0);
+            double MAX_SPEED = 4.2;
+        }
+
+        public interface Drive {
+            SmartNumber kS = new SmartNumber("Swerve/Drive/kS", 0.17335);
+            SmartNumber kV = new SmartNumber("Swerve/Drive/kV", 2.7274);
+            SmartNumber kA = new SmartNumber("Swerve/Drive/kA", 0.456);
+            
+            SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 1.0);
+            SmartNumber kI = new SmartNumber("Swerve/Drive/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Drive/kD", 0.0);
+        }
+
+        public interface Turn {
+            SmartNumber kP = new SmartNumber("Swerve/Turn/kP", 3.5);
+            SmartNumber kI = new SmartNumber("Swerve/Turn/kI", 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Turn/kD", 0.1);
+
+            double kS = 0.14;
+            double kV = 0.25;
+            double kA = 0.007;
+        }
+
+        public interface FrontRight {
+            String ID = "Front Right";
+            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(143));
+            Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * -0.5);
+        }
+
+        public interface FrontLeft {
+            String ID = "Front Left";
+            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(36));
+            Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * +0.5);
+        }
+
+        public interface BackLeft {
+            String ID = "Back Left";
+            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(-80.5));
+            Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * +0.5);
+        }
+
+        public interface BackRight {
+            String ID = "Back Right";
+            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(142.3));
+            Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * -0.5);
+        }
+
+        public interface Encoder {
+            public interface Drive {
+                double WHEEL_DIAMETER = Units.inchesToMeters(4.0);
+                double WHEEL_CIRCUMFERENCE = WHEEL_DIAMETER * Math.PI;
+
+                public interface Stages {
+                    // input / output
+                    double FIRST = 16.0 / 48.0;
+                    double SECOND = 28.0 / 16.0;
+                    double THIRD = 15.0 / 60.0;
+                }
+
+                double GEAR_RATIO = Stages.FIRST * Stages.SECOND * Stages.THIRD;
+
+                double POSITION_CONVERSION = WHEEL_CIRCUMFERENCE * GEAR_RATIO;
+                double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
+            }
+
+            public interface Turn {
+                double GEAR_RATIO = 1.0 / 12.8;
+                double POSITION_CONVERSION = GEAR_RATIO * 2 * Math.PI;
+                double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
+            }
+        }
     }
 }
