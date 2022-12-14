@@ -23,6 +23,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
@@ -75,7 +76,7 @@ public class SwerveDrive extends SubsystemBase {
                 getModuleStream()
                         .map(x -> x.getLocation())
                         .toArray(Translation2d[]::new));
-        odometry = new SwerveDriveOdometry(kinematics, getGyroAngle());
+        odometry = new SwerveDriveOdometry(kinematics, getGyroAngle(), getModulePositions());
 
         field = new Field2d();
         module2ds = new FieldObject2d[modules.length];
@@ -127,8 +128,12 @@ public class SwerveDrive extends SubsystemBase {
         return getModuleStream().map(x -> x.getState()).toArray(SwerveModuleState[]::new);
     }
 
+    public SwerveModulePosition[] getModulePositions() {
+        return getModuleStream().map(x -> x.getModulePosition()).toArray(SwerveModulePosition[]::new);
+    }
+
     public void reset(Pose2d pose) {
-        odometry.resetPosition(pose, getGyroAngle());
+        odometry.resetPosition(getGyroAngle(), getModulePositions(), pose);
     }
 
     /** MODULE STATES API **/
@@ -210,7 +215,7 @@ public class SwerveDrive extends SubsystemBase {
     /** ODOMETRY API */
 
     private void updateOdometry() {
-        odometry.update(getGyroAngle(), getModuleStates());
+        odometry.update(getGyroAngle(), getModulePositions());
     }
 
     public Pose2d getPose() {

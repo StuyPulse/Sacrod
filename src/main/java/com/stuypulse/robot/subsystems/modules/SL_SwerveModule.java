@@ -18,6 +18,7 @@ import com.stuypulse.stuylib.network.SmartAngle;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -68,6 +69,7 @@ public class SL_SwerveModule extends SwerveModule {
         driveMotor = new CANSparkMax(driveCANId, MotorType.kBrushless);
         driveEncoder = driveMotor.getEncoder();
         driveEncoder.setVelocityConversionFactor(Encoder.Drive.VELOCITY_CONVERSION);
+        driveEncoder.setPositionConversionFactor(Encoder.Drive.POSITION_CONVERSION);
         Motors.Swerve.Drive.configure(driveMotor);
 
         driveController = new PIDController(Drive.kP, Drive.kI, Drive.kD)
@@ -93,6 +95,10 @@ public class SL_SwerveModule extends SwerveModule {
         return driveEncoder.getVelocity();
     }
 
+    private double getDistance() {
+        return driveEncoder.getPosition();
+    }
+
     private Rotation2d getAbsolutePosition() {
         return new Rotation2d(MathUtil.interpolate(-Math.PI, +Math.PI, absoluteEncoder.getAbsolutePosition()));
     }
@@ -104,6 +110,11 @@ public class SL_SwerveModule extends SwerveModule {
     @Override
     public SwerveModuleState getState() {
         return new SwerveModuleState(getSpeed(), getRotation2d());
+    }
+
+    @Override
+    public SwerveModulePosition getModulePosition() {
+        return new SwerveModulePosition(getDistance(), getRotation2d());
     }
 
     @Override

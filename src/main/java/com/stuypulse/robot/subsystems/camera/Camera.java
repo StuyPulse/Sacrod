@@ -6,9 +6,7 @@ import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
 import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.util.net.PortForwarder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /* todo: make ICamera, SimCamera */
 public class Camera extends ICamera {
@@ -19,7 +17,7 @@ public class Camera extends ICamera {
 		limelight = Limelight.getInstance(); 
 
 		for (int port : Settings.Limelight.PORTS) {
-            PortForwarder.add(port, "limelight.local", port);
+            edu.wpi.first.net.PortForwarder.add(port, "limelight.local", port);
         }
         CameraServer.startAutomaticCapture();
 	}

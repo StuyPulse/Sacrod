@@ -15,6 +15,7 @@ import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N2;
@@ -87,6 +88,10 @@ public class SL_SimModule extends SwerveModule {
    public SwerveModuleState getState() {
        return new SwerveModuleState(getSpeed(), getAngle().getRotation2d());
    }
+
+   public SwerveModulePosition getModulePosition() {
+       return new SwerveModulePosition(getDistance(), getAngle().getRotation2d());
+   }
    
    /** TURNING METHODS **/
 
@@ -98,6 +103,10 @@ public class SL_SimModule extends SwerveModule {
    
    public double getSpeed() {
        return driveSim.getOutput(0);
+   }
+
+   public double getDistance() {
+       return driveSim.getOutput(1);
    }
    
    /** CONTROL LOOP **/

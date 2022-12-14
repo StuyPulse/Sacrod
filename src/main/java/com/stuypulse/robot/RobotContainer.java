@@ -72,29 +72,29 @@ public class RobotContainer {
   /***************/
 
   private void configureButtonBindings() {
-    driver.getTopButton().whenPressed(new SwerveDriveHome(swerve));
-    driver.getBottomButton().whileHeld(new AutoShoot(this, driver));
+    driver.getTopButton().onTrue(new SwerveDriveHome(swerve));
+    driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
 
     operator.getLeftTriggerButton()
-      .whileHeld(new IntakeDeacquire(intake))
-      .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.REVERSE));
+      .whileTrue(new IntakeDeacquire(intake))
+      .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.REVERSE));
 
     operator.getRightTriggerButton()
-      .whileHeld(new IntakeAcquire(intake))
-      .whenPressed(new IntakeExtend(intake))
-      .whenReleased(new IntakeRetract(intake));
+      .whileTrue(new IntakeAcquire(intake))
+      .onTrue(new IntakeExtend(intake))
+      .onFalse(new IntakeRetract(intake));
 
     operator.getTopButton()
-      .whenPressed(new ConveyorSetMode(conveyor, ConveyorMode.INDEXING));  
+      .onTrue(new ConveyorSetMode(conveyor, ConveyorMode.INDEXING));  
     operator.getRightButton()
-      .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.SHOOTING));
+      .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.SHOOTING));
     operator.getLeftButton()
-      .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
+      .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
 
-    operator.getDPadUp().whenPressed(new ShooterStop(shooter));
-    operator.getDPadRight().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.PRIMARY_RPM));
-    operator.getDPadLeft().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.SECONDARY_RPM));
-    operator.getDPadDown().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.TUNING_RPM));
+    operator.getDPadUp().onTrue(new ShooterStop(shooter));
+    operator.getDPadRight().onTrue(new ShooterSetRPM(shooter, Settings.Scoring.PRIMARY_RPM));
+    operator.getDPadLeft().onTrue(new ShooterSetRPM(shooter, Settings.Scoring.SECONDARY_RPM));
+    operator.getDPadDown().onTrue(new ShooterSetRPM(shooter, Settings.Scoring.TUNING_RPM));
   }
 
   /**************/
