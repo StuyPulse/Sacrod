@@ -64,9 +64,9 @@ public interface Settings {
             new Vector2D(SECONDARY_DISTANCE.get(), SECONDARY_RPM.get())
         );
 
-        SmartNumber ACCEPTABLE_RPM = new SmartNumber("Scoring/Acceptable RPM Error", 150);
-        SmartNumber ACCEPTABLE_VELOCITY = new SmartNumber("Scoring/Acceptable Shot Velocity", Units.inchesToMeters(6));
-        SmartNumber ACCEPTABLE_TURN_ERROR = new SmartNumber("Scoring/Acceptable Turn Error (deg)", 5);
+        SmartNumber ACCEPTABLE_RPM = new SmartNumber("Scoring/Acceptable RPM Error", 200);
+        SmartNumber ACCEPTABLE_VELOCITY = new SmartNumber("Scoring/Acceptable Shot Velocity", Units.inchesToMeters(9));
+        SmartNumber ACCEPTABLE_TURN_ERROR = new SmartNumber("Scoring/Acceptable Turn Error (deg)", 7.5);
         SmartNumber READY_TIME = new SmartNumber("Scoring/Ready Time", 0.2);
 
         // TODO: make shooting and alignment command specifically for testing
@@ -77,6 +77,8 @@ public interface Settings {
             SmartNumber kP = new SmartNumber("Scoring/Auto Shot/kP", 1.0);
             SmartNumber kI = new SmartNumber("Scoring/Auto Shot/kI", 0.0);
             SmartNumber kD = new SmartNumber("Scoring/Auto Shot/kD", 0.2);
+        
+            SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auto Shot/Fusion RC", 0.3);
         }
     }
 
@@ -90,7 +92,7 @@ public interface Settings {
     public interface Field {
         double HUB_HEIGHT = Units.feetToMeters(8) + Units.inchesToMeters(9);
         double HUB_TO_CENTER = Units.feetToMeters(2.0);
-        Translation2d HUB = new Translation2d(Units.feetToMeters(10), 0);
+        Translation2d HUB = new Translation2d(Units.feetToMeters(12.8), 0);
     }
 
     public interface Climber {

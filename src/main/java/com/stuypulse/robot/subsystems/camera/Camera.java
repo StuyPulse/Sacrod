@@ -1,6 +1,7 @@
-package com.stuypulse.robot.subsystems;
+package com.stuypulse.robot.subsystems.camera;
 
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.subsystems.ICamera;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
@@ -10,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 /* todo: make ICamera, SimCamera */
-public class Camera extends SubsystemBase {
+public class Camera extends ICamera {
 
 	private Limelight limelight;
 	
@@ -24,7 +25,7 @@ public class Camera extends SubsystemBase {
 	}
 
 	public Angle getHorizontalOffset() {
-		if (!hasAnyTarget()) {
+		if (!hasTarget()) {
             Settings.reportWarning("Unable To Find Target! [getHorizontal() was called]");
             return Angle.kZero;
         }
@@ -36,7 +37,7 @@ public class Camera extends SubsystemBase {
 	}
 
 	public Angle getVerticalOffset() {
-		if (!hasAnyTarget()) {
+		if (!hasTarget()) {
             Settings.reportWarning("Unable To Find Target! [getVerticalOffset() was called]");
             return Angle.kZero;
         }
@@ -56,7 +57,7 @@ public class Camera extends SubsystemBase {
 	}
 
 	
-    public boolean hasAnyTarget() {
+    public boolean hasTarget() {
         return limelight.getValidTarget();
     }
 

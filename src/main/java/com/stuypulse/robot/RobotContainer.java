@@ -17,6 +17,7 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.subsystems.camera.Camera;
 import com.stuypulse.robot.subsystems.shooter.*;
 import com.stuypulse.robot.util.BootlegXbox;
 import com.stuypulse.robot.util.ConveyorMode;
@@ -41,7 +42,7 @@ public class RobotContainer {
   public final IClimber climber = IClimber.getInstance();
   public final SwerveDrive swerve = SwerveDrive.getInstance();
 
-  public final Camera camera = new Camera();
+  public final ICamera camera = ICamera.getInstance();
 
   // Gamepads
   public final Gamepad driver = new BootlegXbox(Ports.Gamepad.DRIVER);
@@ -72,7 +73,7 @@ public class RobotContainer {
 
   private void configureButtonBindings() {
     driver.getTopButton().whenPressed(new SwerveDriveHome(swerve));
-    driver.getBottomButton().whenPressed(new AutoShoot(this, driver));
+    driver.getBottomButton().whileHeld(new AutoShoot(this, driver));
 
     operator.getLeftTriggerButton()
       .whileHeld(new IntakeDeacquire(intake))

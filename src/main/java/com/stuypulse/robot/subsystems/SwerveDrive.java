@@ -87,6 +87,10 @@ public class SwerveDrive extends SubsystemBase {
         SmartDashboard.putData("Field", field);
     }
 
+    public Field2d getField() {
+        return field;
+    }
+
     /** MODULE API **/
 
     public SwerveModule getModule(String id) {
@@ -105,6 +109,10 @@ public class SwerveDrive extends SubsystemBase {
     public Translation2d getVelocity() {
         var speeds = getChassisSpeeds();
         return new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+    }
+
+    public Translation2d getTranslation() {
+        return getPose().getTranslation();
     }
 
     public SwerveModule[] getModules() {
