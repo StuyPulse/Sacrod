@@ -122,6 +122,11 @@ public class SL_SimModule extends SwerveModule {
    public double getDistance() {
        return driveSim.getOutput(0);
    }
+
+   @Override
+   public void reset() {
+        driveSim.setState(Matrix.mat(Nat.N2(), Nat.N1()).fill(0.0, getSpeed()));
+   }
    
    /** CONTROL LOOP **/
    @Override

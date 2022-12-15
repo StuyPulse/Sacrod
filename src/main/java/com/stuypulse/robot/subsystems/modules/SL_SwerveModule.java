@@ -118,6 +118,11 @@ public class SL_SwerveModule extends SwerveModule {
     }
 
     @Override
+    public void reset() {
+        driveEncoder.setPosition(0);
+    }
+
+    @Override
     public void periodic() {
         turnMotor.setVoltage(turnController.update(
                 Angle.fromRotation2d(targetState.angle),
