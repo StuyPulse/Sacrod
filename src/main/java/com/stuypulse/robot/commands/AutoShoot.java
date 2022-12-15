@@ -57,7 +57,7 @@ public class AutoShoot extends CommandBase {
                 new VDeadZone(Settings.Driver.DEADBAND),
                 x -> x.clamp(1.0),
                 x -> Settings.vpow(x, Settings.Driver.Drive.POWER.get()),
-                x -> x.mul(Settings.Driver.MAX_TELEOP_SPEED.get()),
+                x -> x.mul(Settings.Scoring.AutoShot.MAX_SPEED.get()),
                 new VLowPassFilter(Settings.Driver.Drive.RC)
                 // new VRateLimit(Settings.Driver.MAX_ACCELERATION)
             );
@@ -94,10 +94,11 @@ public class AutoShoot extends CommandBase {
         if (camera.hasTarget()) {
             return Angle.fromDegrees(angleError.get());
         } else {
-            Translation2d tx = Field.HUB.minus(swerve.getTranslation());
-            Rotation2d ax = new Rotation2d(tx.getX(), tx.getY()).times(-1);
-            Rotation2d offset = ax.minus(swerve.getAngle());
-            return Angle.fromRotation2d(offset);
+            return Angle.kZero;
+            // Translation2d tx = Field.HUB.minus(swerve.getTranslation());
+            // Rotation2d ax = new Rotation2d(tx.getX(), tx.getY()).times(-1);
+            // Rotation2d offset = ax.minus(swerve.getAngle());
+            // return Angle.fromRotation2d(offset);
         }
     }
 
@@ -120,7 +121,7 @@ public class AutoShoot extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-
+        conveyor.setMode(ConveyorMode.DEFAULT);
     }
 
     @Override

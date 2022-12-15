@@ -79,6 +79,7 @@ public interface Settings {
             SmartNumber kD = new SmartNumber("Scoring/Auto Shot/kD", 0.2);
         
             SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auto Shot/Fusion RC", 0.3);
+            SmartNumber MAX_SPEED = new SmartNumber("Scoring/Auto Shot/Speed", 2);
         }
     }
 
