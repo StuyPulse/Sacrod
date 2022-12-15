@@ -6,6 +6,7 @@
 package com.stuypulse.robot.constants;
 
 import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.auto.PIDConstants;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
@@ -275,21 +276,9 @@ public interface Settings {
         public interface Motion {
             PathConstraints CONSTRAINTS = new PathConstraints(3.5, 2);
 
-            public interface X {
-                double kP = 2;
-                double kI = 0;
-                double kD = 0.5;
-            }
-            public interface Y {
-                double kP = 2;
-                double kI = 0;
-                double kD = 0.5;
-            }
-            public interface Theta {
-                double kP = 1;
-                double kI = 0;
-                double kD = 0.1;
-            }
+            PIDConstants XY = new PIDConstants(2, 0, 0.5);
+            PIDConstants THETA = new PIDConstants(1, 0, 0.2);
+
         }
     }
 }
