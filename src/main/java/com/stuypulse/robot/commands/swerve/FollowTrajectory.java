@@ -14,9 +14,9 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 			traj,
 			swerve::getPose,
 			swerve.getKinematics(),
-			new PIDController(Motion.X.kP, Motion.X.kI, Motion.X.kD),
-			new PIDController(Motion.Y.kP, Motion.Y.kI, Motion.Y.kD),
-			new PIDController(Motion.Theta.kP, Motion.Theta.kI, Motion.Theta.kD),
+			new PIDController(Motion.XY.kP, Motion.XY.kI, Motion.XY.kD),
+			new PIDController(Motion.XY.kP, Motion.XY.kI, Motion.XY.kD),
+			new PIDController(Motion.THETA.kP, Motion.THETA.kI, Motion.THETA.kD),
 			swerve::setStates,
 			swerve
 		);
