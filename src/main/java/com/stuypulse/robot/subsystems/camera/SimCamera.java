@@ -22,12 +22,12 @@ public class SimCamera extends ICamera {
 
     private Angle getRawHorizontalOffset() {
         // swerve.getPose
-        return null;
+        return Angle.kZero;
     }
 
     @Override
     public Angle getHorizontalOffset() {
-        return null;
+        return Angle.kZero;
     }
 
     @Override
