@@ -7,6 +7,7 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.AutoShoot;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.MylesAuto;
 import com.stuypulse.robot.commands.climber.*;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
@@ -103,6 +104,7 @@ public class RobotContainer {
 
   public void configureAutons() {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
+    autonChooser.addOption("Myles", new MylesAuto(this, "myles"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }

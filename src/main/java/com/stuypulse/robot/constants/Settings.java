@@ -5,6 +5,7 @@
 
 package com.stuypulse.robot.constants;
 
+import com.pathplanner.lib.PathConstraints;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
@@ -268,6 +269,26 @@ public interface Settings {
                 double GEAR_RATIO = 1.0 / 12.8;
                 double POSITION_CONVERSION = GEAR_RATIO * 2 * Math.PI;
                 double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
+            }
+        }
+
+        public interface Motion {
+            PathConstraints CONSTRAINTS = new PathConstraints(3.5, 2);
+
+            public interface X {
+                double kP = 2;
+                double kI = 0;
+                double kD = 0.5;
+            }
+            public interface Y {
+                double kP = 2;
+                double kI = 0;
+                double kD = 0.5;
+            }
+            public interface Theta {
+                double kP = 1;
+                double kI = 0;
+                double kD = 0.1;
             }
         }
     }
