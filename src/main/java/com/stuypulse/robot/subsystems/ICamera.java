@@ -9,8 +9,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class ICamera extends SubsystemBase {
 
-    public static ICamera getInstance() {
-        return RobotBase.isReal() ? new Camera(): new SimCamera(null);
+    public static ICamera getInstance(SwerveDrive swerve) {
+        return RobotBase.isReal() ? new Camera(): new SimCamera(swerve);
     }
 
     public abstract boolean hasTarget();
