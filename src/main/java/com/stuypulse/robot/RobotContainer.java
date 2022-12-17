@@ -13,6 +13,7 @@ import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
+import com.stuypulse.robot.commands.swerve.DrivetrainAlign;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
@@ -43,7 +44,7 @@ public class RobotContainer {
   public final IClimber climber = IClimber.getInstance();
   public final SwerveDrive swerve = SwerveDrive.getInstance();
 
-  public final ICamera camera = ICamera.getInstance();
+  public final ICamera camera = ICamera.getInstance(swerve);
 
   // Gamepads
   public final Gamepad driver = new BootlegXbox(Ports.Gamepad.DRIVER);
@@ -75,6 +76,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driver.getTopButton().onTrue(new SwerveDriveHome(swerve));
     driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
+    driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, swerve));
 
     operator.getLeftTriggerButton()
       .whileTrue(new IntakeDeacquire(intake))

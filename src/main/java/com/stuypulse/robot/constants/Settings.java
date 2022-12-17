@@ -69,6 +69,7 @@ public interface Settings {
         SmartNumber ACCEPTABLE_RPM = new SmartNumber("Scoring/Acceptable RPM Error", 200);
         SmartNumber ACCEPTABLE_VELOCITY = new SmartNumber("Scoring/Acceptable Shot Velocity", Units.inchesToMeters(9));
         SmartNumber ACCEPTABLE_TURN_ERROR = new SmartNumber("Scoring/Acceptable Turn Error (deg)", 7.5);
+        SmartNumber ACCEPTABLE_DISTANCE_ERROR = new SmartNumber("Scoring/Acceptable Distance Error (m)", Units.inchesToMeters(4));
         SmartNumber READY_TIME = new SmartNumber("Scoring/Ready Time", 0.2);
 
         // TODO: make shooting and alignment command specifically for testing
@@ -81,6 +82,18 @@ public interface Settings {
             SmartNumber kD = new SmartNumber("Scoring/Auto Shot/kD", 0.2);
         
             SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auto Shot/Fusion RC", 0.3);
+        }
+
+        public interface Auton {
+            SmartNumber kP = new SmartNumber("Scoring/Auton/Turn kP", 1);
+            SmartNumber kI = new SmartNumber("Scoring/Auton/Turn kI", 0.0);
+            SmartNumber kD = new SmartNumber("Scoring/Auton/Turn kD", 0.5);
+
+            SmartNumber DISTkP = new SmartNumber("Scoring/Auton/Distance kP", 2.0);
+            SmartNumber DISTkI = new SmartNumber("Scoring/Auton/Distance kI", 0.0);
+            SmartNumber DISTkD = new SmartNumber("Scoring/Auton/Distance kD", 0.5);
+        
+            SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auton/Fusion RC", 0.3);
         }
     }
 
