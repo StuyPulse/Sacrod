@@ -1,6 +1,6 @@
 package com.stuypulse.robot.commands.auton;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
@@ -10,11 +10,11 @@ import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeExtend;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
+import com.stuypulse.robot.commands.swerve.FollowTrajectory;
 import com.stuypulse.robot.constants.Settings.Scoring;
 import com.stuypulse.robot.constants.Settings.Swerve.Motion;
 import com.stuypulse.robot.util.ConveyorMode;
 
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -29,19 +29,7 @@ public class MylesAuto extends SequentialCommandGroup {
     private static final double DRIVETRAIN_ALIGN_TIME = 3.0;
 	
 	public MylesAuto(RobotContainer robot, String path) {
-		HashMap<String, Command> events = new HashMap<>(); 
-		events.put("align", new InstantCommand().withTimeout(DRIVETRAIN_ALIGN_TIME));
-		events.put("shoot", new ConveyorSetMode(robot.conveyor, ConveyorMode.SHOOTING).withTimeout(CONVEYOR_TO_SHOOTER));
-
-		SwerveAutoBuilder builder = new SwerveAutoBuilder(
-			robot.swerve::getPose,
-			robot.swerve::reset,
-			Motion.XY,
-			Motion.THETA,
-			robot.swerve::setStates,
-			events,
-			robot.swerve
-		);
+		PathPlannerTrajectory traj = PathPlanner.loadPath(path, Motion.CONSTRAINTS);
 
 		addCommands(
 			// Init
@@ -50,7 +38,12 @@ public class MylesAuto extends SequentialCommandGroup {
 			new ShooterSetRPM(robot.shooter, Scoring.PRIMARY_RPM),
 			new WaitCommand(SHOOTER_INITIALIZE_DELAY),
 
-			builder.fullAuto(PathPlanner.loadPath(path, Motion.CONSTRAINTS))
+			new FollowTrajectory(robot.swerve, traj)
+				.robotRelative()
+				.withEvents(Map.of(
+					"align", new InstantCommand().withTimeout(DRIVETRAIN_ALIGN_TIME),
+					"shoot", new ConveyorSetMode(robot.conveyor, ConveyorMode.SHOOTING).withTimeout(CONVEYOR_TO_SHOOTER)
+				))
 		);
 	}
 
