@@ -19,7 +19,6 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.*;
-import com.stuypulse.robot.subsystems.camera.Camera;
 import com.stuypulse.robot.subsystems.shooter.*;
 import com.stuypulse.robot.util.BootlegXbox;
 import com.stuypulse.robot.util.ConveyorMode;
