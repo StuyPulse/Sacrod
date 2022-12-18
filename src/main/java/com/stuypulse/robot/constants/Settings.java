@@ -222,7 +222,7 @@ public interface Settings {
             SmartNumber kV = new SmartNumber("Swerve/Drive/kV", 2.7274);
             SmartNumber kA = new SmartNumber("Swerve/Drive/kA", 0.456);
 
-            SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 1.0);
+            SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 1.3);
             SmartNumber kI = new SmartNumber("Swerve/Drive/kI", 0.0);
             SmartNumber kD = new SmartNumber("Swerve/Drive/kD", 0.0);
         }
