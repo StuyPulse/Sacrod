@@ -50,7 +50,7 @@ public class PVCamera extends ICamera {
             Limelight.CAMERA_HEIGHT,
             Field.HUB_HEIGHT,
             Limelight.CAMERA_PITCH.toRadians(),
-            getResult().getBestTarget().getPitch()
+            Math.toRadians(getResult().getBestTarget().getPitch())
         );
     }
 
