@@ -172,7 +172,6 @@ public class SwerveDrive extends SubsystemBase {
         var moduleStates = kinematics.toSwerveModuleStates(robotSpeed);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Chassis.MAX_SPEED);
         for (int i = 0; i < modules.length; ++i) {
-            // TODO: put this code in SwerveModule.setTargetState
             var currentState = modules[i].getState();
             if (Math.abs(moduleStates[i].speedMetersPerSecond) < Settings.Swerve.MIN_MODULE_VELOCITY) {
                 modules[i].setTargetState(new SwerveModuleState(

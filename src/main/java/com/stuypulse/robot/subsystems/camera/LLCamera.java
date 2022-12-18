@@ -9,11 +9,11 @@ import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /* todo: make ICamera, SimCamera */
-public class Camera extends ICamera {
+public class LLCamera extends ICamera {
 
 	private Limelight limelight;
 	
-	public Camera() {
+	public LLCamera() {
 		limelight = Limelight.getInstance(); 
 
 		for (int port : Settings.Limelight.PORTS) {

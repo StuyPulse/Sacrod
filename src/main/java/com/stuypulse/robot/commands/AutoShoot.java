@@ -11,7 +11,7 @@ import com.stuypulse.robot.subsystems.Conveyor;
 import com.stuypulse.robot.subsystems.ICamera;
 import com.stuypulse.robot.subsystems.IShooter;
 import com.stuypulse.robot.subsystems.SwerveDrive;
-import com.stuypulse.robot.subsystems.camera.Camera;
+import com.stuypulse.robot.subsystems.camera.LLCamera;
 import com.stuypulse.robot.util.ConveyorMode;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.angle.AngleController;
