@@ -16,10 +16,16 @@ import com.stuypulse.robot.subsystems.modules.SL_SimModule;
 import com.stuypulse.robot.subsystems.modules.SL_SwerveModule;
 import com.stuypulse.robot.subsystems.modules.SparkMax_Module;
 import com.stuypulse.robot.subsystems.modules.SwerveModule;
+import com.stuypulse.stuylib.control.Controller;
+import com.stuypulse.stuylib.control.angle.AngleController;
+import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
+import com.stuypulse.stuylib.control.feedback.PIDController;
+import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.Vector2D;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -142,63 +148,68 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void reset(Pose2d pose) {
+        // targetPose = pose;
+        tx = 0.0; ty = 0.0; tt = 0.0;
         odometry.resetPosition(getGyroAngle(), getModulePositions(), pose);
     }
 
     /** MODULE STATES API **/
 
-    private static double getSaturation(SwerveModuleState[] states) {
-        double sat = 1;
-        for (var state : states) {
-            sat = Math.max(sat, state.speedMetersPerSecond / Chassis.MAX_SPEED);
-        }
-        return sat;
-    }
+    // private Pose2d targetPose = new Pose2d();
+    double tx = 0.0, ty = 0.0, tt = 0.0;
+    Controller xFeedback = new PIDController(1.0, 0.0, 0.0);
+    Controller yFeedback = new PIDController(1.0, 0.0, 0.0);
+    AngleController tFeedback = new AnglePIDController(1.0, 0.0, 0.0);
 
-    public void setStates(Vector2D velocity, double omega, boolean fieldRelative) {
+    public void setStates(ChassisSpeeds robotSpeed, boolean fieldRelative) {
+        // find target pose
+        tx += robotSpeed.vxMetersPerSecond * Settings.DT;
+        ty += robotSpeed.vyMetersPerSecond * Settings.DT;
+        tt += robotSpeed.omegaRadiansPerSecond * Settings.DT;
+        Pose2d targetPose = new Pose2d(tx, ty, new Rotation2d(tt));
+        field.getObject("target robot pose").setPose(targetPose);
+        
+
+        // calculate speeds 
         if (fieldRelative) {
-            final Rotation2d correction = new Rotation2d(0.5 * omega * Settings.DT);
-
-            ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(velocity.y,
-                    -velocity.x, -omega,
-                    getAngle().plus(correction));
-
-            Pose2d next = new Pose2d(
-                speeds.vxMetersPerSecond * Settings.DT, 
-                speeds.vyMetersPerSecond * Settings.DT, 
-                new Rotation2d(speeds.omegaRadiansPerSecond * Settings.DT));
-
-            Twist2d twist = new Pose2d().log(next);
-
-            speeds = new ChassisSpeeds(twist.dx/Settings.DT, twist.dy/Settings.DT, twist.dtheta/Settings.DT);
-
-            setStatesRetainAngle(speeds);
-        } else {
-            setStates(new ChassisSpeeds(velocity.y, -velocity.x, -omega));
+            robotSpeed = ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeed, getAngle());
         }
-    }
 
-    private void setStatesRetainAngle(ChassisSpeeds robotSpeed) {
-        var moduleStates = kinematics.toSwerveModuleStates(robotSpeed);
-        SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Chassis.MAX_SPEED);
-        for (int i = 0; i < modules.length; ++i) {
-            var currentState = modules[i].getState();
-            if (Math.abs(moduleStates[i].speedMetersPerSecond) < Settings.Swerve.MIN_MODULE_VELOCITY) {
-                modules[i].setTargetState(new SwerveModuleState(
-                    moduleStates[i].speedMetersPerSecond, 
-                    currentState.angle
-                ));
-            } else {
-                modules[i].setTargetState(moduleStates[i]);
-            }
-        }
-    }
+        // Twist2d twist = new Pose2d()
+        //     .log(
+        //         new Pose2d(robotSpeed.vxMetersPerSecond*Settings.DT, robotSpeed.vyMetersPerSecond*Settings.DT, new Rotation2d(robotSpeed.omegaRadiansPerSecond*Settings.DT)));
 
-    public void setStates(Vector2D velocity, double omega) {
-        setStates(velocity, omega, true);
-    }
+        Twist2d twist = new Pose2d().log(new Pose2d(
+            robotSpeed.vxMetersPerSecond * Settings.DT,
+            robotSpeed.vyMetersPerSecond * Settings.DT,
+            new Rotation2d(robotSpeed.omegaRadiansPerSecond * Settings.DT)
+        ));
 
-    public void setStates(ChassisSpeeds robotSpeed) {
+        robotSpeed = new ChassisSpeeds(
+            twist.dx/Settings.DT, twist.dy/Settings.DT, twist.dtheta/Settings.DT);
+
+        xFeedback.update(tx, getTranslation().getX());
+        yFeedback.update(ty, getTranslation().getY());
+        tFeedback.update(Angle.fromRadians(tt), Angle.fromRadians(getAngle().getRadians()));
+
+        ChassisSpeeds robotCorrection = new ChassisSpeeds();
+            ChassisSpeeds.fromFieldRelativeSpeeds(
+            xFeedback.getOutput(),
+            yFeedback.getOutput(),
+            tFeedback.getOutput(), 
+            getAngle()
+        );
+
+        robotSpeed = new ChassisSpeeds(
+            robotSpeed.vxMetersPerSecond + robotCorrection.vxMetersPerSecond,
+            robotSpeed.vyMetersPerSecond + robotCorrection.vyMetersPerSecond,
+            robotSpeed.omegaRadiansPerSecond + robotCorrection.omegaRadiansPerSecond
+        );
+        // robotSpeed = ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeed, getAngle());
+
+        // if (fieldRelative) {
+        //     robotSpeed = ChassisSpeeds.fromFieldRelativeSpeeds(robotSpeed, targetPose.getRotation());
+        // }
         setStates(kinematics.toSwerveModuleStates(robotSpeed));
     }
 

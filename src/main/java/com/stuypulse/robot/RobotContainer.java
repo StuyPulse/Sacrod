@@ -29,10 +29,12 @@ import com.stuypulse.stuylib.input.gamepads.Xbox;
 import com.stuypulse.stuylib.input.gamepads.keyboard.SimKeyGamepad;
 import com.stuypulse.stuylib.network.SmartNumber;
 
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 
 public class RobotContainer {
 
@@ -65,7 +67,16 @@ public class RobotContainer {
   /****************/
 
   private void configureDefaultCommands() {
-    swerve.setDefaultCommand(new SwerveDriveDrive(swerve, driver));
+    // swerve.setDefaultCommand(new SwerveDriveDrive(swerve, driver));
+    swerve.setDefaultCommand(new RunCommand(
+      () -> {
+        ChassisSpeeds desiredSpeed = new ChassisSpeeds(
+          driver.getLeftY()*4, -driver.getLeftX()*4, -driver.getRightX()*6);
+
+        swerve.setStates(desiredSpeed, true);
+      }, 
+      swerve
+    ));
   }
 
   /***************/

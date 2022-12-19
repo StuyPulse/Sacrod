@@ -147,12 +147,12 @@ public class SL_SimModule extends SwerveModule {
    @Override
    public void simulationPeriodic() {
        // Drive Simulation
-       driveSim.setInput(driveController.getOutput());
+       driveSim.setInput(MathUtil.clamp(driveController.getOutput(), -12, +12));
 
        driveSim.update(Settings.DT);
 
        // Turn Simulation
-       turnSim.setInput(turnController.getOutput());
+       turnSim.setInput(MathUtil.clamp(turnController.getOutput(), -12, +12));
 
        turnSim.update(Settings.DT);
 

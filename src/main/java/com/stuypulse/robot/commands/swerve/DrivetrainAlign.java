@@ -70,7 +70,7 @@ public class DrivetrainAlign extends CommandBase {
             turnController.update(Angle.kZero, camera.getHorizontalOffset())
         );
 
-        swerve.setStates(speeds);
+        // swerve.setStates(speeds);
     }
 
     @Override

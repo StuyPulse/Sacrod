@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 
 public interface Settings {
-    double DT = 0.02;
+    double DT = 0.01;
 
     public static Vector2D vpow(Vector2D vec, double power) {
         return vec.mul(Math.pow(vec.magnitude(), power - 1));

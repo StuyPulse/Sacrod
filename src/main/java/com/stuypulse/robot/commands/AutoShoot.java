@@ -105,10 +105,10 @@ public class AutoShoot extends CommandBase {
     public void execute() {
         shooter.setTargetRPM(getTargetShooterRPM());
 
-        swerve.setStates(
-            speed.get(), 
-            turnController.update(Angle.kZero, getHorizontalOffset())
-        );
+        // swerve.setStates(
+        //     speed.get(), 
+        //     turnController.update(Angle.kZero, getHorizontalOffset())
+        // );
 
         if (shooting.get()) {
             conveyor.setMode(ConveyorMode.SHOOTING);
