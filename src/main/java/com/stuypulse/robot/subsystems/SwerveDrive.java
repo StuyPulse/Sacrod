@@ -21,6 +21,7 @@ import com.stuypulse.stuylib.math.Vector2D;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -162,13 +163,14 @@ public class SwerveDrive extends SubsystemBase {
                     -velocity.x, -omega,
                     getAngle().plus(correction));
 
-            for (int i = 0; i < 8; ++i) {
-                double saturation = getSaturation(kinematics.toSwerveModuleStates(speeds));
+            Pose2d next = new Pose2d(
+                speeds.vxMetersPerSecond * Settings.DT, 
+                speeds.vyMetersPerSecond * Settings.DT, 
+                new Rotation2d(speeds.omegaRadiansPerSecond * Settings.DT));
 
-                speeds = ChassisSpeeds.fromFieldRelativeSpeeds(velocity.y, -velocity.x,
-                        -omega,
-                        getAngle().plus(correction.times(1.0 / saturation)));
-            }
+            Twist2d twist = new Pose2d().log(next);
+
+            speeds = new ChassisSpeeds(twist.dx/Settings.DT, twist.dy/Settings.DT, twist.dtheta/Settings.DT);
 
             setStatesRetainAngle(speeds);
         } else {
