@@ -22,6 +22,11 @@ public class SimCamera extends ICamera {
     }
 
     @Override
+    public double getLatency() {
+        return 0.0;
+    }
+
+    @Override
     public double getDistance() {
         if (!hasTarget()) {
             return 0.0;
@@ -47,6 +52,11 @@ public class SimCamera extends ICamera {
     public boolean hasTarget() {
         return Math.abs(getRawHorizontalOffset().toDegrees()) <= MAX_FOV;
     }
+
+    @Override
+    public Pose2d getRobotPose() {
+        return swerve.getPose();
+    } 
 
     @Override
     public void simulationPeriodic() {

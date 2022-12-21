@@ -2,6 +2,7 @@ package com.stuypulse.robot.subsystems.camera;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
+import org.photonvision.common.hardware.VisionLEDMode;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import com.stuypulse.robot.constants.Settings;
@@ -9,6 +10,16 @@ import com.stuypulse.robot.constants.Settings.Field;
 import com.stuypulse.robot.constants.Settings.Limelight;
 import com.stuypulse.robot.subsystems.ICamera;
 import com.stuypulse.stuylib.math.Angle;
+
+import edu.wpi.first.math.ComputerVisionUtil;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class PVCamera extends ICamera {
 
@@ -36,6 +47,11 @@ public class PVCamera extends ICamera {
     }
 
     @Override
+    public double getLatency() {
+        return result.getLatencyMillis() / 1000.0;
+    }
+
+    @Override
     public boolean hasTarget() {
         return getResult().hasTargets();
     }
@@ -47,11 +63,10 @@ public class PVCamera extends ICamera {
             return 0.0;
         }
         return PhotonUtils.calculateDistanceToTargetMeters(
-            Limelight.CAMERA_HEIGHT,
-            Field.HUB_HEIGHT,
-            Limelight.CAMERA_PITCH.toRadians(),
-            Math.toRadians(getResult().getBestTarget().getPitch())
-        );
+                Limelight.CAMERA_HEIGHT,
+                Field.HUB_HEIGHT,
+                Limelight.CAMERA_PITCH.toRadians(),
+                Math.toRadians(getResult().getBestTarget().getPitch()));
     }
 
     @Override
@@ -63,11 +78,37 @@ public class PVCamera extends ICamera {
         return Angle.fromDegrees(getResult().getBestTarget().getYaw());
     }
 
+    public Pose2d getRobotPose() {
+        Pose3d pose = ComputerVisionUtil.objectToRobotPose(
+                new Pose3d(
+                        0, 0, Units.inchesToMeters(64),
+                        new Rotation3d()),
+                result.getBestTarget().getBestCameraToTarget(),
+                new Transform3d(new Translation3d(Units.inchesToMeters(10), 0, 0),
+                        new Rotation3d(0, /*-Limelight.PITCH*/ 0, 0)));
+        return new Pose2d(pose.getTranslation().getX(), pose.getTranslation().getY(),
+                pose.getRotation().toRotation2d());
+    }
+
     @Override
     public void periodic() {
-        // TODO: ping a network table inside camera to see if it's connected?
+        SmartDashboard.putBoolean("Camera/Has Target", hasTarget());
 
-        forceUpdateResult();
+        if (hasTarget()) {
+            SmartDashboard.putNumber("Camera/Distance", getDistance());
+            SmartDashboard.putNumber("Camera/Angle", getHorizontalOffset().toDegrees());
+
+            Pose2d pose = getRobotPose();
+            SmartDashboard.putNumber("Camera/Pose X", pose.getX());
+            SmartDashboard.putNumber("Camera/Pose Y", pose.getY());
+            SmartDashboard.putNumber("Camera/Pose Angle", pose.getRotation().getDegrees());
+        }
+
+        if (DriverStation.isDisabled()) {
+            camera.setLED(VisionLEDMode.kOff);
+        } else {
+            camera.setLED(VisionLEDMode.kOn);
+        }
     }
-    
+
 }

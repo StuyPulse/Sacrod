@@ -43,7 +43,7 @@ public class RobotContainer {
   public final IClimber climber = IClimber.getInstance();
   public final SwerveDrive swerve = SwerveDrive.getInstance();
 
-  public final ICamera camera = ICamera.getInstance(swerve);
+  public final ICamera camera = ICamera.getInstance();
 
   // Gamepads
   public final Gamepad driver = new BootlegXbox(Ports.Gamepad.DRIVER);

@@ -18,20 +18,23 @@ import com.stuypulse.robot.subsystems.modules.SparkMax_Module;
 import com.stuypulse.robot.subsystems.modules.SwerveModule;
 import com.stuypulse.stuylib.math.Vector2D;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 
 public class SwerveDrive extends SubsystemBase {
 
@@ -69,7 +72,7 @@ public class SwerveDrive extends SubsystemBase {
 
     /** ODOMETRY **/
     private final SwerveDriveKinematics kinematics;
-    private final SwerveDriveOdometry odometry;
+    private final SwerveDrivePoseEstimator poseEstimator;
 
     private final Field2d field;
     private final FieldObject2d[] module2ds;
@@ -84,7 +87,9 @@ public class SwerveDrive extends SubsystemBase {
                 getModuleStream()
                         .map(x -> x.getLocation())
                         .toArray(Translation2d[]::new));
-        odometry = new SwerveDriveOdometry(kinematics, getGyroAngle(), getModulePositions());
+
+        poseEstimator = new SwerveDrivePoseEstimator(kinematics, getGyroAngle(), getModulePositions(), getPose());
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.01, 0.1, Units.degreesToRadians(3)));
 
         field = new Field2d();
         module2ds = new FieldObject2d[modules.length];
@@ -141,7 +146,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void reset(Pose2d pose) {
-        odometry.resetPosition(getGyroAngle(), getModulePositions(), pose);
+        poseEstimator.resetPosition(getGyroAngle(), getModulePositions(), pose);
     }
 
     /** MODULE STATES API **/
@@ -221,12 +226,16 @@ public class SwerveDrive extends SubsystemBase {
 
     /** ODOMETRY API */
 
-    private void updateOdometry() {
-        odometry.update(getGyroAngle(), getModulePositions());
+    private void updatePose() {
+        poseEstimator.update(getGyroAngle(), getModulePositions());
+        ICamera camera = ICamera.getInstance();
+        if (camera.hasTarget()) {
+            poseEstimator.addVisionMeasurement(camera.getRobotPose(), Timer.getFPGATimestamp() - camera.getLatency());
+        }
     }
 
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        return poseEstimator.getEstimatedPosition();
     }
 
     public Rotation2d getAngle() {
@@ -241,7 +250,7 @@ public class SwerveDrive extends SubsystemBase {
 
     @Override
     public void periodic() {
-        updateOdometry();
+        updatePose();
         field.setRobotPose(getPose());
 
         var pose = getPose();

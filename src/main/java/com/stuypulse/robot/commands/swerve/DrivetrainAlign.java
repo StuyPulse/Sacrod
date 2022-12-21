@@ -20,13 +20,13 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DrivetrainAlign extends CommandBase {
-    
+
     private final ICamera camera;
     private final SwerveDrive swerve;
-    
+
     private final AngleController turnController;
     private final IFuser angleError;
-    
+
     private final Controller distanceController;
 
     private final BStream ready;
@@ -35,22 +35,20 @@ public class DrivetrainAlign extends CommandBase {
         this.camera = camera;
         this.swerve = swerve;
 
-        angleError = 
-                new IFuser(
-                    Auton.FUSION_FILTER,
-                    () -> camera.getHorizontalOffset().toDegrees(),
-                    () -> swerve.getAngle().getDegrees()
-                );
-        
+        angleError = new IFuser(
+                Auton.FUSION_FILTER,
+                () -> camera.getHorizontalOffset().toDegrees(),
+                () -> swerve.getAngle().getDegrees());
+
         turnController = new AnglePIDController(Auton.kP, Auton.kI, Auton.kD)
-            .setOutputFilter(x -> -x); // reversed b/c camera on back of robot 
-        
+                .setOutputFilter(x -> -x); // reversed b/c camera on back of robot
+
         distanceController = new PIDController(Auton.DISTkP, Auton.DISTkI, Auton.DISTkD);
-            
+
         ready = BStream.create(() -> turnController.isDoneDegrees(Scoring.ACCEPTABLE_TURN_ERROR.get()))
-            .and(() -> distanceController.isDone(Scoring.ACCEPTABLE_DISTANCE_ERROR.get()))
-            .filtered(new BDebounce.Rising(Scoring.READY_TIME));
-        
+                .and(() -> distanceController.isDone(Scoring.ACCEPTABLE_DISTANCE_ERROR.get()))
+                .filtered(new BDebounce.Rising(Scoring.READY_TIME));
+
         addRequirements(swerve, camera);
     }
 
@@ -62,13 +60,12 @@ public class DrivetrainAlign extends CommandBase {
     @Override
     public void execute() {
         var translation = new Vector2D(Field.HUB.minus(swerve.getPose().getTranslation()))
-            .clamp(Driver.MAX_TELEOP_SPEED.get());
-        
+                .clamp(Driver.MAX_TELEOP_SPEED.get());
+
         var speeds = new ChassisSpeeds(
-            translation.x,
-            translation.y,
-            turnController.update(Angle.kZero, camera.getHorizontalOffset())
-        );
+                translation.x,
+                translation.y,
+                turnController.update(Angle.kZero, camera.getHorizontalOffset()));
 
         swerve.setStates(speeds);
     }

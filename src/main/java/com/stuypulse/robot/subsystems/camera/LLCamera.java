@@ -6,6 +6,7 @@ import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /* todo: make ICamera, SimCamera */
@@ -20,6 +21,10 @@ public class LLCamera extends ICamera {
             edu.wpi.first.net.PortForwarder.add(port, "limelight.local", port);
         }
         CameraServer.startAutomaticCapture();
+	}
+
+	public double getLatency() {
+		return limelight.getLatencyMs() / 1000.0;
 	}
 
 	public Angle getHorizontalOffset() {
@@ -58,6 +63,10 @@ public class LLCamera extends ICamera {
     public boolean hasTarget() {
         return limelight.getValidTarget();
     }
+
+	public Pose2d getRobotPose() {
+		return new Pose2d();
+	}
 
 	@Override
 	public void periodic() {
