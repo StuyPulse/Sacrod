@@ -7,6 +7,7 @@ import com.stuypulse.stuylib.network.limelight.Limelight;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /* todo: make ICamera, SimCamera */
@@ -18,7 +19,7 @@ public class LLCamera extends ICamera {
 		limelight = Limelight.getInstance(); 
 
 		for (int port : Settings.Limelight.PORTS) {
-            edu.wpi.first.net.PortForwarder.add(port, "limelight.local", port);
+            PortForwarder.add(port, "limelight.local", port);
         }
         CameraServer.startAutomaticCapture();
 	}

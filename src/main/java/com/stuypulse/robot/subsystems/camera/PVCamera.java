@@ -18,6 +18,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -29,6 +30,8 @@ public class PVCamera extends ICamera {
     public PVCamera(String cameraName) {
         camera = new PhotonCamera(cameraName);
         result = null;
+
+        PortForwarder.add(5800, "photonvision.local", 5800);
     }
 
     public PVCamera() {
