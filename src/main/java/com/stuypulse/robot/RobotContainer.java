@@ -18,6 +18,7 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Scoring;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.shooter.*;
 import com.stuypulse.robot.util.BootlegXbox;
@@ -75,7 +76,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driver.getTopButton().onTrue(new SwerveDriveHome(swerve));
     driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
-    driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, swerve));
+    driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, swerve, Scoring.PRIMARY_DISTANCE));
 
     operator.getLeftTriggerButton()
       .whileTrue(new IntakeDeacquire(intake))

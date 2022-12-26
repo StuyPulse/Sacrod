@@ -11,11 +11,12 @@ import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.math.Angle;
-import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.streams.IFuser;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -28,10 +29,11 @@ public class DrivetrainAlign extends CommandBase {
     private final IFuser angleError;
 
     private final Controller distanceController;
+    private final Number targetDistance;
 
     private final BStream ready;
 
-    public DrivetrainAlign(ICamera camera, SwerveDrive swerve) {
+    public DrivetrainAlign(ICamera camera, SwerveDrive swerve, Number targetDistance) {
         this.camera = camera;
         this.swerve = swerve;
 
@@ -44,6 +46,8 @@ public class DrivetrainAlign extends CommandBase {
                 .setOutputFilter(x -> -x); // reversed b/c camera on back of robot
 
         distanceController = new PIDController(Auton.DISTkP, Auton.DISTkI, Auton.DISTkD);
+
+        this.targetDistance = targetDistance;
 
         ready = BStream.create(() -> turnController.isDoneDegrees(Scoring.ACCEPTABLE_TURN_ERROR.get()))
                 .and(() -> distanceController.isDone(Scoring.ACCEPTABLE_DISTANCE_ERROR.get()))
@@ -59,12 +63,22 @@ public class DrivetrainAlign extends CommandBase {
 
     @Override
     public void execute() {
-        var translation = new Vector2D(Field.HUB.minus(swerve.getPose().getTranslation()))
-                .clamp(Driver.MAX_TELEOP_SPEED.get());
+        var toHub = Field.HUB.minus(swerve.getTranslation());
+        double distance = toHub.getDistance(new Translation2d());
+        var angle = toHub.getAngle();
+
+        Translation2d translation = swerve.getTranslation().minus(
+            new Translation2d(targetDistance.doubleValue(), angle));
+
+        translation = translation.div(translation.getNorm())
+            .times(MathUtil.clamp(
+                distanceController.update(targetDistance.doubleValue(), distance),
+                -Driver.MAX_TELEOP_SPEED.get(),
+                +Driver.MAX_TELEOP_SPEED.get()));
 
         var speeds = new ChassisSpeeds(
-                translation.x,
-                translation.y,
+                translation.getX(),
+                translation.getY(),
                 turnController.update(Angle.kZero, camera.getHorizontalOffset()));
 
         swerve.setStates(speeds);
