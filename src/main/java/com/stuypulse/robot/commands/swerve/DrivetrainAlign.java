@@ -67,8 +67,9 @@ public class DrivetrainAlign extends CommandBase {
         double distance = toHub.getDistance(new Translation2d());
         var angle = toHub.getAngle();
 
-        Translation2d translation = swerve.getTranslation().minus(
-            new Translation2d(targetDistance.doubleValue(), angle));
+        Translation2d target = new Translation2d(targetDistance.doubleValue(), angle)
+            .plus(Field.HUB);
+        Translation2d translation = swerve.getTranslation().minus(target);
 
         translation = translation.div(translation.getNorm())
             .times(MathUtil.clamp(
