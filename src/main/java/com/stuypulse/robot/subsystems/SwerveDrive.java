@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 import com.kauailabs.navx.frc.AHRS;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.constants.Ports.Swerve.*;
+import static com.stuypulse.robot.constants.Ports.Swerve.*;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontRight;
 import com.stuypulse.robot.constants.Settings.Swerve.BackLeft;
@@ -14,41 +14,58 @@ import com.stuypulse.robot.constants.Settings.Swerve.BackRight;
 import com.stuypulse.robot.constants.Settings.Swerve.Chassis;
 import com.stuypulse.robot.subsystems.modules.SL_SimModule;
 import com.stuypulse.robot.subsystems.modules.SL_SwerveModule;
+import com.stuypulse.robot.subsystems.modules.SparkMax_Module;
 import com.stuypulse.robot.subsystems.modules.SwerveModule;
 import com.stuypulse.stuylib.math.Vector2D;
 
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.Timer;
 
 public class SwerveDrive extends SubsystemBase {
 
+    private static SwerveDrive instance = null;
+
     public static SwerveDrive getInstance() {
-        if (RobotBase.isReal()) {
-            return new SwerveDrive(new SwerveModule[] {
-                new SL_SwerveModule(FrontRight.ID, FrontRight.MODULE_OFFSET, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER, FrontRight.ABSOLUTE_OFFSET, Ports.Swerve.FrontRight.DRIVE),
-                new SL_SwerveModule(FrontLeft.ID, FrontLeft.MODULE_OFFSET, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER, FrontLeft.ABSOLUTE_OFFSET, Ports.Swerve.FrontLeft.DRIVE),
-                new SL_SwerveModule(BackLeft.ID, BackLeft.MODULE_OFFSET, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER, BackLeft.ABSOLUTE_OFFSET, Ports.Swerve.BackLeft.DRIVE),
-                new SL_SwerveModule(BackRight.ID, BackRight.MODULE_OFFSET, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER, BackRight.ABSOLUTE_OFFSET, Ports.Swerve.BackRight.DRIVE)
-            });
-        } else {
-            return new SwerveDrive(new SwerveModule[] {
-                new SL_SimModule(FrontRight.ID, FrontRight.MODULE_OFFSET),
-                new SL_SimModule(FrontLeft.ID, FrontLeft.MODULE_OFFSET),
-                new SL_SimModule(BackLeft.ID, BackLeft.MODULE_OFFSET),
-                new SL_SimModule(BackRight.ID, BackRight.MODULE_OFFSET)
-            });
+        if (instance == null) {
+            if (RobotBase.isReal()) {
+                instance = new SwerveDrive(new SwerveModule[] {
+                    new SL_SwerveModule(FrontRight.ID, FrontRight.MODULE_OFFSET, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER, FrontRight.ABSOLUTE_OFFSET, Ports.Swerve.FrontRight.DRIVE),
+                    new SL_SwerveModule(FrontLeft.ID, FrontLeft.MODULE_OFFSET, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER, FrontLeft.ABSOLUTE_OFFSET, Ports.Swerve.FrontLeft.DRIVE),
+                    new SL_SwerveModule(BackLeft.ID, BackLeft.MODULE_OFFSET, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER, BackLeft.ABSOLUTE_OFFSET, Ports.Swerve.BackLeft.DRIVE),
+                    new SL_SwerveModule(BackRight.ID, BackRight.MODULE_OFFSET, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER, BackRight.ABSOLUTE_OFFSET, Ports.Swerve.BackRight.DRIVE)
+                });
+    
+                // instance = new SwerveDrive(new SwerveModule[] {
+                //     new SparkMax_Module(FrontRight.ID, FrontRight.MODULE_OFFSET, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER, FrontRight.ABSOLUTE_OFFSET.getRotation2d(), Ports.Swerve.FrontRight.DRIVE),
+                //     new SparkMax_Module(FrontLeft.ID, FrontLeft.MODULE_OFFSET, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER, FrontLeft.ABSOLUTE_OFFSET.getRotation2d(), Ports.Swerve.FrontLeft.DRIVE),
+                //     new SparkMax_Module(BackLeft.ID, BackLeft.MODULE_OFFSET, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER, BackLeft.ABSOLUTE_OFFSET.getRotation2d(), Ports.Swerve.BackLeft.DRIVE),
+                //     new SparkMax_Module(BackRight.ID, BackRight.MODULE_OFFSET, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER, BackRight.ABSOLUTE_OFFSET.getRotation2d(), Ports.Swerve.BackRight.DRIVE)
+                // });
+            } else {
+                instance = new SwerveDrive(new SwerveModule[] {
+                    new SL_SimModule(FrontRight.ID, FrontRight.MODULE_OFFSET),
+                    new SL_SimModule(FrontLeft.ID, FrontLeft.MODULE_OFFSET),
+                    new SL_SimModule(BackLeft.ID, BackLeft.MODULE_OFFSET),
+                    new SL_SimModule(BackRight.ID, BackRight.MODULE_OFFSET)
+                });
+            }
         }
+        return instance;
     }
 
 
@@ -60,7 +77,7 @@ public class SwerveDrive extends SubsystemBase {
 
     /** ODOMETRY **/
     private final SwerveDriveKinematics kinematics;
-    private final SwerveDriveOdometry odometry;
+    private final SwerveDrivePoseEstimator poseEstimator;
 
     private final Field2d field;
     private final FieldObject2d[] module2ds;
@@ -75,7 +92,9 @@ public class SwerveDrive extends SubsystemBase {
                 getModuleStream()
                         .map(x -> x.getLocation())
                         .toArray(Translation2d[]::new));
-        odometry = new SwerveDriveOdometry(kinematics, getGyroAngle());
+
+        poseEstimator = new SwerveDrivePoseEstimator(kinematics, getGyroAngle(), getModulePositions(), new Pose2d());
+        poseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(0.01, 0.1, Units.degreesToRadians(3)));
 
         field = new Field2d();
         module2ds = new FieldObject2d[modules.length];
@@ -127,8 +146,12 @@ public class SwerveDrive extends SubsystemBase {
         return getModuleStream().map(x -> x.getState()).toArray(SwerveModuleState[]::new);
     }
 
+    public SwerveModulePosition[] getModulePositions() {
+        return getModuleStream().map(x -> x.getModulePosition()).toArray(SwerveModulePosition[]::new);
+    }
+
     public void reset(Pose2d pose) {
-        odometry.resetPosition(pose, getGyroAngle());
+        poseEstimator.resetPosition(getGyroAngle(), getModulePositions(), pose);
     }
 
     /** MODULE STATES API **/
@@ -157,7 +180,8 @@ public class SwerveDrive extends SubsystemBase {
                         getAngle().plus(correction.times(1.0 / saturation)));
             }
 
-            setStatesRetainAngle(speeds);
+            // setStatesRetainAngle(speeds);
+            setStates(speeds);
         } else {
             setStates(new ChassisSpeeds(velocity.y, -velocity.x, -omega));
         }
@@ -167,7 +191,6 @@ public class SwerveDrive extends SubsystemBase {
         var moduleStates = kinematics.toSwerveModuleStates(robotSpeed);
         SwerveDriveKinematics.desaturateWheelSpeeds(moduleStates, Chassis.MAX_SPEED);
         for (int i = 0; i < modules.length; ++i) {
-            // TODO: put this code in SwerveModule.setTargetState
             var currentState = modules[i].getState();
             if (Math.abs(moduleStates[i].speedMetersPerSecond) < Settings.Swerve.MIN_MODULE_VELOCITY) {
                 modules[i].setTargetState(new SwerveModuleState(
@@ -209,12 +232,16 @@ public class SwerveDrive extends SubsystemBase {
 
     /** ODOMETRY API */
 
-    private void updateOdometry() {
-        odometry.update(getGyroAngle(), getModuleStates());
+    private void updatePose() {
+        poseEstimator.update(getGyroAngle(), getModulePositions());
+        ICamera camera = ICamera.getInstance();
+        if (camera.hasTarget()) {
+            poseEstimator.addVisionMeasurement(camera.getRobotPose(), Timer.getFPGATimestamp() - camera.getLatency());
+        }
     }
 
     public Pose2d getPose() {
-        return odometry.getPoseMeters();
+        return poseEstimator.getEstimatedPosition();
     }
 
     public Rotation2d getAngle() {
@@ -229,7 +256,7 @@ public class SwerveDrive extends SubsystemBase {
 
     @Override
     public void periodic() {
-        updateOdometry();
+        updatePose();
         field.setRobotPose(getPose());
 
         var pose = getPose();

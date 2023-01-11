@@ -18,6 +18,8 @@ import com.stuypulse.stuylib.network.SmartAngle;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -68,6 +70,7 @@ public class SL_SwerveModule extends SwerveModule {
         driveMotor = new CANSparkMax(driveCANId, MotorType.kBrushless);
         driveEncoder = driveMotor.getEncoder();
         driveEncoder.setVelocityConversionFactor(Encoder.Drive.VELOCITY_CONVERSION);
+        driveEncoder.setPositionConversionFactor(Encoder.Drive.POSITION_CONVERSION);
         Motors.Swerve.Drive.configure(driveMotor);
 
         driveController = new PIDController(Drive.kP, Drive.kI, Drive.kD)
@@ -93,6 +96,10 @@ public class SL_SwerveModule extends SwerveModule {
         return driveEncoder.getVelocity();
     }
 
+    private double getDistance() {
+        return driveEncoder.getPosition();
+    }
+
     private Rotation2d getAbsolutePosition() {
         return new Rotation2d(MathUtil.interpolate(-Math.PI, +Math.PI, absoluteEncoder.getAbsolutePosition()));
     }
@@ -107,19 +114,32 @@ public class SL_SwerveModule extends SwerveModule {
     }
 
     @Override
+    public SwerveModulePosition getModulePosition() {
+        return new SwerveModulePosition(getDistance(), getRotation2d());
+    }
+
+    @Override
+    public void reset() {
+        driveEncoder.setPosition(0);
+    }
+
+    @Override
     public void periodic() {
-        turnMotor.setVoltage(turnController.update(
-                Angle.fromRotation2d(targetState.angle),
-                Angle.fromRotation2d(getRotation2d())));
+        // if (targetState.speedMetersPerSecond > Units.inchesToMeters(4)) {
+            turnMotor.setVoltage(turnController.update(
+                    Angle.fromRotation2d(targetState.angle),
+                    Angle.fromRotation2d(getRotation2d())));
+            driveMotor.setVoltage(driveController.update(targetState.speedMetersPerSecond, getSpeed()));
+        // } else {
+        //     turnMotor.stopMotor();
+        //     driveMotor.stopMotor();
+        // }
 
         SmartDashboard.putNumber(id + "/Target Angle", targetState.angle.getDegrees());
         SmartDashboard.putNumber(id + "/Angle", getRotation2d().getDegrees());
         SmartDashboard.putNumber(id + "/Angle Error", turnController.getError().toDegrees());
         SmartDashboard.putNumber(id + "/Angle Voltage", turnController.getOutput());
         SmartDashboard.putNumber(id + "/Absolute Angle", getAbsolutePosition().getDegrees());
-
-        driveMotor.setVoltage(Math.abs(turnController.getError().cos()) * driveController.update(
-                targetState.speedMetersPerSecond, getSpeed()));
 
         SmartDashboard.putNumber(id + "/Target Speed", targetState.speedMetersPerSecond);
         SmartDashboard.putNumber(id + "/Speed", getSpeed());

@@ -5,6 +5,8 @@
 
 package com.stuypulse.robot.constants;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.auto.PIDConstants;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
@@ -67,6 +69,7 @@ public interface Settings {
         SmartNumber ACCEPTABLE_RPM = new SmartNumber("Scoring/Acceptable RPM Error", 200);
         SmartNumber ACCEPTABLE_VELOCITY = new SmartNumber("Scoring/Acceptable Shot Velocity", Units.inchesToMeters(9));
         SmartNumber ACCEPTABLE_TURN_ERROR = new SmartNumber("Scoring/Acceptable Turn Error (deg)", 7.5);
+        SmartNumber ACCEPTABLE_DISTANCE_ERROR = new SmartNumber("Scoring/Acceptable Distance Error (m)", Units.inchesToMeters(4));
         SmartNumber READY_TIME = new SmartNumber("Scoring/Ready Time", 0.2);
 
         // TODO: make shooting and alignment command specifically for testing
@@ -80,6 +83,18 @@ public interface Settings {
         
             SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auto Shot/Fusion RC", 0.3);
             SmartNumber MAX_SPEED = new SmartNumber("Scoring/Auto Shot/Speed", 2);
+        }
+
+        public interface Auton {
+            SmartNumber kP = new SmartNumber("Scoring/Auton/Turn kP", 1);
+            SmartNumber kI = new SmartNumber("Scoring/Auton/Turn kI", 0.0);
+            SmartNumber kD = new SmartNumber("Scoring/Auton/Turn kD", 0.5);
+
+            SmartNumber DISTkP = new SmartNumber("Scoring/Auton/Distance kP", 3.0);
+            SmartNumber DISTkI = new SmartNumber("Scoring/Auton/Distance kI", 0.0);
+            SmartNumber DISTkD = new SmartNumber("Scoring/Auton/Distance kD", 0.2);
+        
+            SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auton/Fusion RC", 0.3);
         }
     }
 
@@ -208,7 +223,7 @@ public interface Settings {
             SmartNumber kV = new SmartNumber("Swerve/Drive/kV", 2.7274);
             SmartNumber kA = new SmartNumber("Swerve/Drive/kA", 0.456);
 
-            SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 1.0);
+            SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 1.3);
             SmartNumber kI = new SmartNumber("Swerve/Drive/kI", 0.0);
             SmartNumber kD = new SmartNumber("Swerve/Drive/kD", 0.0);
         }
@@ -270,6 +285,14 @@ public interface Settings {
                 double POSITION_CONVERSION = GEAR_RATIO * 2 * Math.PI;
                 double VELOCITY_CONVERSION = POSITION_CONVERSION / 60.0;
             }
+        }
+
+        public interface Motion {
+            PathConstraints CONSTRAINTS = new PathConstraints(3.5, 2);
+
+            PIDConstants XY = new PIDConstants(2, 0, 0.5);
+            PIDConstants THETA = new PIDConstants(1, 0, 0.2);
+
         }
     }
 }

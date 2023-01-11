@@ -7,17 +7,19 @@ package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.AutoShoot;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.MylesAuto;
 import com.stuypulse.robot.commands.climber.*;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
+import com.stuypulse.robot.commands.swerve.DrivetrainAlign;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Scoring;
 import com.stuypulse.robot.subsystems.*;
-import com.stuypulse.robot.subsystems.camera.Camera;
 import com.stuypulse.robot.subsystems.shooter.*;
 import com.stuypulse.robot.util.BootlegXbox;
 import com.stuypulse.robot.util.ConveyorMode;
@@ -72,29 +74,30 @@ public class RobotContainer {
   /***************/
 
   private void configureButtonBindings() {
-    driver.getTopButton().whenPressed(new SwerveDriveHome(swerve));
-    driver.getBottomButton().whileHeld(new AutoShoot(this, driver));
+    driver.getTopButton().onTrue(new SwerveDriveHome(swerve));
+    driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
+    driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, swerve, Scoring.PRIMARY_DISTANCE));
 
     operator.getLeftTriggerButton()
-      .whileHeld(new IntakeDeacquire(intake))
-      .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.REVERSE));
+      .whileTrue(new IntakeDeacquire(intake))
+      .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.REVERSE));
 
     operator.getRightTriggerButton()
-      .whileHeld(new IntakeAcquire(intake))
-      .whenPressed(new IntakeExtend(intake))
-      .whenReleased(new IntakeRetract(intake));
+      .whileTrue(new IntakeAcquire(intake))
+      .onTrue(new IntakeExtend(intake))
+      .onFalse(new IntakeRetract(intake));
 
     operator.getTopButton()
-      .whenPressed(new ConveyorSetMode(conveyor, ConveyorMode.INDEXING));  
+      .onTrue(new ConveyorSetMode(conveyor, ConveyorMode.INDEXING));  
     operator.getRightButton()
-      .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.SHOOTING));
+      .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.SHOOTING));
     operator.getLeftButton()
-      .whileHeld(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
+      .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
 
-    operator.getDPadUp().whenPressed(new ShooterStop(shooter));
-    operator.getDPadRight().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.PRIMARY_RPM));
-    operator.getDPadLeft().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.SECONDARY_RPM));
-    operator.getDPadDown().whenPressed(new ShooterSetRPM(shooter, Settings.Scoring.TUNING_RPM));
+    operator.getDPadUp().onTrue(new ShooterStop(shooter));
+    operator.getDPadRight().onTrue(new ShooterSetRPM(shooter, Settings.Scoring.PRIMARY_RPM));
+    operator.getDPadLeft().onTrue(new ShooterSetRPM(shooter, Settings.Scoring.SECONDARY_RPM));
+    operator.getDPadDown().onTrue(new ShooterSetRPM(shooter, Settings.Scoring.TUNING_RPM));
   }
 
   /**************/
@@ -103,6 +106,7 @@ public class RobotContainer {
 
   public void configureAutons() {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
+    autonChooser.addOption("Myles", new MylesAuto(this, "myles"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }

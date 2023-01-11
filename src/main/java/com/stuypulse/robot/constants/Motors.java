@@ -28,25 +28,25 @@ public interface Motors {
     }
 
     public interface Shooter {
-        
+
         CANSparkMaxConfig ShooterMotorConfig = new CANSparkMaxConfig(false, IdleMode.kCoast, 80);
         CANSparkMaxConfig ShooterFollowerConfig = new CANSparkMaxConfig(true, IdleMode.kCoast, 80);
 
         CANSparkMaxConfig FeederMotorConfig = new CANSparkMaxConfig(false, IdleMode.kCoast, 80);
-        
+
     }
 
-    public interface Conveyor{
-        VictorSPXConfig MotorConfig = new VictorSPXConfig(true, NeutralMode.Brake); 
+    public interface Conveyor {
+        VictorSPXConfig MotorConfig = new VictorSPXConfig(true, NeutralMode.Brake);
     }
-    
+
     public interface Swerve {
         CANSparkMaxConfig Drive = new CANSparkMaxConfig(false, IdleMode.kBrake, 40, 0.0);
         CANSparkMaxConfig Turn = new CANSparkMaxConfig(false, IdleMode.kBrake, 20, 0.0);
-    }    
-    
+    }
+
     TalonSRXConfig CLIMBER = new TalonSRXConfig(false, NeutralMode.Brake, 60);
-    
+
     /** Classes to store all of the values a motor needs */
 
     public static class TalonSRXConfig {
@@ -141,7 +141,7 @@ public interface Motors {
             motor.setSmartCurrentLimit(CURRENT_LIMIT_AMPS);
             motor.setOpenLoopRampRate(OPEN_LOOP_RAMP_RATE);
             motor.burnFlash();
-         }
-          
-     }
+        }
+
+    }
 }
