@@ -11,9 +11,8 @@ import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
 import com.stuypulse.stuylib.control.feedback.PIDController;
-import com.stuypulse.stuylib.control.feedforward.Feedforward;
+import com.stuypulse.stuylib.control.feedforward.MotorFeedforward;
 import com.stuypulse.stuylib.math.Angle;
-import com.stuypulse.stuylib.network.SmartAngle;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -37,7 +36,7 @@ public class SL_SwerveModule extends SwerveModule {
 
     private final CANSparkMax turnMotor;
     private final DutyCycleEncoder absoluteEncoder;
-    private final SmartAngle angleOffset;
+    private final double angleOffset;
 
     private final AngleController turnController;
 
@@ -48,7 +47,7 @@ public class SL_SwerveModule extends SwerveModule {
     private final Controller driveController;
 
     public SL_SwerveModule(String id, Translation2d location, int turnCANId, int absoluteEncoderChannel,
-            SmartAngle angleOffset, int driveCANId) {
+            double angleOffset, int driveCANId) {
 
         // module data
         this.id = id;
@@ -74,7 +73,7 @@ public class SL_SwerveModule extends SwerveModule {
         Motors.Swerve.Drive.configure(driveMotor);
 
         driveController = new PIDController(Drive.kP, Drive.kI, Drive.kD)
-                .add(new Feedforward.Motor(Drive.kS, Drive.kV, Drive.kA).velocity());
+                .add(new MotorFeedforward(Drive.kS, Drive.kV, Drive.kA).velocity());
     }
 
     @Override
@@ -105,7 +104,7 @@ public class SL_SwerveModule extends SwerveModule {
     }
 
     private Rotation2d getRotation2d() {
-        return getAbsolutePosition().minus(angleOffset.getRotation2d());
+        return getAbsolutePosition().minus(Rotation2d.fromDegrees(angleOffset));
     }
 
     @Override
