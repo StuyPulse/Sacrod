@@ -39,9 +39,9 @@ public interface Settings {
 
     public interface Driver {
         SmartNumber DEADBAND = new SmartNumber("Driver Settings/Deadband", 0.05);
-        SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 4.2);
-        SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 6.1);
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 5);
+        SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 2);
+        SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 3);
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 2);
 
         public interface Drive {
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.2);
@@ -57,10 +57,10 @@ public interface Settings {
 
     public interface Scoring {
         SmartNumber PRIMARY_DISTANCE = new SmartNumber("Scoring/Primary Distance", 3.71);
-        SmartNumber PRIMARY_RPM = new SmartNumber("Scoring/Primary RPM", 1750);
+        SmartNumber PRIMARY_RPM = new SmartNumber("Scoring/Primary RPM", 750);
         
         SmartNumber SECONDARY_DISTANCE = new SmartNumber("Scoring/Secondary Distance", 4.55);
-        SmartNumber SECONDARY_RPM = new SmartNumber("Scoring/Secondary RPM", 2000);
+        SmartNumber SECONDARY_RPM = new SmartNumber("Scoring/Secondary RPM", 1000);
 
         Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
             new Vector2D(PRIMARY_DISTANCE.get(), PRIMARY_RPM.get()),
@@ -71,7 +71,7 @@ public interface Settings {
         SmartNumber ACCEPTABLE_VELOCITY = new SmartNumber("Scoring/Acceptable Shot Velocity", Units.inchesToMeters(9));
         SmartNumber ACCEPTABLE_TURN_ERROR = new SmartNumber("Scoring/Acceptable Turn Error (deg)", 7.5);
         SmartNumber ACCEPTABLE_DISTANCE_ERROR = new SmartNumber("Scoring/Acceptable Distance Error (m)", Units.inchesToMeters(4));
-        SmartNumber READY_TIME = new SmartNumber("Scoring/Ready Time", 0.2);
+        SmartNumber READY_TIME = new SmartNumber("Scoring/Ready Time", 0.5);
 
         // TODO: make shooting and alignment command specifically for testing
         SmartNumber TUNING_RPM = new SmartNumber("Scoring/Tuning RPM", 0.0);
@@ -117,7 +117,7 @@ public interface Settings {
         SmartNumber ERROR = new SmartNumber("Climber/Error", 0.01);
         SmartNumber DEADBAND = new SmartNumber("Climber/Deadband", 0.05);
         SmartNumber RC = new SmartNumber("Climber/RC", 0.05);
-        SmartNumber MAX_VELOCITY = new SmartNumber("Climber/Max Velocity", 1);
+        SmartNumber MAX_VELOCITY = new SmartNumber("Climber/Max Velocity", 0.75);
 
         public interface Feedback {
             SmartNumber kP = new SmartNumber("Climber/P", 0.5);
@@ -157,8 +157,8 @@ public interface Settings {
         SmartNumber EXTEND_ANGLE = new SmartNumber("Intake/Extend Angle", 99);
         SmartNumber RETRACT_ANGLE = new SmartNumber("Intake/Retract Angle", 0);
 
-        SmartNumber ACQUIRE_SPEED = new SmartNumber("Intake/Acquire Speed", 1);
-        SmartNumber DEACQUIRE_SPEED = new SmartNumber("Intake/Deacquire Speed", -1);
+        SmartNumber ACQUIRE_SPEED = new SmartNumber("Intake/Acquire Speed", 0.75);
+        SmartNumber DEACQUIRE_SPEED = new SmartNumber("Intake/Deacquire Speed", -0.75);
 
         double GEAR_RATIO = 28.0 / 1.0;
 
