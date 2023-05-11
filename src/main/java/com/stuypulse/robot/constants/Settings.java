@@ -41,9 +41,10 @@ public interface Settings {
         SmartNumber DEADBAND = new SmartNumber("Driver Settings/Deadband", 0.05);
         SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 4.2);
         SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 6.1);
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 5);
 
         public interface Drive {
-            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.02);
+            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.2);
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
         }
 
@@ -82,6 +83,19 @@ public interface Settings {
             SmartNumber kD = new SmartNumber("Scoring/Auto Shot/kD", 0.2);
         
             SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auto Shot/Fusion RC", 0.3);
+            SmartNumber MAX_SPEED = new SmartNumber("Scoring/Auto Shot/Speed", 2);
+        }
+
+        public interface Auton {
+            SmartNumber kP = new SmartNumber("Scoring/Auton/Turn kP", 1);
+            SmartNumber kI = new SmartNumber("Scoring/Auton/Turn kI", 0.0);
+            SmartNumber kD = new SmartNumber("Scoring/Auton/Turn kD", 0.5);
+
+            SmartNumber DISTkP = new SmartNumber("Scoring/Auton/Distance kP", 3.0);
+            SmartNumber DISTkI = new SmartNumber("Scoring/Auton/Distance kI", 0.0);
+            SmartNumber DISTkD = new SmartNumber("Scoring/Auton/Distance kD", 0.2);
+        
+            SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auton/Fusion RC", 0.3);
         }
 
         public interface Auton {
