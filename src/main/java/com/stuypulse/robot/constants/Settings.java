@@ -97,18 +97,6 @@ public interface Settings {
         
             SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auton/Fusion RC", 0.3);
         }
-
-        public interface Auton {
-            SmartNumber kP = new SmartNumber("Scoring/Auton/Turn kP", 1);
-            SmartNumber kI = new SmartNumber("Scoring/Auton/Turn kI", 0.0);
-            SmartNumber kD = new SmartNumber("Scoring/Auton/Turn kD", 0.5);
-
-            SmartNumber DISTkP = new SmartNumber("Scoring/Auton/Distance kP", 3.0);
-            SmartNumber DISTkI = new SmartNumber("Scoring/Auton/Distance kI", 0.0);
-            SmartNumber DISTkD = new SmartNumber("Scoring/Auton/Distance kD", 0.2);
-        
-            SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auton/Fusion RC", 0.3);
-        }
     }
 
     public interface Limelight {
