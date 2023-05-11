@@ -10,7 +10,7 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.IShooter;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
-import com.stuypulse.stuylib.control.feedforward.Feedforward;
+import com.stuypulse.stuylib.control.feedforward.MotorFeedforward;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,9 +38,9 @@ public class SimShooter extends IShooter{
         targetRPM = new SmartNumber("Shooter/Target RPM", 0.0);
 
         shooterController = new PIDController(ShooterPID.kP, ShooterPID.kI, ShooterPID.kD)
-            .add(new Feedforward.Flywheel(ShooterFF.kS, ShooterFF.kV, ShooterFF.kA ).velocity());
+            .add(new MotorFeedforward(ShooterFF.kS, ShooterFF.kV, ShooterFF.kA ).velocity());
         feederController = new PIDController(FeederPID.kP, FeederPID.kI, FeederPID.kD)
-            .add(new Feedforward.Flywheel(FeederFF.kS, FeederFF.kV, FeederFF.kA).velocity());
+            .add(new MotorFeedforward(FeederFF.kS, FeederFF.kV, FeederFF.kA).velocity());
     }
 
     public void setTargetRPM(double targetRPM){
