@@ -6,8 +6,6 @@
 package com.stuypulse.robot.constants;
 
 import com.stuypulse.robot.constants.Settings.Swerve.Chassis;
-import com.stuypulse.stuylib.math.Angle;
-import com.stuypulse.stuylib.network.SmartAngle;
 
 import edu.wpi.first.math.geometry.Translation2d;
 

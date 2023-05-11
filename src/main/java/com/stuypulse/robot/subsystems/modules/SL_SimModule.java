@@ -7,7 +7,7 @@ import com.stuypulse.robot.constants.Settings.Swerve.Turn;
 // import com.stuypulse.robot.util.DelayFilter;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.*;
-import com.stuypulse.stuylib.control.feedforward.Feedforward;
+import com.stuypulse.stuylib.control.feedforward.MotorFeedforward;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.control.angle.AngleController;
 import com.stuypulse.stuylib.control.angle.feedback.AnglePIDController;
@@ -81,7 +81,7 @@ public class SL_SimModule extends SwerveModule {
        driveSim = new LinearSystemSim<>(identifyVelocityPositionSystem(Drive.kV.get(), Drive.kA.get()));
 
        driveController = new PIDController(Drive.kP, Drive.kI, Drive.kD)
-           .add(new Feedforward.Motor(Drive.kS, Drive.kV, Drive.kA).velocity());
+           .add(new MotorFeedforward(Drive.kS, Drive.kV, Drive.kA).velocity());
        
    }
 
