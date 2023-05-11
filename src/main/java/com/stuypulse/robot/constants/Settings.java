@@ -11,7 +11,7 @@ import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
 import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
-import com.stuypulse.stuylib.network.SmartNumber;
+import com.stuypulse.stuylib.network.SmartAngle;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -57,10 +57,10 @@ public interface Settings {
 
     public interface Scoring {
         SmartNumber PRIMARY_DISTANCE = new SmartNumber("Scoring/Primary Distance", 3.71);
-        SmartNumber PRIMARY_RPM = new SmartNumber("Scoring/Primary RPM", 1800); // 1750
+        SmartNumber PRIMARY_RPM = new SmartNumber("Scoring/Primary RPM", 1750);
         
         SmartNumber SECONDARY_DISTANCE = new SmartNumber("Scoring/Secondary Distance", 4.55);
-        SmartNumber SECONDARY_RPM = new SmartNumber("Scoring/Secondary RPM", 500); // 2000
+        SmartNumber SECONDARY_RPM = new SmartNumber("Scoring/Secondary RPM", 2000);
 
         Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
             new Vector2D(PRIMARY_DISTANCE.get(), PRIMARY_RPM.get()),
@@ -241,25 +241,25 @@ public interface Settings {
 
         public interface FrontRight {
             String ID = "Front Right";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", 143);
+            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(143));
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * -0.5);
         }
 
         public interface FrontLeft {
             String ID = "Front Left";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", 36);
+            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(36));
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * +0.5);
         }
 
         public interface BackLeft {
             String ID = "Back Left";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", -80.5);
+            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(-80.5));
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * +0.5);
         }
 
         public interface BackRight {
             String ID = "Back Right";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", 142.3);
+            SmartAngle ABSOLUTE_OFFSET = new SmartAngle(ID + "/Absolute Offset", Angle.fromDegrees(142.3));
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * -0.5);
         }
 

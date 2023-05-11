@@ -18,6 +18,7 @@ public class IntakeExtend extends InstantCommand {
 
     public IntakeExtend(IIntake intake) {
         this.intake = intake;
+        addRequirements(intake);
     }
 
     @Override
