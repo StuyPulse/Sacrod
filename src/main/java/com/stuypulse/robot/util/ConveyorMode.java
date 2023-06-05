@@ -3,25 +3,31 @@ package com.stuypulse.robot.util;
 import java.util.function.Consumer;
 
 import com.stuypulse.robot.subsystems.Conveyor;
+import com.stuypulse.robot.subsystems.IIntake;
+import com.stuypulse.robot.subsystems.SwerveDrive;
 
 public enum ConveyorMode {
     INDEXING(conveyor -> {
-        if (conveyor.hasIntakeBall() && !conveyor.hasShooterBall()) {
-            conveyor.runForward();       
+        var angle = SwerveDrive.getInstance().getAngle().getDegrees();
+        var isShooting = angle > -90 && angle < 90;
+
+        if (!conveyor.hasShooterBall() && isShooting) {
+            conveyor.runForward();
+        } else if (!conveyor.hasIntakeBall() && !isShooting) {
+            conveyor.runReverse();
         } else {
             conveyor.stop();
         }
     }),
 
     SHOOTING(conveyor -> { 
-        conveyor.runForward();
-    }),
-    
-    BRING_UP_BALLS(conveyor -> {
-        if (!conveyor.hasShooterBall()) {
+        var angle = SwerveDrive.getInstance().getAngle().getDegrees();
+
+        if (angle > -90 && angle < 90) {
             conveyor.runForward();
         } else {
-            conveyor.stop();
+            conveyor.runReverse();
+            IIntake.getInstance().deacquire();
         }
     }),
 

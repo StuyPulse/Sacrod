@@ -7,8 +7,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class IIntake extends SubsystemBase {
 
+    private static IIntake instance = null;
+
     public static IIntake getInstance() {
-        return RobotBase.isReal() ? new Intake() : new SimIntake();
+        if (instance == null) {
+            instance = RobotBase.isReal() ? new Intake() : new SimIntake();
+        }
+        return instance;
     }
 
     // intaking

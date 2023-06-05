@@ -39,9 +39,9 @@ public interface Settings {
 
     public interface Driver {
         SmartNumber DEADBAND = new SmartNumber("Driver Settings/Deadband", 0.05);
-        SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 4.2);
-        SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 6.1);
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 5);
+        SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 2.1); // 4.2
+        SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 4); // 6.1
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 2.5); // 5
 
         public interface Drive {
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.2);
@@ -60,7 +60,7 @@ public interface Settings {
         SmartNumber PRIMARY_RPM = new SmartNumber("Scoring/Primary RPM", 1800); // 1750
         
         SmartNumber SECONDARY_DISTANCE = new SmartNumber("Scoring/Secondary Distance", 4.55);
-        SmartNumber SECONDARY_RPM = new SmartNumber("Scoring/Secondary RPM", 500); // 2000
+        SmartNumber SECONDARY_RPM = new SmartNumber("Scoring/Secondary RPM", 1500); // 2000
 
         Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
             new Vector2D(PRIMARY_DISTANCE.get(), PRIMARY_RPM.get()),

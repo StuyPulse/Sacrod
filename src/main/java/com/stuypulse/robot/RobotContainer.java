@@ -76,7 +76,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driver.getTopButton().onTrue(new SwerveDriveHome(swerve));
     driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
-    driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, swerve, Scoring.PRIMARY_DISTANCE));
+  driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, swerve, Scoring.PRIMARY_DISTANCE));
 
     operator.getLeftTriggerButton()
       .whileTrue(new IntakeDeacquire(intake))
@@ -91,8 +91,8 @@ public class RobotContainer {
       .onTrue(new ConveyorSetMode(conveyor, ConveyorMode.INDEXING));  
     operator.getRightButton()
       .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.SHOOTING));
-    operator.getLeftButton()
-      .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
+    operator.getBottomButton()
+      .onTrue(new ConveyorSetMode(conveyor, ConveyorMode.STOP));
 
     operator.getDPadUp().onTrue(new ShooterStop(shooter));
     operator.getDPadRight().onTrue(new ShooterSetRPM(shooter, Settings.Scoring.PRIMARY_RPM));
