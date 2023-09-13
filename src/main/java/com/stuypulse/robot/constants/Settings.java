@@ -26,12 +26,19 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 
 public interface Settings {
+    
+    public enum Robot {
+        SACROD,
+        JIM
+    }
+
+    Robot ROBOT = Robot.SACROD;
+
     double DT = 0.02;
 
     public static Vector2D vpow(Vector2D vec, double power) {
         return vec.mul(Math.pow(vec.magnitude(), power - 1));
     }
-    
 
     public static void reportWarning(String warning) {
         DriverStation.reportWarning(warning, false);
@@ -58,19 +65,19 @@ public interface Settings {
     public interface Scoring {
         SmartNumber PRIMARY_DISTANCE = new SmartNumber("Scoring/Primary Distance", 3.71);
         SmartNumber PRIMARY_RPM = new SmartNumber("Scoring/Primary RPM", 1800); // 1750
-        
+
         SmartNumber SECONDARY_DISTANCE = new SmartNumber("Scoring/Secondary Distance", 4.55);
         SmartNumber SECONDARY_RPM = new SmartNumber("Scoring/Secondary RPM", 500); // 2000
 
         Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
-            new Vector2D(PRIMARY_DISTANCE.get(), PRIMARY_RPM.get()),
-            new Vector2D(SECONDARY_DISTANCE.get(), SECONDARY_RPM.get())
-        );
+                new Vector2D(PRIMARY_DISTANCE.get(), PRIMARY_RPM.get()),
+                new Vector2D(SECONDARY_DISTANCE.get(), SECONDARY_RPM.get()));
 
         SmartNumber ACCEPTABLE_RPM = new SmartNumber("Scoring/Acceptable RPM Error", 200);
         SmartNumber ACCEPTABLE_VELOCITY = new SmartNumber("Scoring/Acceptable Shot Velocity", Units.inchesToMeters(9));
         SmartNumber ACCEPTABLE_TURN_ERROR = new SmartNumber("Scoring/Acceptable Turn Error (deg)", 7.5);
-        SmartNumber ACCEPTABLE_DISTANCE_ERROR = new SmartNumber("Scoring/Acceptable Distance Error (m)", Units.inchesToMeters(4));
+        SmartNumber ACCEPTABLE_DISTANCE_ERROR = new SmartNumber("Scoring/Acceptable Distance Error (m)",
+                Units.inchesToMeters(4));
         SmartNumber READY_TIME = new SmartNumber("Scoring/Ready Time", 0.2);
 
         // TODO: make shooting and alignment command specifically for testing
@@ -81,7 +88,7 @@ public interface Settings {
             SmartNumber kP = new SmartNumber("Scoring/Auto Shot/kP", 1.0);
             SmartNumber kI = new SmartNumber("Scoring/Auto Shot/kI", 0.0);
             SmartNumber kD = new SmartNumber("Scoring/Auto Shot/kD", 0.2);
-        
+
             SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auto Shot/Fusion RC", 0.3);
             SmartNumber MAX_SPEED = new SmartNumber("Scoring/Auto Shot/Speed", 2);
         }
@@ -94,13 +101,13 @@ public interface Settings {
             SmartNumber DISTkP = new SmartNumber("Scoring/Auton/Distance kP", 3.0);
             SmartNumber DISTkI = new SmartNumber("Scoring/Auton/Distance kI", 0.0);
             SmartNumber DISTkD = new SmartNumber("Scoring/Auton/Distance kD", 0.2);
-        
+
             SmartNumber FUSION_FILTER = new SmartNumber("Scoring/Auton/Fusion RC", 0.3);
         }
     }
 
     public interface Limelight {
-        int[] PORTS = {5800, 5801, 5802, 5803, 5804, 5805};
+        int[] PORTS = { 5800, 5801, 5802, 5803, 5804, 5805 };
         double CAMERA_TO_CENTER = Units.inchesToMeters(14.0);
         Angle CAMERA_PITCH = Angle.fromDegrees(28);
         double CAMERA_HEIGHT = Units.inchesToMeters(32);
@@ -153,6 +160,21 @@ public interface Settings {
         SmartNumber REVERSE_SPEED = new SmartNumber("Conveyor/Reverse Speed", -1.0);
     }
 
+    public interface Arm {
+        // REPLACE VALUES
+        SmartNumber ARM_EXTEND_ANGLE = new SmartNumber("Arm/Extend Angle", 0);
+        SmartNumber ARM_RETRACT_ANGLE = new SmartNumber("Arm/Retract Angle", 0);
+
+        public interface Deployment {
+            // CHANGE VALUES
+            SmartNumber MAX_ERROR = new SmartNumber("Arm/Deployment/Max Error", 3.0);
+
+            SmartNumber kP = new SmartNumber("Arm/Deployment/P", 0);
+            SmartNumber kI = new SmartNumber("Ar/Deployment/I", 0);
+            SmartNumber kD = new SmartNumber("Arm/Deployment/D", 0);
+        }
+    }
+
     public interface Intake {
         SmartNumber EXTEND_ANGLE = new SmartNumber("Intake/Extend Angle", 99);
         SmartNumber RETRACT_ANGLE = new SmartNumber("Intake/Retract Angle", 0);
@@ -179,9 +201,7 @@ public interface Settings {
             SmartNumber kV = new SmartNumber("Intake/Simulation/V", 12.0 / MAX_DEGREES_PER_SECOND);
             SmartNumber kA = new SmartNumber("Intake/Simulation/A", 0.01);
         }
-    }
-    
-    public interface Shooter{    
+
         public interface ShooterPID {
             // TODO: auto pid tune this
             SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0); // 0.0050642);

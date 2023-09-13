@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends TimedRobot {
 
+  public static final com.stuypulse.robot.constants.Settings.Robot SACROD = null;
   private RobotContainer robot;
   private Command auto;
 
@@ -33,14 +34,16 @@ public class Robot extends TimedRobot {
   /*********************/
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+  }
 
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+  }
 
   /***********************/
   /*** AUTONOMOUS MODE ***/
-  /***********************/  
+  /***********************/
 
   @Override
   public void autonomousInit() {
@@ -52,10 +55,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+  }
 
   @Override
-  public void autonomousExit() {}
+  public void autonomousExit() {
+  }
 
   /*******************/
   /*** TELEOP MODE ***/
@@ -69,10 +74,12 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   @Override
-  public void teleopExit() {}
+  public void teleopExit() {
+  }
 
   /*****************/
   /*** TEST MODE ***/
@@ -84,8 +91,10 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void testPeriodic() {}
+  public void testPeriodic() {
+  }
 
   @Override
-  public void testExit() {}
+  public void testExit() {
+  }
 }

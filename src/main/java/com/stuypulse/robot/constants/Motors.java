@@ -27,6 +27,10 @@ public interface Motors {
         TalonSRXConfig DriverConfig = new TalonSRXConfig(true, NeutralMode.Coast, 40, 1.0 / 5.0);
     }
 
+    public interface Arm {
+        CANSparkMaxConfig ARM_MOTOR_CONFIG = new CANSparkMaxConfig(true, IdleMode.kCoast, 40);
+    }
+
     public interface Shooter {
 
         CANSparkMaxConfig ShooterMotorConfig = new CANSparkMaxConfig(false, IdleMode.kCoast, 80);
