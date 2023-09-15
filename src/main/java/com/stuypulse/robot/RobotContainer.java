@@ -87,8 +87,8 @@ public class RobotContainer {
       .onTrue(new ConveyorSetMode(conveyor, ConveyorMode.INDEXING));  
     operator.getRightButton()
       .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.SHOOTING));
-    operator.getLeftButton()
-      .whileTrue(new ConveyorSetMode(conveyor, ConveyorMode.BRING_UP_BALLS));
+    operator.getBottomButton()
+      .onTrue(new ConveyorSetMode(conveyor, ConveyorMode.STOP));
 
     operator.getDPadUp().onTrue(new ShooterStop(shooter));
     operator.getDPadRight().onTrue(new ShooterSetRPM(shooter, Settings.Scoring.PRIMARY_RPM));
