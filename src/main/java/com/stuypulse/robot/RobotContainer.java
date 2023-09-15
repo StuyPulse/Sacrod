@@ -76,7 +76,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driver.getTopButton().onTrue(new SwerveDriveHome(swerve));
     driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
-  driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, swerve, Scoring.PRIMARY_DISTANCE));
+    driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, swerve, Scoring.PRIMARY_DISTANCE));
 
     operator.getLeftTriggerButton()
       .whileTrue(new IntakeDeacquire(intake))
