@@ -201,7 +201,9 @@ public interface Settings {
             SmartNumber kV = new SmartNumber("Intake/Simulation/V", 12.0 / MAX_DEGREES_PER_SECOND);
             SmartNumber kA = new SmartNumber("Intake/Simulation/A", 0.01);
         }
+    }
 
+    public interface Shooter {
         public interface ShooterPID {
             // TODO: auto pid tune this
             SmartNumber kP = new SmartNumber("Shooter/Shooter kP", 0); // 0.0050642);
