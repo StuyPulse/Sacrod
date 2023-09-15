@@ -1,5 +1,6 @@
 package com.stuypulse.robot.subsystems.intake;
 
+import com.stuypulse.robot.subsystems.arm.ArmImpl;
 import com.stuypulse.robot.subsystems.intake.*;
 
 import edu.wpi.first.wpilibj.RobotBase;
@@ -7,9 +8,20 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class Intake extends SubsystemBase {
 
-    public static Intake getInstance() {
-        return RobotBase.isReal() ? new Intake() : new SimIntake();
+    private static final Intake instance;
+
+    static {
+        if (RobotBase.isReal()) {
+            instance = new IntakeImpl();
+        } else {
+            instance = new SimIntake();
+        }
     }
+
+    public static final Intake getInstance() {
+        return instance;
+    }
+
 
     // intaking
 

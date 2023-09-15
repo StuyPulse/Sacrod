@@ -3,10 +3,7 @@ package com.stuypulse.robot.subsystems.arm;
 import com.stuypulse.stuylib.network.SmartNumber;
 import static com.stuypulse.robot.constants.Settings.Arm.*;
 import static com.stuypulse.robot.constants.Settings.Arm.Deployment.*;
-import com.stuypulse.robot.Robot;
-import com.stuypulse.robot.constants.Settings;
 
-import static com.stuypulse.robot.constants.Ports.Arm.*;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -33,13 +30,13 @@ public abstract class Arm extends SubsystemBase {
     private static final Arm instance;
 
     static {
-        if (RobotBase.isReal() && Settings.ROBOT == Robot.SACROD)
-            instance = new ArmImpl();
+        instance = new ArmImpl();
     }
 
-    public static Arm getInstance() {
+    public static final Arm getInstance() {
         return instance;
     }
+
 
     public Arm() {
         targetAngle = new SmartNumber("Arm/Target Angle", 0.0);

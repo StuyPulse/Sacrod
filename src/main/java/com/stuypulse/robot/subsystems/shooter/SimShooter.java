@@ -1,7 +1,6 @@
 package com.stuypulse.robot.subsystems.shooter;
 
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.LinearSystemSim;
 
 import static com.stuypulse.robot.constants.Settings.Shooter.*;
@@ -14,7 +13,6 @@ import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.system.plant.DCMotor;
 
 public class SimShooter extends Shooter {
 
