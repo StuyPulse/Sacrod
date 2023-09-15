@@ -12,6 +12,7 @@ import com.stuypulse.robot.constants.Settings.Swerve.FrontRight;
 import com.stuypulse.robot.constants.Settings.Swerve.BackLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.BackRight;
 import com.stuypulse.robot.constants.Settings.Swerve.Chassis;
+import com.stuypulse.robot.subsystems.camera.Camera;
 import com.stuypulse.robot.subsystems.modules.SL_SimModule;
 import com.stuypulse.robot.subsystems.modules.SL_SwerveModule;
 import com.stuypulse.robot.subsystems.modules.SparkMax_Module;
@@ -234,7 +235,7 @@ public class SwerveDrive extends SubsystemBase {
 
     private void updatePose() {
         poseEstimator.update(getGyroAngle(), getModulePositions());
-        ICamera camera = ICamera.getInstance();
+        Camera camera = Camera.getInstance();
         if (camera.hasTarget()) {
             poseEstimator.addVisionMeasurement(camera.getRobotPose(), Timer.getFPGATimestamp() - camera.getLatency());
         }

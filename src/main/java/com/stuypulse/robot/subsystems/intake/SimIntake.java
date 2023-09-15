@@ -20,12 +20,10 @@ import com.stuypulse.stuylib.network.SmartNumber;
 import static com.stuypulse.robot.constants.Settings.Intake.Simulation.*;
 
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.IIntake;
-
 import static com.stuypulse.robot.constants.Settings.Intake.Deployment.*;
 import static com.stuypulse.robot.constants.Settings.Intake.*;
 
-public class SimIntake extends IIntake {
+public class SimIntake extends Intake {
     // SIMULATION HARDWARE
     private final LinearSystemSim<N2, N1, N1> intakeSim;
     private final MechanismLigament2d intakeArm;
@@ -98,20 +96,20 @@ public class SimIntake extends IIntake {
     @Override
     public void periodic() {
         intakeSim.setInput(MathUtil.clamp(
-            controller.update(getTargetAngle(), getAngleDegrees()),
-            -RoboRioSim.getVInVoltage(),
-            +RoboRioSim.getVInVoltage()));
+                controller.update(getTargetAngle(), getAngleDegrees()),
+                -RoboRioSim.getVInVoltage(),
+                +RoboRioSim.getVInVoltage()));
 
         intakeSim.update(Settings.DT);
 
         if (getAngleDegrees() < RETRACT_ANGLE.get() || getAngleDegrees() > EXTEND_ANGLE.get())
             intakeSim.setState(VecBuilder.fill(
-                MathUtil.clamp(getAngleDegrees(), RETRACT_ANGLE.get(), EXTEND_ANGLE.get()), 0));
+                    MathUtil.clamp(getAngleDegrees(), RETRACT_ANGLE.get(), EXTEND_ANGLE.get()), 0));
 
         intakeArm.setAngle(getAngleDegrees() + 90);
         RoboRioSim.setVInCurrent(BatterySim.calculateDefaultBatteryLoadedVoltage(
                 intakeSim.getCurrentDrawAmps()));
-        
+
         SmartDashboard.putNumber("Intake/Angle", getAngleDegrees());
         SmartDashboard.putNumber("Intake/Voltage", controller.getOutput());
     }

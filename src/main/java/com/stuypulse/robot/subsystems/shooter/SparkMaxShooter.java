@@ -9,36 +9,34 @@ import com.stuypulse.robot.constants.Motors;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Shooter.FeederFF;
-import com.stuypulse.robot.subsystems.IShooter;
 import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SparkMaxShooter extends IShooter {
-    
+public class SparkMaxShooter extends ShooterImpl {
+
     private SmartNumber target;
     private double lastTarget;
 
     private CANSparkMax shooterA;
     private CANSparkMax shooterB;
     private SparkMaxPIDController shooterPID;
-    private SimpleMotorFeedforward shooterFeedforward; 
+    private SimpleMotorFeedforward shooterFeedforward;
 
     private CANSparkMax feeder;
     private SparkMaxPIDController feederPID;
     private SimpleMotorFeedforward feederFeedforward;
-
 
     public SparkMaxShooter() {
         //
         target = new SmartNumber("Shooter/Target RPM", 0.0);
         lastTarget = 0.0;
 
-        // 
+        //
         shooterA = new CANSparkMax(Ports.Shooter.SHOOTER_MOTOR, MotorType.kBrushless);
         shooterB = new CANSparkMax(Ports.Shooter.SHOOTER_FOLLOWER, MotorType.kBrushless);
-        
+
         shooterA.enableVoltageCompensation(12.0);
         shooterPID = shooterA.getPIDController();
         shooterPID.setP(Settings.Shooter.ShooterPID.kP.doubleValue());
@@ -48,17 +46,16 @@ public class SparkMaxShooter extends IShooter {
         shooterPID.setDFilter(1.0);
 
         shooterFeedforward = new SimpleMotorFeedforward(
-            Settings.Shooter.ShooterFF.kS.get(), 
-            Settings.Shooter.ShooterFF.kV.get(), 
-            Settings.Shooter.ShooterFF.kA.get()
-        );
-        
+                Settings.Shooter.ShooterFF.kS.get(),
+                Settings.Shooter.ShooterFF.kV.get(),
+                Settings.Shooter.ShooterFF.kA.get());
+
         shooterB.follow(shooterA);
 
         Motors.Shooter.ShooterMotorConfig.configure(shooterA);
         Motors.Shooter.ShooterFollowerConfig.configure(shooterB);
 
-        // 
+        //
         feeder = new CANSparkMax(Ports.Shooter.FEEDER_MOTOR, MotorType.kBrushless);
 
         feeder.enableVoltageCompensation(12.0);
@@ -70,16 +67,17 @@ public class SparkMaxShooter extends IShooter {
         feederPID.setDFilter(1.0);
 
         feederFeedforward = new SimpleMotorFeedforward(
-            Settings.Shooter.FeederFF.kS.get(), 
-            Settings.Shooter.FeederFF.kV.get(), 
-            Settings.Shooter.FeederFF.kA.get()
-        );
+                Settings.Shooter.FeederFF.kS.get(),
+                Settings.Shooter.FeederFF.kV.get(),
+                Settings.Shooter.FeederFF.kA.get());
 
         Motors.Shooter.FeederMotorConfig.configure(feeder);
     }
+
     public double getShooterTargetRPM() {
         return this.target.get();
     }
+
     public double getFeederTargetRPM() {
         return this.target.get() * FeederFF.FEEDER_RPM_MULTIPLIER.get();
     }
@@ -103,25 +101,23 @@ public class SparkMaxShooter extends IShooter {
     public void periodic() {
 
         shooterPID.setReference(
-            lastTarget, 
-            ControlType.kVelocity, 
-            0, 
-            shooterFeedforward.calculate(lastTarget, target.get(), Settings.DT), 
-            ArbFFUnits.kVoltage
-        );
+                lastTarget,
+                ControlType.kVelocity,
+                0,
+                shooterFeedforward.calculate(lastTarget, target.get(), Settings.DT),
+                ArbFFUnits.kVoltage);
 
         feederPID.setReference(
-            lastTarget, 
-            ControlType.kVelocity, 
-            0, 
-            feederFeedforward.calculate(lastTarget, getFeederTargetRPM(), Settings.DT), 
-            ArbFFUnits.kVoltage
-        );
+                lastTarget,
+                ControlType.kVelocity,
+                0,
+                feederFeedforward.calculate(lastTarget, getFeederTargetRPM(), Settings.DT),
+                ArbFFUnits.kVoltage);
 
         lastTarget = target.get();
 
         SmartDashboard.putNumber("Shooter/Shooter RPM", getShooterRPM());
         SmartDashboard.putNumber("Shooter/Feeder RPM", getFeederRPM());
     }
-    
+
 }

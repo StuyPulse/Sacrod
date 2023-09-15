@@ -18,8 +18,10 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+import com.stuypulse.robot.constants.Settings.Climber;
 import com.stuypulse.robot.constants.Settings.Scoring;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.subsystems.camera.Camera;
 import com.stuypulse.robot.subsystems.shooter.*;
 import com.stuypulse.robot.util.BootlegXbox;
 import com.stuypulse.robot.util.ConveyorMode;
@@ -39,12 +41,12 @@ public class RobotContainer {
 
   // Subsystem
   public final Conveyor conveyor = new Conveyor();
-  public final IShooter shooter = IShooter.getInstance();
-  public final IIntake intake = IIntake.getInstance();
-  public final IClimber climber = IClimber.getInstance();
+  public final Shooter shooter = Shooter.getInstance();
+  public final Intake intake = Intake.getInstance();
+  public final Climber climber = Climber.getInstance();
   public final SwerveDrive swerve = SwerveDrive.getInstance();
 
-  public final ICamera camera = ICamera.getInstance();
+  public final Camera camera = Camera.getInstance();
 
   // Gamepads
   public final Gamepad driver = new BootlegXbox(Ports.Gamepad.DRIVER);

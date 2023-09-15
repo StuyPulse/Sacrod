@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands.intake;
 
-import com.stuypulse.robot.subsystems.IIntake;
+
+import com.stuypulse.robot.subsystems.intake.Intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
@@ -14,9 +15,9 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
  */
 
 public class IntakeExtend extends InstantCommand {
-    private final IIntake intake;
+    private final Intake intake;
 
-    public IntakeExtend(IIntake intake) {
+    public IntakeExtend(Intake intake) {
         this.intake = intake;
     }
 

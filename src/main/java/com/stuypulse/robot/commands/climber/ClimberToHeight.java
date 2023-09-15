@@ -1,17 +1,17 @@
 package com.stuypulse.robot.commands.climber;
 
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.IClimber;
+import com.stuypulse.robot.subsystems.climber.Climber;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class ClimberToHeight extends CommandBase{
     
-    private final IClimber climber;
+    private final Climber climber;
     private final double height; 
     private boolean instant;
 
-    public ClimberToHeight(IClimber climber, double height){
+    public ClimberToHeight(Climber climber, double height){
         this.climber = climber;
         this.height = height;
         instant = true;

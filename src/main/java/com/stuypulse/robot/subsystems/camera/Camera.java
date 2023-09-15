@@ -1,5 +1,6 @@
-package com.stuypulse.robot.subsystems;
+package com.stuypulse.robot.subsystems.camera;
 
+import com.stuypulse.robot.subsystems.SwerveDrive;
 import com.stuypulse.robot.subsystems.camera.*;
 import com.stuypulse.robot.subsystems.camera.SimCamera;
 import com.stuypulse.stuylib.math.Angle;
@@ -8,11 +9,11 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public abstract class ICamera extends SubsystemBase {
+public abstract class Camera extends SubsystemBase {
 
-    private static ICamera instance = null;
+    private static Camera instance = null;
 
-    public static ICamera getInstance() {
+    public static Camera getInstance() {
         if (instance == null) {
             instance = RobotBase.isReal() ? new PVCamera() : new SimCamera(SwerveDrive.getInstance());
         }

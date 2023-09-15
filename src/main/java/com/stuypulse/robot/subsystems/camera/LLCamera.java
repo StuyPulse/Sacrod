@@ -1,7 +1,6 @@
 package com.stuypulse.robot.subsystems.camera;
 
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.ICamera;
 import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.network.limelight.Limelight;
 
@@ -11,17 +10,17 @@ import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /* todo: make ICamera, SimCamera */
-public class LLCamera extends ICamera {
+public class LLCamera extends Camera {
 
 	private Limelight limelight;
-	
+
 	public LLCamera() {
-		limelight = Limelight.getInstance(); 
+		limelight = Limelight.getInstance();
 
 		for (int port : Settings.Limelight.PORTS) {
-            PortForwarder.add(port, "limelight.local", port);
-        }
-        CameraServer.startAutomaticCapture();
+			PortForwarder.add(port, "limelight.local", port);
+		}
+		CameraServer.startAutomaticCapture();
 	}
 
 	public double getLatency() {
@@ -30,23 +29,23 @@ public class LLCamera extends ICamera {
 
 	public Angle getHorizontalOffset() {
 		if (!hasTarget()) {
-            Settings.reportWarning("Unable To Find Target! [getHorizontal() was called]");
-            return Angle.kZero;
-        }
+			Settings.reportWarning("Unable To Find Target! [getHorizontal() was called]");
+			return Angle.kZero;
+		}
 		double txDegrees = limelight.getTargetXAngle();
 
 		Angle txAngle = Angle.fromDegrees(txDegrees);
-		
+
 		return txAngle;
 	}
 
 	public Angle getVerticalOffset() {
 		if (!hasTarget()) {
-            Settings.reportWarning("Unable To Find Target! [getVerticalOffset() was called]");
-            return Angle.kZero;
-        }
+			Settings.reportWarning("Unable To Find Target! [getVerticalOffset() was called]");
+			return Angle.kZero;
+		}
 		double tyDegrees = limelight.getTargetYAngle();
-		
+
 		Angle tyAngle = Angle.fromDegrees(tyDegrees);
 
 		return tyAngle;
@@ -55,15 +54,14 @@ public class LLCamera extends ICamera {
 	public double getDistance() {
 		Angle ty = getVerticalOffset().add(Settings.Limelight.CAMERA_PITCH);
 
-		double distance = (Settings.Field.HUB_HEIGHT-Settings.Limelight.CAMERA_HEIGHT) / ty.tan();
+		double distance = (Settings.Field.HUB_HEIGHT - Settings.Limelight.CAMERA_HEIGHT) / ty.tan();
 
 		return distance + Settings.Field.HUB_TO_CENTER + Settings.Limelight.CAMERA_TO_CENTER;
 	}
 
-	
-    public boolean hasTarget() {
-        return limelight.getValidTarget();
-    }
+	public boolean hasTarget() {
+		return limelight.getValidTarget();
+	}
 
 	public Pose2d getRobotPose() {
 		return new Pose2d();

@@ -8,7 +8,6 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Field;
 import com.stuypulse.robot.constants.Settings.Limelight;
-import com.stuypulse.robot.subsystems.ICamera;
 import com.stuypulse.stuylib.math.Angle;
 
 import edu.wpi.first.math.ComputerVisionUtil;
@@ -22,7 +21,7 @@ import edu.wpi.first.net.PortForwarder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class PVCamera extends ICamera {
+public class PVCamera extends Camera {
 
     private final PhotonCamera camera;
     private PhotonPipelineResult result;
