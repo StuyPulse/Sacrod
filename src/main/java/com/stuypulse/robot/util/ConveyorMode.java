@@ -3,8 +3,8 @@ package com.stuypulse.robot.util;
 import java.util.function.Consumer;
 
 import com.stuypulse.robot.subsystems.Conveyor;
-import com.stuypulse.robot.subsystems.IIntake;
 import com.stuypulse.robot.subsystems.SwerveDrive;
+import com.stuypulse.robot.subsystems.intake.Intake;
 
 public enum ConveyorMode {
     // move cube to shooter/intake location to face grid unless holding two cubes
@@ -29,7 +29,7 @@ public enum ConveyorMode {
             conveyor.runForward();
         } else {
             conveyor.runReverse();
-            IIntake.getInstance().deacquire();
+            Intake.getInstance().deacquire();
         }
     }),
 
