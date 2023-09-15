@@ -12,7 +12,6 @@ import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
 import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
 import com.stuypulse.stuylib.network.SmartNumber;
-import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
