@@ -7,6 +7,7 @@ import com.stuypulse.robot.subsystems.IIntake;
 import com.stuypulse.robot.subsystems.SwerveDrive;
 
 public enum ConveyorMode {
+    // move cube to shooter/intake location to face grid unless holding two cubes
     INDEXING(conveyor -> {
         var angle = SwerveDrive.getInstance().getAngle().getDegrees();
         var isShooting = angle > -90 && angle < 90;
@@ -20,6 +21,7 @@ public enum ConveyorMode {
         }
     }),
 
+    // shoot or outtake towards grid
     SHOOTING(conveyor -> { 
         var angle = SwerveDrive.getInstance().getAngle().getDegrees();
 
