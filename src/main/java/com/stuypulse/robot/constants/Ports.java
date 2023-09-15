@@ -1,5 +1,5 @@
 /************************ PROJECT SACROD ************************/
-/* Copyright (c) 2022 StuyPulse Robotics. All rights reserved.  */
+/* Copyright (c) 2023 StuyPulse Robotics. All rights reserved.  */
 /* This work is licensed under the terms of the MIT license.    */
 /****************************************************************/
 
@@ -24,7 +24,7 @@ public interface Ports {
         int INTAKE_IR = 8;
         int SHOOTER_IR = 9;
     }
-    
+
     public interface Climber {
         int MOTOR = 50;
     }
@@ -32,6 +32,14 @@ public interface Ports {
     public interface Intake {
         int DRIVER_MOTOR = 40;
         int DEPLOYMENT_MOTOR = 41;
+    }
+
+    public interface Arm {
+        // CHANGE NUMBER
+        int ARM_MOTOR = 0;
+        int ARM_MOTOR_PORT = 0;
+        double ARM_MOTOR_RUN = 0;
+        double ARM_MOTOR_REVERSE = 0;
     }
 
     public interface Shooter {
@@ -47,7 +55,7 @@ public interface Ports {
             int ENCODER = 1;
         }
 
-        public interface FrontLeft  {
+        public interface FrontLeft {
             int DRIVE = 12;
             int TURN = 13;
             int ENCODER = 3;
@@ -58,7 +66,7 @@ public interface Ports {
             int TURN = 15;
             int ENCODER = 2;
         }
-        
+
         public interface BackRight {
             int DRIVE = 16;
             int TURN = 17;

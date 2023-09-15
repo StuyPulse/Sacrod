@@ -1,13 +1,14 @@
 package com.stuypulse.robot.commands.intake;
 
-import com.stuypulse.robot.subsystems.IIntake;
+
+import com.stuypulse.robot.subsystems.intake.Intake;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class IntakeRetract extends InstantCommand {
-    private final IIntake intake;
+    private final Intake intake;
     
-    public IntakeRetract(IIntake intake) {
+    public IntakeRetract(Intake intake) {
         this.intake = intake;
         addRequirements(intake);
     }    

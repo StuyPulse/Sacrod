@@ -1,5 +1,5 @@
 /************************ PROJECT SACROD ************************/
-/* Copyright (c) 2022 StuyPulse Robotics. All rights reserved.  */
+/* Copyright (c) 2023 StuyPulse Robotics. All rights reserved.  */
 /* This work is licensed under the terms of the MIT license.    */
 /****************************************************************/
 
@@ -8,7 +8,6 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.AutoShoot;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.MylesAuto;
-import com.stuypulse.robot.commands.climber.*;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
@@ -18,19 +17,16 @@ import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
+// import com.stuypulse.robot.constants.Settings.Climber;
 import com.stuypulse.robot.constants.Settings.Scoring;
 import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.subsystems.camera.Camera;
 import com.stuypulse.robot.subsystems.shooter.*;
 import com.stuypulse.robot.util.BootlegXbox;
 import com.stuypulse.robot.util.ConveyorMode;
 import com.stuypulse.robot.subsystems.intake.*;
 import com.stuypulse.robot.subsystems.climber.*;
 import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.gamepads.Xbox;
-import com.stuypulse.stuylib.input.gamepads.keyboard.SimKeyGamepad;
-import com.stuypulse.stuylib.network.SmartNumber;
-
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -39,12 +35,12 @@ public class RobotContainer {
 
   // Subsystem
   public final Conveyor conveyor = new Conveyor();
-  public final IShooter shooter = IShooter.getInstance();
-  public final IIntake intake = IIntake.getInstance();
-  public final IClimber climber = IClimber.getInstance();
+  public final Shooter shooter = Shooter.getInstance();
+  public final Intake intake = Intake.getInstance();
+  public final Climber climber = Climber.getInstance();
   public final SwerveDrive swerve = SwerveDrive.getInstance();
 
-  public final ICamera camera = ICamera.getInstance();
+  public final Camera camera = Camera.getInstance();
 
   // Gamepads
   public final Gamepad driver = new BootlegXbox(Ports.Gamepad.DRIVER);

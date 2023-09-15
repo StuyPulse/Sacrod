@@ -4,7 +4,6 @@ import com.stuypulse.robot.constants.Settings.Driver;
 import com.stuypulse.robot.constants.Settings.Field;
 import com.stuypulse.robot.constants.Settings.Scoring;
 import com.stuypulse.robot.constants.Settings.Scoring.Auton;
-import com.stuypulse.robot.subsystems.ICamera;
 import com.stuypulse.robot.subsystems.SwerveDrive;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.angle.AngleController;
@@ -14,7 +13,7 @@ import com.stuypulse.stuylib.math.Angle;
 import com.stuypulse.stuylib.streams.IFuser;
 import com.stuypulse.stuylib.streams.booleans.BStream;
 import com.stuypulse.stuylib.streams.booleans.filters.BDebounce;
-
+import com.stuypulse.robot.subsystems.camera.Camera;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -22,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DrivetrainAlign extends CommandBase {
 
-    private final ICamera camera;
+    private final com.stuypulse.robot.subsystems.camera.Camera camera;
     private final SwerveDrive swerve;
 
     private final AngleController turnController;
@@ -33,7 +32,7 @@ public class DrivetrainAlign extends CommandBase {
 
     private final BStream ready;
 
-    public DrivetrainAlign(ICamera camera, SwerveDrive swerve, Number targetDistance) {
+    public DrivetrainAlign(Camera camera, SwerveDrive swerve, Number targetDistance) {
         this.camera = camera;
         this.swerve = swerve;
 

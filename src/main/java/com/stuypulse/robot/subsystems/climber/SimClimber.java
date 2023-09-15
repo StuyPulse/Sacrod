@@ -1,6 +1,5 @@
 package com.stuypulse.robot.subsystems.climber;
 
-import com.stuypulse.robot.subsystems.IClimber;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
@@ -22,7 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Mechanism2d;
 import edu.wpi.first.wpilibj.smartdashboard.MechanismLigament2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class SimClimber extends IClimber {
+public class SimClimber extends Climber {
 
     private final LinearSystemSim<N2, N1, N1> sim;
 
@@ -33,7 +32,7 @@ public class SimClimber extends IClimber {
 
     public SimClimber() {
         sim = new LinearSystemSim<>(
-            LinearSystemId.identifyPositionSystem(Feedforward.kV, Feedforward.kA));
+                LinearSystemId.identifyPositionSystem(Feedforward.kV, Feedforward.kA));
 
         controller = new PIDController(kP, kI, kD);
 
@@ -70,9 +69,8 @@ public class SimClimber extends IClimber {
     @Override
     public void periodic() {
         sim.setInput(
-            RoboRioSim.getVInVoltage() * 
-            MathUtil.clamp(controller.update(target.get(), getHeight()), -1, +1)
-        );
+                RoboRioSim.getVInVoltage() *
+                        MathUtil.clamp(controller.update(target.get(), getHeight()), -1, +1));
 
         sim.update(Settings.DT);
         RoboRioSim.setVInCurrent(BatterySim.calculateDefaultBatteryLoadedVoltage(sim.getCurrentDrawAmps()));
@@ -81,7 +79,7 @@ public class SimClimber extends IClimber {
             reset(MathUtil.clamp(getHeight(), MIN_HEIGHT, MAX_HEIGHT));
         }
 
-        climber2d.setLength(25 + 275 * (getHeight() - MIN_HEIGHT)/(MAX_HEIGHT - MIN_HEIGHT));
+        climber2d.setLength(25 + 275 * (getHeight() - MIN_HEIGHT) / (MAX_HEIGHT - MIN_HEIGHT));
 
         SmartDashboard.putNumber("Climber/Height", getHeight());
         SmartDashboard.putNumber("Climber/Controller Output", controller.getOutput());

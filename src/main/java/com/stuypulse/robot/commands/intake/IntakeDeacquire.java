@@ -1,14 +1,14 @@
 package com.stuypulse.robot.commands.intake;
 
-import com.stuypulse.robot.subsystems.IIntake;
+import com.stuypulse.robot.subsystems.intake.Intake;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class IntakeDeacquire extends CommandBase {
 
-    private final IIntake intake;
+    private final Intake intake;
 
-    public IntakeDeacquire(IIntake intake) {
+    public IntakeDeacquire(Intake intake) {
         this.intake = intake;
         addRequirements(intake);
     }

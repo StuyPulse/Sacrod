@@ -1,5 +1,5 @@
 /************************ PROJECT SACROD ************************/
-/* Copyright (c) 2022 StuyPulse Robotics. All rights reserved.  */
+/* Copyright (c) 2023 StuyPulse Robotics. All rights reserved.  */
 /* This work is licensed under the terms of the MIT license.    */
 /****************************************************************/
 
@@ -25,6 +25,10 @@ public interface Motors {
     public interface Intake {
         CANSparkMaxConfig DeploymentConfig = new CANSparkMaxConfig(false, IdleMode.kBrake, 40);
         TalonSRXConfig DriverConfig = new TalonSRXConfig(true, NeutralMode.Coast, 40, 1.0 / 5.0);
+    }
+
+    public interface Arm {
+        CANSparkMaxConfig ARM_MOTOR_CONFIG = new CANSparkMaxConfig(true, IdleMode.kCoast, 40);
     }
 
     public interface Shooter {
