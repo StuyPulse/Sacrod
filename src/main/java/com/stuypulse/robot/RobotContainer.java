@@ -83,6 +83,10 @@ public class RobotContainer {
       .onTrue(new IntakeExtend())
       .onFalse(new IntakeRetract());
 
+      //ask blay if shooing button should shoot torwards grid or does he want 
+      //separate outtake and shooting button 
+      //right now if facing grid and press button it shoots, if not facing grid
+      //it outtakes 
     operator.getTopButton()
       .onTrue(new ConveyorSetMode(ConveyorMode.INDEXING));  
     operator.getRightButton()
