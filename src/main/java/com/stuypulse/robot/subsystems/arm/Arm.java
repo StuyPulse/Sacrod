@@ -5,7 +5,6 @@ import static com.stuypulse.robot.constants.Settings.Arm.*;
 import static com.stuypulse.robot.constants.Settings.Arm.Deployment.*;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -56,6 +55,8 @@ public abstract class Arm extends SubsystemBase {
     public abstract void runMotor();
 
     public abstract void reverseMotor();
+
+    public abstract void stop();
 
     public void pointAtAngle(double angle) {
         this.targetAngle.set(MathUtil.clamp(angle, ARM_RETRACT_ANGLE.get(), ARM_EXTEND_ANGLE.get()));

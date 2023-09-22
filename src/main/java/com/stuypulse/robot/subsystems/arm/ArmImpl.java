@@ -1,24 +1,20 @@
 package com.stuypulse.robot.subsystems.arm;
 
-import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.stuypulse.stuylib.control.Controller;
-import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.network.SmartNumber;
-import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import static com.stuypulse.robot.constants.Ports.Arm.*;
 import static com.stuypulse.robot.constants.Motors.Arm.*;
 
-import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ArmImpl extends Arm {
 
+    private SmartNumber targetAngle;
     private CANSparkMax motor;
     public RelativeEncoder encoder;
-    private SmartNumber targetAngle;
     private Controller controller;
 
     public ArmImpl() {
@@ -38,6 +34,10 @@ public class ArmImpl extends Arm {
 
     public void reverseMotor() {
         motor.set(ARM_MOTOR_REVERSE);
+    }
+
+    public void stop() {
+        motor.set(0);
     }
 
     // set built in cansparkmax encoder up, get angle from encoder
