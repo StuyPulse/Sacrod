@@ -32,9 +32,9 @@ public class DrivetrainAlign extends CommandBase {
 
     private final BStream ready;
 
-    public DrivetrainAlign(Camera camera, SwerveDrive swerve, Number targetDistance) {
+    public DrivetrainAlign(Camera camera, Number targetDistance) {
         this.camera = camera;
-        this.swerve = swerve;
+        swerve = SwerveDrive.getInstance();
 
         angleError = new IFuser(
                 Auton.FUSION_FILTER,

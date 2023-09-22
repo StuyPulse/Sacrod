@@ -18,21 +18,20 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 	private PathPlannerTrajectory path;
 	private SwerveDrive swerve;
 	
-	public FollowTrajectory(SwerveDrive swerve, PathPlannerTrajectory path) {
+	public FollowTrajectory(PathPlannerTrajectory path) {
 		super(
 			path,
-			swerve::getPose,
-			swerve.getKinematics(),
+			SwerveDrive.getInstance()::getPose,
+			SwerveDrive.getInstance().getKinematics(),
 			new PIDController(Motion.XY.kP, Motion.XY.kI, Motion.XY.kD),
 			new PIDController(Motion.XY.kP, Motion.XY.kI, Motion.XY.kD),
 			new PIDController(Motion.THETA.kP, Motion.THETA.kI, Motion.THETA.kD),
-			swerve::setStates,
-			swerve
+			SwerveDrive.getInstance()::setStates,
+			SwerveDrive.getInstance()
 		);
 
 		robotRelative = false;
 		this.path = path;
-		this.swerve = swerve;
 	}
 
 	public FollowTrajectory robotRelative() {

@@ -14,8 +14,9 @@ public class ClimberDrive extends CommandBase {
     private final Climber climber;
     private StopWatch stopwatch;
 
-    public ClimberDrive(Climber climber, Gamepad operator) {
-        this.climber = climber;
+    public ClimberDrive(Gamepad operator) {
+        climber = Climber.getInstance();
+        
         this.velocity = IStream.create(operator::getLeftY)
             .filtered(x -> x * Settings.Climber.MAX_VELOCITY.get());
         addRequirements(climber);

@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
 import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
@@ -33,16 +32,16 @@ public class MylesAuto extends SequentialCommandGroup {
 
 		addCommands(
 			// Init
-			new IntakeExtend(robot.intake),
-			new IntakeAcquireForever(robot.intake),
-			new ShooterSetRPM(robot.shooter, Scoring.PRIMARY_RPM),
+			new IntakeExtend(),
+			new IntakeAcquireForever(),
+			new ShooterSetRPM(Scoring.PRIMARY_RPM),
 			new WaitCommand(SHOOTER_INITIALIZE_DELAY),
 
-			new FollowTrajectory(robot.swerve, traj)
+			new FollowTrajectory(traj)
 				.robotRelative()
 				.withEvents(Map.of(
 					"align", new InstantCommand().withTimeout(DRIVETRAIN_ALIGN_TIME),
-					"shoot", new ConveyorSetMode(robot.conveyor, ConveyorMode.SHOOTING).withTimeout(CONVEYOR_TO_SHOOTER)
+					"shoot", new ConveyorSetMode(ConveyorMode.SHOOTING).withTimeout(CONVEYOR_TO_SHOOTER)
 				))
 		);
 	}

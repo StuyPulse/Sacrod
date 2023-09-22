@@ -45,8 +45,8 @@ public class ShooterSetRPM extends InstantCommand {
     private Shooter shooter;
     private Number targetRPM;
 
-    public ShooterSetRPM(Shooter shooter, Number targetRPM) {
-        this.shooter = shooter;
+    public ShooterSetRPM(Number targetRPM) {
+        shooter = Shooter.getInstance();
         this.targetRPM = targetRPM;
         addRequirements(shooter);
     }

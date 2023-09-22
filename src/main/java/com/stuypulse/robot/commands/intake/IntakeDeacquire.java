@@ -8,8 +8,8 @@ public class IntakeDeacquire extends CommandBase {
 
     private final Intake intake;
 
-    public IntakeDeacquire(Intake intake) {
-        this.intake = intake;
+    public IntakeDeacquire() {
+        intake = Intake.getInstance();
         addRequirements(intake);
     }
 

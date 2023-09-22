@@ -6,7 +6,6 @@ import java.util.stream.Stream;
 import com.kauailabs.navx.frc.AHRS;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
-import static com.stuypulse.robot.constants.Ports.Swerve.*;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontLeft;
 import com.stuypulse.robot.constants.Settings.Swerve.FrontRight;
 import com.stuypulse.robot.constants.Settings.Swerve.BackLeft;
@@ -15,7 +14,6 @@ import com.stuypulse.robot.constants.Settings.Swerve.Chassis;
 import com.stuypulse.robot.subsystems.camera.Camera;
 import com.stuypulse.robot.subsystems.modules.SL_SimModule;
 import com.stuypulse.robot.subsystems.modules.SL_SwerveModule;
-import com.stuypulse.robot.subsystems.modules.SparkMax_Module;
 import com.stuypulse.robot.subsystems.modules.SwerveModule;
 import com.stuypulse.stuylib.math.Vector2D;
 

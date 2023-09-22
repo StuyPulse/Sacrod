@@ -47,6 +47,16 @@ public class Conveyor extends SubsystemBase {
 
     private ConveyorMode mode;
 
+    private static final Conveyor instance;
+
+    static {
+        instance = new Conveyor();
+    }
+
+    public static final Conveyor getInstance() {
+        return instance;
+    }
+
     public Conveyor() {
         motor = new WPI_VictorSPX(MOTOR); 
         MotorConfig.configure(motor);

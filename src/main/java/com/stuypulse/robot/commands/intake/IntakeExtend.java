@@ -17,8 +17,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 public class IntakeExtend extends InstantCommand {
     private final Intake intake;
 
-    public IntakeExtend(Intake intake) {
-        this.intake = intake;
+    public IntakeExtend() {
+        intake = Intake.getInstance();
     }
 
     @Override

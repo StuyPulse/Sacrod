@@ -7,8 +7,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 public class IntakeDeacquireForever extends InstantCommand {
     private final Intake intake;
     
-    public IntakeDeacquireForever(Intake intake) {
-        this.intake = intake;
+    public IntakeDeacquireForever() {
+        intake = Intake.getInstance();
         addRequirements(intake);
     }
     

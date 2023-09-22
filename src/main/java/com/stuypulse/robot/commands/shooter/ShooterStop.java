@@ -4,8 +4,8 @@ import com.stuypulse.robot.subsystems.shooter.Shooter;
 
 public class ShooterStop extends ShooterSetRPM {
 
-    public ShooterStop(Shooter shooter) {
-        super(shooter, 0);
+    public ShooterStop() {
+        super(0);
     }
     
 }

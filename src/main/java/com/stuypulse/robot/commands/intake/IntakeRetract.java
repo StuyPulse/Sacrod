@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 public class IntakeRetract extends InstantCommand {
     private final Intake intake;
     
-    public IntakeRetract(Intake intake) {
-        this.intake = intake;
+    public IntakeRetract() {
+        intake = Intake.getInstance();
         addRequirements(intake);
     }    
 

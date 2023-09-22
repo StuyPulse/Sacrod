@@ -9,9 +9,9 @@ public class ConveyorSetMode extends CommandBase{
     private final ConveyorMode mode;
     private final Conveyor conveyor;
 
-    public ConveyorSetMode(Conveyor conveyor, ConveyorMode mode) {
+    public ConveyorSetMode(ConveyorMode mode) {
+        conveyor = Conveyor.getInstance();
         this.mode = mode;
-        this.conveyor = conveyor;
 
         addRequirements(conveyor);
     }

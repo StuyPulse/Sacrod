@@ -32,8 +32,8 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class IntakeAcquire extends CommandBase {
     private final Intake intake;
     
-    public IntakeAcquire(Intake intake) {
-        this.intake = intake;
+    public IntakeAcquire() {
+        intake = Intake.getInstance();
         addRequirements(intake);
     }
     

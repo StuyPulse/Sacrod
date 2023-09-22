@@ -11,8 +11,8 @@ public class ClimberToHeight extends CommandBase{
     private final double height; 
     private boolean instant;
 
-    public ClimberToHeight(Climber climber, double height){
-        this.climber = climber;
+    public ClimberToHeight(double height){
+        climber = Climber.getInstance();
         this.height = height;
         instant = true;
         addRequirements(climber);

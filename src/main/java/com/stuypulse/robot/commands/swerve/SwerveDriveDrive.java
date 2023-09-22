@@ -19,8 +19,8 @@ public class SwerveDriveDrive extends CommandBase {
     private VStream speed;
     private IStream turn;
 
-    public SwerveDriveDrive(SwerveDrive swerve, Gamepad driver) {
-        this.swerve = swerve;
+    public SwerveDriveDrive(Gamepad driver) {
+        swerve = SwerveDrive.getInstance();
 
         speed = VStream.create(driver::getLeftStick)
             .filtered(

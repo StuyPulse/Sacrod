@@ -8,8 +8,8 @@ public class IntakeAcquireForever extends InstantCommand {
 
     private final Intake intake;
     
-    public IntakeAcquireForever(Intake intake) {
-        this.intake = intake;
+    public IntakeAcquireForever() {
+        intake = Intake.getInstance();
         addRequirements(intake);
     }
 
