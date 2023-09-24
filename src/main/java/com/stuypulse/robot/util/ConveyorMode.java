@@ -41,7 +41,7 @@ public enum ConveyorMode {
         conveyor.stop();
     }),
     
-    DEFAULT(INDEXING.action);
+    DEFAULT(STOP.action);
     
     private Consumer<Conveyor> action;
 

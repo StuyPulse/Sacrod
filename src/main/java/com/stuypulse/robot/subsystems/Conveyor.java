@@ -109,6 +109,7 @@ public class Conveyor extends SubsystemBase {
         SmartDashboard.putBoolean("Conveyor/Has Shooter Ball", hasShooterBall());
         SmartDashboard.putBoolean("Conveyor/Has Intake Ball", hasIntakeBall());    
         SmartDashboard.putNumber("Conveyor/Motor Speed", getMotorSpeed());
+        SmartDashboard.putString("Conveyor/Mode", mode.name());
     }
 
 }

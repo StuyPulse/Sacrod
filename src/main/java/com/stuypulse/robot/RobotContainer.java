@@ -15,6 +15,7 @@ import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.DrivetrainAlign;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
+import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.constants.Settings;
 // import com.stuypulse.robot.constants.Settings.Climber;
@@ -70,6 +71,7 @@ public class RobotContainer {
   /***************/
 
   private void configureButtonBindings() {
+    driver.getDPadUp().onTrue(new SwerveDriveResetHeading());
     driver.getTopButton().onTrue(new SwerveDriveHome());
     driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
     driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, Scoring.PRIMARY_DISTANCE));
