@@ -95,7 +95,7 @@ public class AutoShoot extends CommandBase {
 
     @Override
     public void execute() {
-        shooter.setTargetRPM(getTargetShooterRPM());
+        // shooter.setTargetRPM(getTargetShooterRPM());
 
         swerve.setStates(
                 speed.get(),
