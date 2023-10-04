@@ -47,7 +47,7 @@ public interface Settings {
         SmartNumber DEADBAND = new SmartNumber("Driver Settings/Deadband", 0.05);
         SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 3); // 4.2
         SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 4); // 6.1
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 2.5); // 5
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 6); // 5
 
         public interface Drive {
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.2);
