@@ -76,7 +76,8 @@ public class AutoShoot extends CommandBase {
     }
 
     private double getTargetShooterRPM() {
-        return Settings.Scoring.DISTANCE_TO_RPM.interpolate(camera.getDistance());
+        return 0.0;
+        // return Settings.Scoring.DISTANCE_TO_RPM.interpolate(camera.getDistance());
     }
 
     private Angle getHorizontalOffset() {

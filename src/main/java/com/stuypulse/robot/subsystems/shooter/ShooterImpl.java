@@ -35,7 +35,7 @@ public class ShooterImpl extends Shooter {
 
         shooterMotor = new CANSparkMax(SHOOTER_MOTOR, MotorType.kBrushless);
         ShooterMotorConfig.configure(shooterMotor);
-        
+
         shooterFollower = new CANSparkMax(SHOOTER_FOLLOWER, MotorType.kBrushless);
         ShooterFollowerConfig.configure(shooterFollower);
 
@@ -43,18 +43,18 @@ public class ShooterImpl extends Shooter {
         shooterFollowerEncoder = shooterFollower.getEncoder();
 
         shooterController = new PIDController(ShooterPID.kP, ShooterPID.kI, ShooterPID.kD)
-            .add(new MotorFeedforward(ShooterFF.kS, ShooterFF.kV, ShooterFF.kA ).velocity());
+                .add(new MotorFeedforward(ShooterFF.kS, ShooterFF.kV, ShooterFF.kA).velocity());
         feederController = new PIDController(FeederPID.kP, FeederPID.kI, FeederPID.kD)
-            .add(new MotorFeedforward(FeederFF.kS, FeederFF.kV, FeederFF.kA).velocity());
+                .add(new MotorFeedforward(FeederFF.kS, FeederFF.kV, FeederFF.kA).velocity());
 
         feederMotor = new CANSparkMax(FEEDER_MOTOR, MotorType.kBrushless);
         FeederMotorConfig.configure(feederMotor);
-        
+
         feederMotorEncoder = feederMotor.getEncoder();
 
     }
 
-    public void setTargetRPM(double targetRPM) {
+    public void setTargetRPM(SmartNumber targetRPM) {
         this.targetRPM.set(targetRPM);
     }
 

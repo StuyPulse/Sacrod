@@ -25,7 +25,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  */
 
 public interface Settings {
-    
+
     public enum Robot {
         SACROD,
         JIM
@@ -45,7 +45,7 @@ public interface Settings {
 
     public interface Driver {
         SmartNumber DEADBAND = new SmartNumber("Driver Settings/Deadband", 0.05);
-        SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 2.1); // 4.2
+        SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 3); // 4.2
         SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 4); // 6.1
         SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 2.5); // 5
 
@@ -62,15 +62,19 @@ public interface Settings {
     }
 
     public interface Scoring {
-        SmartNumber PRIMARY_DISTANCE = new SmartNumber("Scoring/Primary Distance", 3.71);
-        SmartNumber PRIMARY_RPM = new SmartNumber("Scoring/Primary RPM", 1800); // 1750
+        // SmartNumber PRIMARY_DISTANCE = new SmartNumber("Scoring/Primary Distance",
+        // 3.71);
+        // TUNE VALUES
+        SmartNumber CS_RPM = new SmartNumber("Scoring/CS RPM", 1400);
+        SmartNumber HIGH_RPM = new SmartNumber("Scoring/High RPM", 1800); // 1750
+        // SmartNumber MID_DISTANCE = new SmartNumber("Scoring/Secondary Distance",
+        // 4.55);
+        SmartNumber MID_RPM = new SmartNumber("Scoring/Mid RPM", 1500); // 2000
+        SmartNumber LOW_RPM = new SmartNumber("Scoring/Low RPM", 1300);
 
-        SmartNumber SECONDARY_DISTANCE = new SmartNumber("Scoring/Secondary Distance", 4.55);
-        SmartNumber SECONDARY_RPM = new SmartNumber("Scoring/Secondary RPM", 1500); // 2000
-
-        Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
-                new Vector2D(PRIMARY_DISTANCE.get(), PRIMARY_RPM.get()),
-                new Vector2D(SECONDARY_DISTANCE.get(), SECONDARY_RPM.get()));
+        // Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
+        // new Vector2D(HIGH_RPM.get(), HIGH_RPM.get()),
+        // new Vector2D(MID_RPM.get(), MID_RPM.get()));
 
         SmartNumber ACCEPTABLE_RPM = new SmartNumber("Scoring/Acceptable RPM Error", 200);
         SmartNumber ACCEPTABLE_VELOCITY = new SmartNumber("Scoring/Acceptable Shot Velocity", Units.inchesToMeters(9));

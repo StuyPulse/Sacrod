@@ -1,7 +1,6 @@
 package com.stuypulse.robot.subsystems.shooter;
 
-import com.stuypulse.robot.subsystems.arm.ArmImpl;
-import com.stuypulse.robot.subsystems.shooter.*;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -22,8 +21,7 @@ public abstract class Shooter extends SubsystemBase {
         return instance;
     }
 
-
-    public abstract void setTargetRPM(double targetRPM);
+    public abstract void setTargetRPM(SmartNumber csRpm);
 
     public abstract double getShooterTargetRPM();
 

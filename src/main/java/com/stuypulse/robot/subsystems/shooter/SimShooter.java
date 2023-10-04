@@ -69,6 +69,10 @@ public class SimShooter extends Shooter {
         return feederController.update(feederTargetRPM, getFeederRPM());
     }
 
+    public void setTargetRPM(SmartNumber targetRPM) {
+        // this.targetRPM.set(targetRPM);
+    }
+
     @Override
     public void periodic() {
         final double shooterVoltage = getDesiredShooterVoltage();

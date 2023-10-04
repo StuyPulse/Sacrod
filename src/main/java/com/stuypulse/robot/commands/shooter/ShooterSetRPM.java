@@ -1,6 +1,7 @@
 package com.stuypulse.robot.commands.shooter;
 
 import com.stuypulse.robot.subsystems.shooter.Shooter;
+import com.stuypulse.stuylib.network.SmartNumber;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 /**
@@ -10,14 +11,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
  * end - run when the command is finished
  */
 
- /*
-  * ways commands end:
-  * 
-  * "natural" (organic) - ends because isFinished returned true
-  * interrupted - a command ends via interruption
-  *    - binding a command to a button (e.g. whileHeld -> release that button, the command is interrupted)
-  *    - subsystem requirements
-  */
+/*
+ * ways commands end:
+ * 
+ * "natural" (organic) - ends because isFinished returned true
+ * interrupted - a command ends via interruption
+ *    - binding a command to a button (e.g. whileHeld -> release that button, the command is interrupted)
+ *    - subsystem requirements
+ */
 
 /*
 3.0 // double --> Number
@@ -43,9 +44,9 @@ new ShooterSetRPM(shooter, new SmartNumber("Shooter/Best RPM", 6940));
  */
 public class ShooterSetRPM extends InstantCommand {
     private Shooter shooter;
-    private Number targetRPM;
+    private SmartNumber targetRPM;
 
-    public ShooterSetRPM(Number targetRPM) {
+    public ShooterSetRPM(SmartNumber targetRPM) {
         shooter = Shooter.getInstance();
         this.targetRPM = targetRPM;
         addRequirements(shooter);
@@ -53,6 +54,6 @@ public class ShooterSetRPM extends InstantCommand {
 
     @Override
     public void initialize() {
-        shooter.setTargetRPM(targetRPM.doubleValue());
+        shooter.setTargetRPM(targetRPM);
     }
 }

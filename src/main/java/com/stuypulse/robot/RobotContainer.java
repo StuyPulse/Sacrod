@@ -6,10 +6,14 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.AutoShoot;
+import com.stuypulse.robot.commands.arm.ArmDown;
+import com.stuypulse.robot.commands.arm.ArmUp;
+import com.stuypulse.robot.commands.arm.ArmUp;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.MylesAuto;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
+import com.stuypulse.robot.commands.shooter.ShootHigh;
 import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.DrivetrainAlign;
@@ -27,7 +31,9 @@ import com.stuypulse.robot.util.BootlegXbox;
 import com.stuypulse.robot.util.ConveyorMode;
 import com.stuypulse.robot.subsystems.intake.*;
 import com.stuypulse.robot.subsystems.climber.*;
+import com.stuypulse.robot.commands.shooter.*;
 import com.stuypulse.stuylib.input.Gamepad;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,7 +41,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
 
   // Subsystem
-  public final Conveyor conveyor = new Conveyor();
+  public final Conveyor conveyor = Conveyor.getInstance();
   public final Shooter shooter = Shooter.getInstance();
   public final Intake intake = Intake.getInstance();
   public final Climber climber = Climber.getInstance();
@@ -74,32 +80,41 @@ public class RobotContainer {
     driver.getDPadUp().onTrue(new SwerveDriveResetHeading());
     driver.getTopButton().onTrue(new SwerveDriveHome());
     driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
-    driver.getLeftButton().whileTrue(new DrivetrainAlign(camera, Scoring.PRIMARY_DISTANCE));
+
+    driver.getDPadUp().onTrue(new ShootHigh());
+    driver.getDPadRight().onTrue(new ShootMid());
+    driver.getDPadDown().onTrue(new ShootLow());
+    // operator.getDPadLeft().onTrue(new ArmDown());
+    driver.getDPadLeft()
+        .onTrue(new ArmDown())
+        .onTrue(new ShootCS())
+        .onFalse(new ArmUp());
+
+    // driver.getLeftButton().whileTrue(new DrivetrainAlign(camera,
+    // Scoring.PRIMARY_DISTANCE));
 
     operator.getLeftTriggerButton()
-      .whileTrue(new IntakeDeacquire())
-      .whileTrue(new ConveyorSetMode(ConveyorMode.REVERSE));
+        .whileTrue(new IntakeDeacquire())
+        .whileTrue(new ConveyorSetMode(ConveyorMode.REVERSE));
 
     operator.getRightTriggerButton()
-      .whileTrue(new IntakeAcquire())
-      .onTrue(new IntakeExtend())
-      .onFalse(new IntakeRetract());
+        .whileTrue(new IntakeAcquire())
+        .onTrue(new IntakeExtend())
+        .onFalse(new IntakeRetract());
 
-      //ask blay if shooing button should shoot torwards grid or does he want 
-      //separate outtake and shooting button 
-      //right now if facing grid and press button it shoots, if not facing grid
-      //it outtakes 
+    // ask blay if shooing button should shoot torwards grid or does he want
+    // separate outtake and shooting button
+    // right now if facing grid and press button it shoots, if not facing grid
+    // it outtakes
     operator.getTopButton()
-      .onTrue(new ConveyorSetMode(ConveyorMode.INDEXING));  
+        .onTrue(new ConveyorSetMode(ConveyorMode.INDEXING));
     operator.getRightButton()
-      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
+        .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
     operator.getBottomButton()
-      .onTrue(new ConveyorSetMode(ConveyorMode.STOP));
+        .onTrue(new ConveyorSetMode(ConveyorMode.STOP));
 
-    operator.getDPadUp().onTrue(new ShooterStop());
-    operator.getDPadRight().onTrue(new ShooterSetRPM(Settings.Scoring.PRIMARY_RPM));
-    operator.getDPadLeft().onTrue(new ShooterSetRPM(Settings.Scoring.SECONDARY_RPM));
-    operator.getDPadDown().onTrue(new ShooterSetRPM(Settings.Scoring.TUNING_RPM));
+    // operator.getDPadLeft().onTrue(new
+    // ShooterSetRPM(Settings.Scoring.TUNING_RPM));
   }
 
   /**************/

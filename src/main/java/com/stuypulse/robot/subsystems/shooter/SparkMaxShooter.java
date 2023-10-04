@@ -83,7 +83,7 @@ public class SparkMaxShooter extends ShooterImpl {
     }
 
     @Override
-    public void setTargetRPM(double targetRPM) {
+    public void setTargetRPM(SmartNumber targetRPM) {
         target.set(targetRPM);
     }
 

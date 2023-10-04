@@ -90,7 +90,7 @@ public class IntakeImpl extends Intake {
     }
 
     public void pointAtAngle(double angle) {
-        this.targetAngle.set(MathUtil.clamp(angle, RETRACT_ANGLE.get(), EXTEND_ANGLE.get()));
+        this.targetAngle.set(MathUtil.clamp(angle, RETRACT_ANGLE.get(), 120));//EXTEND_ANGLE.get()));
     }
 
     public double getAngle() {
