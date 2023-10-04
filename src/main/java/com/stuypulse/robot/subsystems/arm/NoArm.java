@@ -11,7 +11,7 @@ import static com.stuypulse.robot.constants.Motors.Arm.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class NullArm extends SubsystemBase {
+public class NoArm extends Arm {
 
     private SmartNumber targetAngle;
     private CANSparkMax motor;
@@ -24,27 +24,27 @@ public class NullArm extends SubsystemBase {
         // ARM_MOTOR_CONFIG.configure(motor);
     }
 
-    // @Override
-    // // public void setVoltage(double voltage) {
-    // //     motor.setVoltage(voltage);
-    // // }
+    @Override
+    public void setVoltage(double voltage) {
+        // motor.setVoltage(voltage);
+    }
 
-    // // public void runMotor() {
-    // //     motor.set(ARM_MOTOR_RUN);
-    // // }
+    public void runMotor() {
+        // motor.set(ARM_MOTOR_RUN);
+    }
 
-    // // public void reverseMotor() {
-    // //     motor.set(ARM_MOTOR_REVERSE);
-    // // }
+    public void reverseMotor() {
+        // motor.set(ARM_MOTOR_REVERSE);
+    }
 
-    // public void stop() {
-    //     motor.set(0);
-    // }
+    public void stop() {
+        // motor.set(0);
+    }
 
-    // // set built in cansparkmax encoder up, get angle from encoder
-    // public double getAngle() {
-    //     return encoder.getPosition();
-    // }
+    // set built in cansparkmax encoder up, get angle from encoder
+    public double getAngle() {
+        // return encoder.getPosition();
+    }
 
     @Override
     public void periodic() {
