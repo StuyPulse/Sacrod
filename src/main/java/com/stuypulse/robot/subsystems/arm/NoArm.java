@@ -18,7 +18,7 @@ public class NoArm extends Arm {
     public RelativeEncoder encoder;
     private Controller controller;
 
-    public NullArm() {
+    public NoArm() {
         // motor = new CANSparkMax(ARM_MOTOR_PORT, MotorType.kBrushless);
         // RelativeEncoder encoder = motor.getEncoder();
         // ARM_MOTOR_CONFIG.configure(motor);
@@ -44,6 +44,7 @@ public class NoArm extends Arm {
     // set built in cansparkmax encoder up, get angle from encoder
     public double getAngle() {
         // return encoder.getPosition();
+        return 0.0;
     }
 
     @Override
