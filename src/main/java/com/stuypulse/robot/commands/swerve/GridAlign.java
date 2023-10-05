@@ -10,11 +10,11 @@ public class GridAlign extends CommandBase {
     SwerveDrive swerve;
     //controller, target angle
     //controller goes to targetangle (180 or 0 degrees)
-    private final AngleController controller; 
+    // private final AngleController controller; 
     
     public GridAlign() {
-        swerve = SwerveDrive.getInstance();
-        addRequirements(swerve);
+        // swerve = SwerveDrive.getInstance();
+        // addRequirements(swerve);
     }
 
 }

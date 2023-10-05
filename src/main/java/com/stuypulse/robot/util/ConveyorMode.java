@@ -14,7 +14,7 @@ public enum ConveyorMode {
         var angle = SwerveDrive.getInstance().getAngle().getDegrees();
         var isShooting = angle > -90 && angle < 90;
 
-        if (!conveyor.hasShooterBall() && isShooting) {
+        if (!conveyor.hasShooterBall() ) {// && isShooting) {
             conveyor.runForward();
         } else {
             conveyor.stop();
