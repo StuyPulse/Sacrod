@@ -33,6 +33,7 @@ import com.stuypulse.robot.subsystems.intake.*;
 import com.stuypulse.robot.subsystems.climber.*;
 import com.stuypulse.robot.commands.shooter.*;
 import com.stuypulse.stuylib.input.Gamepad;
+import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -51,7 +52,7 @@ public class RobotContainer {
 
   // Gamepads
   public final Gamepad driver = new BootlegXbox(Ports.Gamepad.DRIVER);
-  public final Gamepad operator = new BootlegXbox(Ports.Gamepad.OPERATOR);
+  public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
 
   // Autons
   private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -79,16 +80,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     driver.getDPadUp().onTrue(new SwerveDriveResetHeading());
     driver.getTopButton().onTrue(new SwerveDriveHome());
-    driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
-
-    driver.getDPadUp().onTrue(new ShootHigh());
-    driver.getDPadRight().onTrue(new ShootMid());
-    driver.getDPadDown().onTrue(new ShootLow());
-    // operator.getDPadLeft().onTrue(new ArmDown());
-    driver.getDPadLeft()
-        .onTrue(new ArmDown())
-        .onTrue(new ShootCS())
-        .onFalse(new ArmUp());
+    // driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
+      
+    driver.getBottomButton()
+      .onTrue(new ConveyorSetMode(ConveyorMode.SHOOTING))
+      .onFalse(new ConveyorSetMode(ConveyorMode.DEFAULT));
 
     // driver.getLeftButton().whileTrue(new DrivetrainAlign(camera,
     // Scoring.PRIMARY_DISTANCE));
@@ -106,6 +102,16 @@ public class RobotContainer {
     // separate outtake and shooting button
     // right now if facing grid and press button it shoots, if not facing grid
     // it outtakes
+
+    operator.getDPadUp().onTrue(new ShootHigh());
+    operator.getDPadRight().onTrue(new ShootMid());
+    operator.getDPadDown().onTrue(new ShootLow());
+    // operator.getDPadLeft().onTrue(new ArmDown());
+    operator.getDPadLeft()
+        .onTrue(new ArmDown())
+        .onTrue(new ShootCS())
+        .onFalse(new ArmUp());
+
     operator.getTopButton()
         .onTrue(new ConveyorSetMode(ConveyorMode.INDEXING));
     operator.getRightButton()
