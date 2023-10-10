@@ -67,11 +67,11 @@ public interface Settings {
         // 3.71);
         // TUNE VALUES
         SmartNumber CS_RPM = new SmartNumber("Scoring/CS RPM", 1400);
-        SmartNumber HIGH_RPM = new SmartNumber("Scoring/High RPM", 1800); // 1750
+        SmartNumber HIGH_RPM = new SmartNumber("Scoring/High RPM", 1500); // 1750
         // SmartNumber MID_DISTANCE = new SmartNumber("Scoring/Secondary Distance",
         // 4.55);
-        SmartNumber MID_RPM = new SmartNumber("Scoring/Mid RPM", 1500); // 2000
-        SmartNumber LOW_RPM = new SmartNumber("Scoring/Low RPM", 1300);
+        SmartNumber MID_RPM = new SmartNumber("Scoring/Mid RPM", 800); // 2000
+        SmartNumber LOW_RPM = new SmartNumber("Scoring/Low RPM", 500);
 
         // Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
         // new Vector2D(HIGH_RPM.get(), HIGH_RPM.get()),
