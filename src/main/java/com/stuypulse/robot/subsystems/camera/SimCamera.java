@@ -1,7 +1,7 @@
 package com.stuypulse.robot.subsystems.camera;
 
 import com.stuypulse.robot.constants.Settings.Field;
-import com.stuypulse.robot.subsystems.SwerveDrive;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.stuylib.math.Angle;
 
 import edu.wpi.first.math.geometry.Pose2d;

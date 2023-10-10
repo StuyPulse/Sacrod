@@ -1,4 +1,4 @@
-package com.stuypulse.robot.subsystems;
+package com.stuypulse.robot.subsystems.swerve;
 
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -222,6 +222,28 @@ public class SwerveDrive extends SubsystemBase {
             modules[i].setTargetState(states[i]);
         }
     }
+    public void setXMode() {
+        SwerveModuleState[] states = {
+            new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(225)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(315)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
+        };
+        for (int i = 0; i < states.length; ++i) {
+            modules[i].setTargetState(states[i]);
+        }
+    }
+    public void stop() {
+        SwerveModuleState[] states = {
+            new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+            new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
+        };
+        for (int i = 0; i < states.length; ++i) {
+            modules[i].setTargetState(states[i]);
+        }
+    }
 
     /** GYRO API */
 
@@ -245,6 +267,42 @@ public class SwerveDrive extends SubsystemBase {
 
     public Rotation2d getAngle() {
         return getPose().getRotation();
+    }
+
+    public Rotation2d getGyroPitch() {
+        if (Settings.ROBOT == Settings.Robot.JIM) {
+            return Rotation2d.fromDegrees(gyro.getRoll());
+        }
+        return Rotation2d.fromDegrees(gyro.getPitch());
+    }
+
+    public Rotation2d getGyroRoll() {
+        if (Settings.ROBOT == Settings.Robot.JIM) {
+            return Rotation2d.fromDegrees(-gyro.getPitch());
+        }
+        return Rotation2d.fromDegrees(gyro.getRoll());
+    }
+
+    public double getForwardAccelerationGs() {
+        if (Settings.ROBOT == Settings.Robot.SACROD) {
+            return gyro.getWorldLinearAccelX();
+        }
+        return gyro.getWorldLinearAccelY();
+    }
+
+    public Rotation2d getBalanceAngle() {
+        Rotation2d pitch = getGyroPitch();
+        Rotation2d roll = getGyroRoll();
+        Rotation2d yaw = getAngle();
+
+        double facingSlope = pitch.getTan() * yaw.getCos() + roll.getTan() * yaw.getSin();
+        double maxSlope = Math.sqrt(Math.pow(roll.getTan(), 2) + Math.pow(pitch.getTan(), 2));
+
+
+        SmartDashboard.putNumber("Swerve/Max Slope", maxSlope);
+        SmartDashboard.putNumber("Swerve/Facing Slope", facingSlope);
+
+        return Rotation2d.fromRadians(Math.signum(facingSlope) * Math.atan(maxSlope));
     }
 
     public SwerveDriveKinematics getKinematics() {

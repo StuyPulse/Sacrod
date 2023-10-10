@@ -5,7 +5,7 @@ import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.constants.Settings.Scoring;
 import com.stuypulse.robot.constants.Settings.Scoring.AutoShot;
 import com.stuypulse.robot.subsystems.Conveyor;
-import com.stuypulse.robot.subsystems.SwerveDrive;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.camera.Camera;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.util.ConveyorMode;

@@ -1,6 +1,6 @@
 package com.stuypulse.robot.commands.swerve;
 
-import com.stuypulse.robot.subsystems.SwerveDrive;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;

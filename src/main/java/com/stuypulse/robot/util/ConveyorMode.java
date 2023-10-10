@@ -3,7 +3,7 @@ package com.stuypulse.robot.util;
 import java.util.function.Consumer;
 
 import com.stuypulse.robot.subsystems.Conveyor;
-import com.stuypulse.robot.subsystems.SwerveDrive;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.intake.Intake;
 
 public enum ConveyorMode {

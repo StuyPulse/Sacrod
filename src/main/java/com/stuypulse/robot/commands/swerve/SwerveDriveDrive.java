@@ -1,7 +1,7 @@
 package com.stuypulse.robot.commands.swerve;
 
 import com.stuypulse.robot.constants.Settings;
-import com.stuypulse.robot.subsystems.SwerveDrive;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.streams.IStream;

@@ -12,6 +12,7 @@ import com.stuypulse.stuylib.math.Vector2D;
 import com.stuypulse.stuylib.math.interpolation.Interpolator;
 import com.stuypulse.stuylib.math.interpolation.LinearInterpolator;
 import com.stuypulse.stuylib.network.SmartNumber;
+import com.stuypulse.stuylib.streams.IStream;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
@@ -120,6 +121,36 @@ public interface Settings {
         double HUB_HEIGHT = Units.feetToMeters(8) + Units.inchesToMeters(9);
         double HUB_TO_CENTER = Units.feetToMeters(2.0);
         Translation2d HUB = new Translation2d(Units.feetToMeters(12.8), 0);
+    }
+    public interface AutoBalance{ //TUNE THESEE
+        SmartNumber DISTANCE_THRESHOLD = new SmartNumber("Auto Balance/Dual PID/Distance Threshold", 0.05);
+        SmartNumber ANGLE_THRESHOLD = new SmartNumber("Auto Balance/Dual PID/Angle Thrshold", 6); // 12 originally
+
+        SmartNumber MAX_TILT = new SmartNumber("Auto Balance/Max Tilt (deg)", 15.0);
+        SmartNumber MAX_SPEED = new SmartNumber("Auto Balance/Max Engage Speed (m per s)", 0.8);
+
+        SmartNumber kT_u = new SmartNumber("Auto Balance/With Plant/Tu", 0.2);  // from Zieger-Nichols tuning method
+
+        public interface Translation {
+            SmartNumber P = new SmartNumber("Auto Balance/Translation/kP", 0.05);
+            SmartNumber I = new SmartNumber("Auto Balance/Translation/kI", 0);
+            SmartNumber D = new SmartNumber("Auto Balance/Translation/kD", 0);
+        }
+
+        public interface Tilt {
+            SmartNumber P = new SmartNumber("Auto Balance/Tilt/kP", 0.05);
+            SmartNumber I = new SmartNumber("Auto Balance/Tilt/kI", 0);
+            SmartNumber D = new SmartNumber("Auto Balance/Tilt/kD", 0);
+        }
+
+        public interface Gyro {
+            SmartNumber kT_u = new SmartNumber("Auto Engage/Tu", 0.2);  // from Zieger-Nichols tuning method
+            Number kK_u = IStream.create(() -> MAX_SPEED.get() / MAX_TILT.get()).number();  // from Zieger-Nichols tuning method
+
+            Number kP = IStream.create(() -> 0.8 * kK_u.doubleValue()).number();  // from Zieger-Nichols tuning method
+            SmartNumber kI = new SmartNumber("", 0);
+            Number kD = IStream.create(() -> 0.1 * kK_u.doubleValue() * kT_u.doubleValue()).number(); // from Zieger-Nichols tuning method
+        }
     }
 
     public interface Climber {

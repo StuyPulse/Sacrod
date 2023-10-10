@@ -1,6 +1,6 @@
 package com.stuypulse.robot.subsystems.camera;
 
-import com.stuypulse.robot.subsystems.SwerveDrive;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.camera.*;
 import com.stuypulse.robot.subsystems.camera.SimCamera;
 import com.stuypulse.stuylib.math.Angle;

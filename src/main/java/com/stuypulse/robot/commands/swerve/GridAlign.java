@@ -4,7 +4,7 @@ import com.stuypulse.stuylib.control.angle.AngleController;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
-import com.stuypulse.robot.subsystems.SwerveDrive;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
 public class GridAlign extends CommandBase {
     SwerveDrive swerve;
