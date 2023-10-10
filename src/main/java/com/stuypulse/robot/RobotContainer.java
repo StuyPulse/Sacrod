@@ -52,7 +52,7 @@ public class RobotContainer {
   public final Camera camera = Camera.getInstance();
 
   // Gamepads
-  public final Gamepad driver = new BootlegXbox(Ports.Gamepad.DRIVER);
+  public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
   public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
 
   // Autons
