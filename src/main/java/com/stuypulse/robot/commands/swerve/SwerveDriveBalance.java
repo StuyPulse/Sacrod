@@ -1,3 +1,5 @@
+package com.stuypulse.robot.commands.swerve;
+
 import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings.AutoBalance;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
@@ -41,10 +43,12 @@ public class SwerveDriveBalance extends CommandBase {
     public void execute() {
         control.update(0, swerve.getBalanceAngle().getDegrees());
 
-        swerve.setChassisSpeeds(ChassisSpeeds.fromFieldRelativeSpeeds(
+        swerve.setStates(ChassisSpeeds.fromFieldRelativeSpeeds(
             control.getOutput(), 0, 0, swerve.getAngle()));
-
-        SmartDashboard.putNumber("Auto Balance/Speed", control.getOutput());
+        
+        swerve.setXMode();
+        
+            SmartDashboard.putNumber("Auto Balance/Speed", control.getOutput());
     }
 
 private boolean timedOut = false;
