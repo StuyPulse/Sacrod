@@ -131,6 +131,11 @@ public class RobotContainer {
   public void configureAutons() {
     autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
     autonChooser.addOption("Myles", new MylesAuto(this, "myles"));
+    
+    autonChooser.addOption("MobilityAuton", new MylesAuto(this, "Mobility"));
+    autonChooser.addOption("OnePieceDock", new MylesAuto(this, "1 Piece + Dock"));
+    autonChooser.addOption("OnePieceMobility", new MylesAuto(this, "1 Piece + mobility (nonwire)"));
+    autonChooser.addOption("OnePieceMobilityWire", new MylesAuto(this, "1 piece + mobility (wire side)"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }
