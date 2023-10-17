@@ -5,25 +5,16 @@
 
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.commands.AutoShoot;
 import com.stuypulse.robot.commands.arm.ArmDown;
-import com.stuypulse.robot.commands.arm.ArmUp;
 import com.stuypulse.robot.commands.arm.ArmUp;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.MylesAuto;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShootHigh;
-import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
-import com.stuypulse.robot.commands.shooter.ShooterStop;
-import com.stuypulse.robot.commands.swerve.DrivetrainAlign;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
-import com.stuypulse.robot.commands.swerve.SwerveDriveHome;
 import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
 import com.stuypulse.robot.constants.Ports;
-import com.stuypulse.robot.constants.Settings;
-// import com.stuypulse.robot.constants.Settings.Climber;
-import com.stuypulse.robot.constants.Settings.Scoring;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.camera.Camera;
 import com.stuypulse.robot.subsystems.shooter.*;
@@ -52,8 +43,8 @@ public class RobotContainer {
   public final Camera camera = Camera.getInstance();
 
   // Gamepads
-  public final Gamepad driver = new AutoGamepad(Ports.Gamepad.DRIVER);
-  public final Gamepad operator = new AutoGamepad(Ports.Gamepad.OPERATOR);
+  public final Gamepad driver = new BootlegXbox(Ports.Gamepad.DRIVER);
+  public final Gamepad operator = new BootlegXbox(Ports.Gamepad.OPERATOR);
 
   // Autons
   private static SendableChooser<Command> autonChooser = new SendableChooser<>();
@@ -79,35 +70,31 @@ public class RobotContainer {
   /***************/
 
   private void configureButtonBindings() {
+    configureDriverBindings();
+    configureOperatorBindings();
+  }
+
+  private void configureDriverBindings() {
+    // reset zero angle (intake away)
     driver.getDPadUp().onTrue(new SwerveDriveResetHeading());
-    driver.getTopButton().onTrue(new SwerveDriveHome());
-    // driver.getBottomButton().whileTrue(new AutoShoot(this, driver));
-      
+    
     driver.getBottomButton()
-      .onTrue(new ConveyorSetMode(ConveyorMode.SHOOTING))
-      .onFalse(new ConveyorSetMode(ConveyorMode.DEFAULT));
+      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
+  }
 
-    // driver.getLeftButton().whileTrue(new DrivetrainAlign(camera,
-    // Scoring.PRIMARY_DISTANCE));
-
+  private void configureOperatorBindings() {
     operator.getLeftTriggerButton()
-        .whileTrue(new IntakeDeacquire())
-        .whileTrue(new ConveyorSetMode(ConveyorMode.REVERSE));
+      .whileTrue(new IntakeDeacquire())
+      .whileTrue(new ConveyorSetMode(ConveyorMode.REVERSE));
 
     operator.getRightTriggerButton()
-        .whileTrue(new IntakeAcquire())
-        .onTrue(new IntakeExtend())
-        .onFalse(new IntakeRetract());
-
-    // ask blay if shooing button should shoot torwards grid or does he want
-    // separate outtake and shooting button
-    // right now if facing grid and press button it shoots, if not facing grid
-    // it outtakes
+      .whileTrue(new IntakeAcquire())
+      .onTrue(new IntakeExtend())
+      .onFalse(new IntakeRetract());
 
     operator.getDPadUp().onTrue(new ShootHigh());
     operator.getDPadRight().onTrue(new ShootMid());
     operator.getDPadDown().onTrue(new ShootLow());
-    // operator.getDPadLeft().onTrue(new ArmDown());
     operator.getDPadLeft()
         .onTrue(new ArmDown())
         .onTrue(new ShootCS())
@@ -119,9 +106,6 @@ public class RobotContainer {
         .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
     operator.getBottomButton()
         .onTrue(new ConveyorSetMode(ConveyorMode.STOP));
-
-    // operator.getDPadLeft().onTrue(new
-    // ShooterSetRPM(Settings.Scoring.TUNING_RPM));
   }
 
   /**************/
