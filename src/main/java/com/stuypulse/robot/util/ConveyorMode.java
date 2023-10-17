@@ -7,14 +7,9 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.intake.Intake;
 
 public enum ConveyorMode {
-    // move cube to shooter/intake location to face grid unless holding two cubes
-    //change INDEXING to always move up to shooter 
-    //check if doesn have shooter ball, thn run confeyor forward otherwise stop
+    // move intaked cubes to shooter IR
     INDEXING(conveyor -> {
-        var angle = SwerveDrive.getInstance().getAngle().getDegrees();
-        var isShooting = angle > -90 && angle < 90;
-
-        if (conveyor.hasIntakeBall() || !conveyor.hasShooterBall() ) {// && isShooting) {
+        if (conveyor.hasBall() && !conveyor.hasShooterBall()) {
             conveyor.runForward();
         } else {
             conveyor.stop();
@@ -24,8 +19,9 @@ public enum ConveyorMode {
     // shoot or outtake towards grid
     SHOOTING(conveyor -> { 
         var angle = SwerveDrive.getInstance().getAngle().getDegrees();
+        boolean facingGrid = angle > -90 && angle < 90;
 
-        if (angle > -90 && angle < 90) {
+        if (facingGrid) {
             conveyor.runForward();
         } else {
             conveyor.runReverse();
