@@ -16,7 +16,6 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 
 	private boolean robotRelative;
 	private PathPlannerTrajectory path;
-	private SwerveDrive swerve;
 	
 	public FollowTrajectory(PathPlannerTrajectory path) {
 		super(
@@ -63,7 +62,7 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 	@Override
 	public void initialize() {
 		if (robotRelative) {
-			swerve.reset(path.getInitialHolonomicPose());
+			SwerveDrive.getInstance().reset(path.getInitialHolonomicPose());
 		}
 
 		super.initialize();

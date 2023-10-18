@@ -8,7 +8,11 @@ package com.stuypulse.robot;
 import com.stuypulse.robot.commands.arm.ArmDown;
 import com.stuypulse.robot.commands.arm.ArmUp;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
+import com.stuypulse.robot.commands.auton.MobilityAuton;
 import com.stuypulse.robot.commands.auton.MylesAuto;
+import com.stuypulse.robot.commands.auton.OnePieceDock;
+import com.stuypulse.robot.commands.auton.OnePieceMobilityNonwire;
+import com.stuypulse.robot.commands.auton.OnePieceMobilityWire;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShootHigh;
@@ -34,11 +38,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
 
   // Subsystem
+  public final SwerveDrive swerve = SwerveDrive.getInstance();
   public final Conveyor conveyor = Conveyor.getInstance();
   public final Shooter shooter = Shooter.getInstance();
   public final Intake intake = Intake.getInstance();
   public final Climber climber = Climber.getInstance();
-  public final SwerveDrive swerve = SwerveDrive.getInstance();
 
   public final Camera camera = Camera.getInstance();
 
@@ -96,9 +100,9 @@ public class RobotContainer {
     operator.getDPadRight().onTrue(new ShootMid());
     operator.getDPadDown().onTrue(new ShootLow());
     operator.getDPadLeft()
-        .onTrue(new ArmDown())
-        .onTrue(new ShootCS())
-        .onFalse(new ArmUp());
+        // .onTrue(new ArmDown())
+        .onTrue(new ShootCS());
+        // .onFalse(new ArmUp());
 
     operator.getTopButton()
         .onTrue(new ConveyorSetMode(ConveyorMode.INDEXING));
@@ -113,13 +117,13 @@ public class RobotContainer {
   /**************/
 
   public void configureAutons() {
-    autonChooser.setDefaultOption("Do Nothing", new DoNothingAuton());
+    autonChooser.addOption("Do Nothing", new DoNothingAuton());
     autonChooser.addOption("Myles", new MylesAuto(this, "myles"));
     
-    autonChooser.addOption("MobilityAuton", new MylesAuto(this, "Mobility"));
-    autonChooser.addOption("OnePieceDock", new MylesAuto(this, "1 Piece + Dock"));
-    autonChooser.addOption("OnePieceMobility", new MylesAuto(this, "1 Piece + mobility (nonwire)"));
-    autonChooser.addOption("OnePieceMobilityWire", new MylesAuto(this, "1 piece + mobility (wire side)"));
+    autonChooser.setDefaultOption("MobilityAuton", new MobilityAuton(this, "Mobility"));
+    autonChooser.addOption("OnePieceDock", new OnePieceDock(this, "1 Piece + Dock"));
+    autonChooser.addOption("OnePieceMobility", new OnePieceMobilityNonwire(this, "1 Piece + mobility (nonwire)"));
+    autonChooser.addOption("OnePieceMobilityWire", new OnePieceMobilityWire(this, "1 piece + mobility (wire side)"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }

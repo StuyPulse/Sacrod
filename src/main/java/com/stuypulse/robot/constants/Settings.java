@@ -46,17 +46,17 @@ public interface Settings {
 
     public interface Driver {
         SmartNumber DEADBAND = new SmartNumber("Driver Settings/Deadband", 0.05);
-        SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 3); // 4.2
+        SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 4); // 4.2
         SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 4); // 6.1
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 6); // 5
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 4); // 5
 
         public interface Drive {
-            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.2);
+            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.1);
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
         }
 
         public interface Turn {
-            SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.1);
+            SmartNumber RC = new SmartNumber("Driver Settings/Turn/RC", 0.15);
             SmartNumber POWER = new SmartNumber("Driver Settings/Turn/Power", 2);
         }
 
@@ -70,7 +70,7 @@ public interface Settings {
         SmartNumber HIGH_RPM = new SmartNumber("Scoring/High RPM", 1500); // 1750
         // SmartNumber MID_DISTANCE = new SmartNumber("Scoring/Secondary Distance",
         // 4.55);
-        SmartNumber MID_RPM = new SmartNumber("Scoring/Mid RPM", 800); // 2000
+        SmartNumber MID_RPM = new SmartNumber("Scoring/Mid RPM", 750); // 2000
         SmartNumber LOW_RPM = new SmartNumber("Scoring/Low RPM", 500);
 
         // Interpolator DISTANCE_TO_RPM = new LinearInterpolator(
@@ -190,8 +190,8 @@ public interface Settings {
     }
 
     public interface Conveyor {
-        SmartNumber FORWARD_SPEED = new SmartNumber("Conveyor/Forward Speed", 1.0);
-        SmartNumber REVERSE_SPEED = new SmartNumber("Conveyor/Reverse Speed", -1.0);
+        SmartNumber FORWARD_SPEED = new SmartNumber("Conveyor/Forward Speed", 0.7);
+        SmartNumber REVERSE_SPEED = new SmartNumber("Conveyor/Reverse Speed", -0.7);
 
         SmartNumber EMPTY_DEBOUNCE = new SmartNumber("Conveyor/Is Empty Debounce", 0.2);
         SmartNumber HASBALL_DEBOUNCE = new SmartNumber("Conveyor/Has Ball Debounce", 0.2);
@@ -283,9 +283,9 @@ public interface Settings {
             SmartNumber kV = new SmartNumber("Swerve/Drive/kV", 2.7274);
             SmartNumber kA = new SmartNumber("Swerve/Drive/kA", 0.456);
 
-            SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 1.3);
+            SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 1.0);
             SmartNumber kI = new SmartNumber("Swerve/Drive/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Swerve/Drive/kD", 0.0);
+            SmartNumber kD = new SmartNumber("Swerve/Drive/kD", 0.3);
         }
 
         public interface Turn {
@@ -350,8 +350,8 @@ public interface Settings {
         public interface Motion {
             PathConstraints CONSTRAINTS = new PathConstraints(3.5, 2);
 
-            PIDConstants XY = new PIDConstants(2, 0, 0.5);
-            PIDConstants THETA = new PIDConstants(1, 0, 0.2);
+            PIDConstants XY = new PIDConstants(0.4, 0, 0.04);
+            PIDConstants THETA = new PIDConstants(0.2, 0, 0.02);
 
         }
     }

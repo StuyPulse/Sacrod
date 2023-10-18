@@ -48,7 +48,9 @@ public class SwerveDriveBalance extends CommandBase {
         
         swerve.setXMode();
         
-            SmartDashboard.putNumber("Auto Balance/Speed", control.getOutput());
+        SmartDashboard.putNumber("Balance/Speed", control.getOutput());
+        // SmartDashboard.putNumber("Swerve/ANgle", swerve.getAngle());
+
     }
 
 private boolean timedOut = false;

@@ -329,6 +329,7 @@ public class SwerveDrive extends SubsystemBase {
         SmartDashboard.putNumber("Swerve/Pose Y", getPose().getTranslation().getY());
         SmartDashboard.putNumber("Swerve/Pose Angle", getAngle().getDegrees());
         SmartDashboard.putNumber("Swerve/Gyro Angle", gyro.getRotation2d().getDegrees());
+        SmartDashboard.putNumber("Swerve/Balance Angle", getBalanceAngle().getDegrees());
     }
 
     @Override
