@@ -73,6 +73,10 @@ public class SimShooter extends Shooter {
         // this.targetRPM.set(targetRPM);
     }
 
+    public void stop() {
+        targetRPM.set(0);
+    }
+
     @Override
     public void periodic() {
         final double shooterVoltage = getDesiredShooterVoltage();

@@ -97,11 +97,11 @@ public class RobotContainer {
       .onFalse(new IntakeRetract());
 
     operator.getDPadUp().onTrue(new ShootHigh());
-    operator.getDPadRight().onTrue(new ShootMid());
+    operator.getDPadRight().onTrue(new ShootFar());
     operator.getDPadDown().onTrue(new ShootLow());
     operator.getDPadLeft()
         // .onTrue(new ArmDown())
-        .onTrue(new ShootCS());
+        .onTrue(new ShootMid());
         // .onFalse(new ArmUp());
 
     operator.getTopButton()

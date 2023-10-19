@@ -14,8 +14,7 @@ public class MobilityAuton extends SequentialCommandGroup {
         PathPlannerTrajectory traj = PathPlanner.loadPath(path, new PathConstraints(1, 1));
         
         addCommands(
-            new FollowTrajectory(traj)
-                .robotRelative()
+            new FollowTrajectory(traj).robotRelative()
         );
     }
 }

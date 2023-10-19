@@ -5,6 +5,10 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.commands.intake.IntakeRetract;
+import com.stuypulse.robot.subsystems.intake.Intake;
+import com.stuypulse.robot.subsystems.shooter.Shooter;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -71,6 +75,10 @@ public class Robot extends TimedRobot {
     if (auto != null) {
       auto.cancel();
     }
+
+    Intake.getInstance().retract();
+    Intake.getInstance().stop();
+    Shooter.getInstance().stop();
   }
 
   @Override

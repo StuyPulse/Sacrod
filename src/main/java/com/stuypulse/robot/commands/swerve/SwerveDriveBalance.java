@@ -8,7 +8,6 @@ import com.stuypulse.stuylib.control.feedback.PIDController;
 import com.stuypulse.stuylib.streams.IStream;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -32,7 +31,8 @@ public class SwerveDriveBalance extends CommandBase {
         angleThreshold = AutoBalance.ANGLE_THRESHOLD.doubleValue();
 
         swerve = SwerveDrive.getInstance();
-        control = new PIDController(kP, 0, kD).setOutputFilter(x -> -x);
+        // control = new PIDController(kP, 0, kD).setOutputFilter(x -> -x);
+        control = new PIDController(kP, 0, kD);
 
         addRequirements(swerve);
     }

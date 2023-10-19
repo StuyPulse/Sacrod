@@ -3,6 +3,7 @@ package com.stuypulse.robot.commands.auton;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.stuypulse.robot.RobotContainer;
+import com.stuypulse.robot.commands.shooter.ShootFar;
 import com.stuypulse.robot.commands.shooter.ShootHigh;
 import com.stuypulse.robot.commands.swerve.FollowTrajectory;
 import com.stuypulse.robot.constants.Settings.Swerve.Motion;
@@ -18,7 +19,7 @@ public class OnePieceMobilityNonwire extends SequentialCommandGroup{
         PathPlannerTrajectory traj = PathPlanner.loadPath(path, Motion.CONSTRAINTS);
         
         addCommands(
-				new ShootHigh(),
+				new ShootFar(),
 				new WaitCommand(SHOOTER_INITIALIZE_DELAY),
 
 				new FollowTrajectory(traj)
