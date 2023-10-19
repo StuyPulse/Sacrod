@@ -17,8 +17,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class FollowTrajectory extends PPSwerveControllerCommand {
 
+	private final PathPlannerTrajectory path;
+
 	private boolean robotRelative;
-	private PathPlannerTrajectory path;
+	private boolean shouldStop;
 	
 	public FollowTrajectory(PathPlannerTrajectory path) {
 		super(
@@ -29,10 +31,13 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 			new PIDController(Motion.XY.kP, Motion.XY.kI, Motion.XY.kD),
 			new PIDController(Motion.THETA.kP, Motion.THETA.kI, Motion.THETA.kD),
 			SwerveDrive.getInstance()::setStates,
+			true,
 			SwerveDrive.getInstance()
 		);
 
 		robotRelative = false;
+		shouldStop = false;
+
 		this.path = path;
 	}
 
@@ -43,6 +48,11 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 
 	public FollowTrajectory fieldRelative() {
 		robotRelative = false;
+		return this;
+	}
+
+	public FollowTrajectory withStop() {
+		shouldStop = true;
 		return this;
 	}
 
@@ -75,6 +85,13 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 		}
 
 		super.initialize();
+	}
+
+	@Override
+	public void end(boolean interrupted) {
+		if (shouldStop) {
+			SwerveDrive.getInstance().stop();
+		}
 	}
 
 }
