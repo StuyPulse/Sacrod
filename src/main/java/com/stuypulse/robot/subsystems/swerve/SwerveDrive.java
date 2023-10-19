@@ -324,6 +324,8 @@ public class SwerveDrive extends SubsystemBase {
             ));
         }
 
+        getBalanceAngle();
+
         // TODO: log angular velocity and velocity vector
         SmartDashboard.putNumber("Swerve/Pose X", getPose().getTranslation().getX());
         SmartDashboard.putNumber("Swerve/Pose Y", getPose().getTranslation().getY());

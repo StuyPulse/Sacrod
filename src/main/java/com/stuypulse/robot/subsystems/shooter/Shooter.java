@@ -31,6 +31,8 @@ public abstract class Shooter extends SubsystemBase {
 
     public abstract double getFeederRPM();
 
+    public abstract void stop();
+
     public final boolean isReady(double acceptableError) {
         return Math.abs(getShooterTargetRPM() - getShooterRPM()) < acceptableError;
     }

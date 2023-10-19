@@ -13,6 +13,7 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.FieldObject2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class FollowTrajectory extends PPSwerveControllerCommand {
@@ -21,6 +22,8 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 
 	private boolean robotRelative;
 	private boolean shouldStop;
+
+	private FieldObject2d trajectory;
 	
 	public FollowTrajectory(PathPlannerTrajectory path) {
 		super(
@@ -39,6 +42,7 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 		shouldStop = false;
 
 		this.path = path;
+		this.trajectory = SwerveDrive.getInstance().getField().getObject("TRAJECTORY");
 	}
 
 	public FollowTrajectory robotRelative() {
@@ -83,6 +87,8 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 				initialState.holonomicRotation
 			));
 		}
+
+		trajectory.setTrajectory(path);
 
 		super.initialize();
 	}
