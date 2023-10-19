@@ -121,9 +121,9 @@ public class RobotContainer {
     autonChooser.addOption("Myles", new MylesAuto(this, "myles"));
     
     autonChooser.setDefaultOption("MobilityAuton", new MobilityAuton(this, "Mobility"));
-    autonChooser.addOption("OnePieceDock", new OnePieceDock(this, "1 Piece + Dock"));
-    autonChooser.addOption("OnePieceMobility", new OnePieceMobilityNonwire(this, "1 Piece + mobility (nonwire)"));
-    autonChooser.addOption("OnePieceMobilityWire", new OnePieceMobilityWire(this, "1 piece + mobility (wire side)"));
+    autonChooser.addOption("OnePieceDock", new OnePieceDock(this, "OnePieceDock"));
+    autonChooser.addOption("OnePieceMobilityNonwire", new OnePieceMobilityNonwire(this, "OnePieceMobilityNonwire"));
+    autonChooser.addOption("OnePieceMobilityWire", new OnePieceMobilityWire(this, "OnePieceMobilityWire"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }
