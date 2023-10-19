@@ -285,9 +285,9 @@ public interface Settings {
             SmartNumber kV = new SmartNumber("Swerve/Drive/kV", 2.7274);
             SmartNumber kA = new SmartNumber("Swerve/Drive/kA", 0.456);
 
-            SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 1.0);
+            SmartNumber kP = new SmartNumber("Swerve/Drive/kP", 0.7);
             SmartNumber kI = new SmartNumber("Swerve/Drive/kI", 0.0);
-            SmartNumber kD = new SmartNumber("Swerve/Drive/kD", 0.3);
+            SmartNumber kD = new SmartNumber("Swerve/Drive/kD", 0.05);
         }
 
         public interface Turn {
@@ -302,25 +302,25 @@ public interface Settings {
 
         public interface FrontRight {
             String ID = "Front Right";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", 143);
+            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", -39.2 + 180);
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * -0.5);
         }
 
         public interface FrontLeft {
             String ID = "Front Left";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", 36);
+            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", 25.3);
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * +0.5);
         }
 
         public interface BackLeft {
             String ID = "Back Left";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", -80.5);
+            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", -80.1);
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * +0.5);
         }
 
         public interface BackRight {
             String ID = "Back Right";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", 142.3);
+            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", -37.0 + 180);
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * -0.5);
         }
 
