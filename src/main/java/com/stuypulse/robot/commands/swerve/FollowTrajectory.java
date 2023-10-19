@@ -4,12 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPlannerTrajectory.PathPlannerState;
 import com.pathplanner.lib.commands.FollowPathWithEvents;
 import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 import com.stuypulse.robot.constants.Settings.Swerve.Motion;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class FollowTrajectory extends PPSwerveControllerCommand {
@@ -62,7 +65,13 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 	@Override
 	public void initialize() {
 		if (robotRelative) {
-			SwerveDrive.getInstance().reset(path.getInitialHolonomicPose());
+			PathPlannerState initialState = PathPlannerTrajectory.transformStateForAlliance(
+				path.getInitialState(), DriverStation.getAlliance());
+
+			SwerveDrive.getInstance().reset(new Pose2d(
+				initialState.poseMeters.getTranslation(),
+				initialState.holonomicRotation
+			));
 		}
 
 		super.initialize();
