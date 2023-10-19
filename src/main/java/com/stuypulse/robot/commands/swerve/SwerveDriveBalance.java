@@ -31,8 +31,8 @@ public class SwerveDriveBalance extends CommandBase {
         angleThreshold = AutoBalance.ANGLE_THRESHOLD.doubleValue();
 
         swerve = SwerveDrive.getInstance();
-        // control = new PIDController(kP, 0, kD).setOutputFilter(x -> -x);
-        control = new PIDController(kP, 0, kD);
+        control = new PIDController(kP, 0, kD).setOutputFilter(x -> -x);
+        // control = new PIDController(kP, 0, kD);
 
         addRequirements(swerve);
     }

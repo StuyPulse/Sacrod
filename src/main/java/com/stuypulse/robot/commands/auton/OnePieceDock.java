@@ -20,8 +20,7 @@ public class OnePieceDock extends SequentialCommandGroup{
         // Time it takes for the shooter to reach the target speed
         double SHOOTER_INITIALIZE_DELAY = 0.5;
 
-        // PathPlannerTrajectory traj = PathPlanner.loadPath(path, Motion.CONSTRAINTS);
-        PathPlannerTrajectory traj = PathPlanner.loadPath(path, new PathConstraints(1, 1));
+        PathPlannerTrajectory traj = PathPlanner.loadPath(path, new PathConstraints(3.5, 2));
         
         addCommands(
                 new ShootHigh(),
