@@ -1,6 +1,5 @@
 package com.stuypulse.robot.commands.swerve;
 
-import com.stuypulse.robot.Robot;
 import com.stuypulse.robot.constants.Settings.AutoBalance;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.stuylib.control.Controller;
@@ -37,8 +36,6 @@ public class SwerveDriveBalance extends CommandBase {
         addRequirements(swerve);
     }
 
-    // private SmartBoolean enabled = new SmartBoolean("Auto Balance/Enabled", false);
-
     @Override
     public void execute() {
         control.update(0, swerve.getBalanceAngle().getDegrees());
@@ -47,18 +44,11 @@ public class SwerveDriveBalance extends CommandBase {
             control.getOutput(), 0, 0, swerve.getAngle()));
         
         SmartDashboard.putNumber("Balance/Speed", control.getOutput());
-        // SmartDashboard.putNumber("Swerve/ANgle", swerve.getAngle());
 
     }
 
-private boolean timedOut = false;
-
     @Override
     public boolean isFinished() {
-        // if (Robot.getMatchState() == MatchState.AUTO && Timer.getMatchTime() < 0.1) {
-        //     timedOut = true;
-        //     return true;
-        // }
         return control.isDone(angleThreshold.doubleValue());
     }
 
@@ -67,6 +57,7 @@ private boolean timedOut = false;
         swerve.stop();
         swerve.setXMode();
     }
+
     public SwerveDriveBalance withMaxSpeed(double maxSpeed) {
         this.maxSpeed = maxSpeed;
         return this;
