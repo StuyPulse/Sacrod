@@ -43,108 +43,108 @@ public class SL_SimModule extends SwerveModule {
               Matrix.mat(Nat.N2(), Nat.N2()).fill(1.0, 0.0, 0.0, 1.0),
               Matrix.mat(Nat.N2(), Nat.N1()).fill(0.0, 0.0));
     }
-   /** MODULE **/
+
+    /** MODULE **/
+        
+    private final String id;
+    private final Translation2d moduleOffset;
     
-   private final String id;
-   private final Translation2d moduleOffset;
-   
-   private SwerveModuleState targetState;
+    private SwerveModuleState targetState;
 
-   /** TURNING **/
-   
-   private final LinearSystemSim<N2, N1, N1> turnSim;
+    /** TURNING **/
+    
+    private final LinearSystemSim<N2, N1, N1> turnSim;
 
-   private final AngleController turnController;
-   
-   /** DRIVING */
-   
-   private final LinearSystemSim<N2, N1, N2> driveSim;
+    private final AngleController turnController;
+    
+    /** DRIVING */
+    
+    private final LinearSystemSim<N2, N1, N2> driveSim;
 
-   private final Controller driveController;
+    private final Controller driveController;
 
-   public SL_SimModule(String id, Translation2d moduleOffset) {
-       // Module
-       this.id = id;
-       this.moduleOffset = moduleOffset;
+    public SL_SimModule(String id, Translation2d moduleOffset) {
+        // Module
+        this.id = id;
+        this.moduleOffset = moduleOffset;
 
-       targetState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(0.0));
+        targetState = new SwerveModuleState(0.0, Rotation2d.fromDegrees(0.0));
 
-       // Turning
-       turnSim = new LinearSystemSim<>(LinearSystemId.identifyPositionSystem(Turn.kV, Turn.kA));
-       
-       turnController = new AnglePIDController(Turn.kP, Turn.kI, Turn.kD)
-           // .add(new Feedforward.Motor(Turn.kS, Turn.kV, Turn.kA).angle())
-       ;
+        // Turning
+        turnSim = new LinearSystemSim<>(LinearSystemId.identifyPositionSystem(Turn.kV, Turn.kA));
+        
+        turnController = new AnglePIDController(Turn.kP, Turn.kI, Turn.kD)
+            // .add(new Feedforward.Motor(Turn.kS, Turn.kV, Turn.kA).angle())
+        ;
 
-       // Driving
-       driveSim = new LinearSystemSim<>(identifyVelocityPositionSystem(Drive.kV.get(), Drive.kA.get()));
+        // Driving
+        driveSim = new LinearSystemSim<>(identifyVelocityPositionSystem(Drive.kV.get(), Drive.kA.get()));
 
-       driveController = new PIDController(Drive.kP, Drive.kI, Drive.kD)
-           .add(new MotorFeedforward(Drive.kS, Drive.kV, Drive.kA).velocity());
-       
-   }
+        driveController = new PIDController(Drive.kP, Drive.kI, Drive.kD)
+            .add(new MotorFeedforward(Drive.kS, Drive.kV, Drive.kA).velocity());
+        
+    }
 
-   /** MODULE METHODS **/
-   
-   public String getId() {
-       return id;
-   }
+    /** MODULE METHODS **/
+    
+    public String getId() {
+        return id;
+    }
 
-   public Translation2d getLocation() {
-       return moduleOffset;
-   }
+    public Translation2d getLocation() {
+        return moduleOffset;
+    }
 
-   public void setTargetState(SwerveModuleState state) {
-       targetState = SwerveModuleState.optimize(state, getAngle().getRotation2d());
-   }
+    public void setTargetState(SwerveModuleState state) {
+        targetState = SwerveModuleState.optimize(state, getAngle().getRotation2d());
+    }
 
-   public SwerveModuleState getState() {
-       return new SwerveModuleState(getSpeed(), getAngle().getRotation2d());
-   }
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(getSpeed(), getAngle().getRotation2d());
+    }
 
-   public SwerveModulePosition getModulePosition() {
-       return new SwerveModulePosition(getDistance(), getAngle().getRotation2d());
-   }
-   
-   /** TURNING METHODS **/
+    public SwerveModulePosition getModulePosition() {
+        return new SwerveModulePosition(getDistance(), getAngle().getRotation2d());
+    }
+    
+    /** TURNING METHODS **/
 
-   public Angle getAngle() {
-       return Angle.fromRadians(turnSim.getOutput(0));
-   }
+    public Angle getAngle() {
+        return Angle.fromRadians(turnSim.getOutput(0));
+    }
 
-   /** DRIVING METHODS **/
-   
-   public double getSpeed() {
-       return driveSim.getOutput(1);
-   }
+    /** DRIVING METHODS **/
+    
+    public double getSpeed() {
+        return driveSim.getOutput(1);
+    }
 
-   public double getDistance() {
-       return driveSim.getOutput(0);
-   }
+    public double getDistance() {
+        return driveSim.getOutput(0);
+    }
 
-   @Override
-   public void reset() {
+    @Override
+    public void reset() {
         driveSim.setState(Matrix.mat(Nat.N2(), Nat.N1()).fill(0.0, getSpeed()));
-   }
+    }
    
-   /** CONTROL LOOP **/
-   @Override
-   public void periodic() {
-
-       // Control Loops
-       turnController.update(Angle.fromRotation2d(targetState.angle), getAngle());
+    /** CONTROL LOOP **/
+    @Override
+    public void periodic() {
+        // Control Loops
+        turnController.update(Angle.fromRotation2d(targetState.angle), getAngle());
         driveController.update(targetState.speedMetersPerSecond, getSpeed());
 
-       // Network Logging
-       SmartDashboard.putNumber("Swerve/" + id + "/Angle", MathUtil.inputModulus(getAngle().toDegrees(), -180, +180));
-       SmartDashboard.putNumber("Swerve/" + id + "/Speed", getSpeed());
-       
-       SmartDashboard.putNumber("Swerve/" + id + "/Target Angle", MathUtil.inputModulus(targetState.angle.getDegrees(), -180, +180));
-       SmartDashboard.putNumber("Swerve/" + id + "/Target Speed", targetState.speedMetersPerSecond);
-   }
+        // Network Logging
+        SmartDashboard.putNumber("Swerve/" + id + "/Angle", MathUtil.inputModulus(getAngle().toDegrees(), -180, +180));
+        SmartDashboard.putNumber("Swerve/" + id + "/Speed", getSpeed());
+        
+        SmartDashboard.putNumber("Swerve/" + id + "/Target Angle", MathUtil.inputModulus(targetState.angle.getDegrees(), -180, +180));
+        SmartDashboard.putNumber("Swerve/" + id + "/Target Speed", targetState.speedMetersPerSecond);
+    }
 
-   @Override
-   public void simulationPeriodic() {
+    @Override
+    public void simulationPeriodic() {
        // Drive Simulation
        driveSim.setInput(driveController.getOutput());
 

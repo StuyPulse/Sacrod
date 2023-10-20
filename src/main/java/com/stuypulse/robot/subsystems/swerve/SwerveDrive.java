@@ -222,6 +222,7 @@ public class SwerveDrive extends SubsystemBase {
             modules[i].setTargetState(states[i]);
         }
     }
+
     public void setXMode() {
         SwerveModuleState[] states = {
             new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
@@ -234,15 +235,7 @@ public class SwerveDrive extends SubsystemBase {
         }
     }
     public void stop() {
-        SwerveModuleState[] states = {
-            new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(0)),
-        };
-        for (int i = 0; i < states.length; ++i) {
-            modules[i].setTargetState(states[i]);
-        }
+        setStates(new ChassisSpeeds());
     }
 
     /** GYRO API */
@@ -308,8 +301,6 @@ public class SwerveDrive extends SubsystemBase {
     public SwerveDriveKinematics getKinematics() {
         return kinematics;
     }
-
-    // AngleVelocity anglevelocity = new AngleVelocity();
 
     @Override
     public void periodic() {

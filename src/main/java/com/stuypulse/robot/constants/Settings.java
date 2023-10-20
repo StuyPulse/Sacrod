@@ -302,25 +302,25 @@ public interface Settings {
 
         public interface FrontRight {
             String ID = "Front Right";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", -39.2 + 180);
+            SmartNumber ABSOLUTE_OFFSET = new SmartNumber("Swerve/" + ID + "/Absolute Offset", -39.2 + 180);
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * -0.5);
         }
 
         public interface FrontLeft {
             String ID = "Front Left";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", 25.3);
+            SmartNumber ABSOLUTE_OFFSET = new SmartNumber("Swerve/" + ID + "/Absolute Offset", 25.3);
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * +0.5, Chassis.HEIGHT * +0.5);
         }
 
         public interface BackLeft {
             String ID = "Back Left";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", -80.1);
+            SmartNumber ABSOLUTE_OFFSET = new SmartNumber("Swerve/" + ID + "/Absolute Offset", -80.1);
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * +0.5);
         }
 
         public interface BackRight {
             String ID = "Back Right";
-            SmartNumber ABSOLUTE_OFFSET = new SmartNumber(ID + "/Absolute Offset", -37.0 + 180);
+            SmartNumber ABSOLUTE_OFFSET = new SmartNumber("Swerve/" + ID + "/Absolute Offset", -37.0 + 180);
             Translation2d MODULE_OFFSET = new Translation2d(Chassis.WIDTH * -0.5, Chassis.HEIGHT * -0.5);
         }
 
