@@ -11,6 +11,7 @@ import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.MobilityAuton;
 import com.stuypulse.robot.commands.auton.MylesAuto;
 import com.stuypulse.robot.commands.auton.OnePieceDock;
+import com.stuypulse.robot.commands.auton.OnePieceMobilityDock;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityNonwire;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityWire;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
@@ -122,6 +123,7 @@ public class RobotContainer {
     
     autonChooser.setDefaultOption("MobilityAuton", new MobilityAuton(this, "Mobility"));
     autonChooser.addOption("OnePieceDock", new OnePieceDock(this, "OnePieceDock"));
+    autonChooser.addOption("One Piece Mobility Dock", new OnePieceMobilityDock(this, "OnePieceMobilityDock"));
     autonChooser.addOption("OnePieceMobilityNonwire", new OnePieceMobilityNonwire(this, "OnePieceMobilityNonwire"));
     autonChooser.addOption("OnePieceMobilityWire", new OnePieceMobilityWire(this, "OnePieceMobilityWire"));
 

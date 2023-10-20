@@ -32,6 +32,7 @@ public class OnePieceMobilityWire extends SequentialCommandGroup{
 				new ShootFar(),
                 new WaitCommand(SHOOTER_INITIALIZE_DELAY),
                 new ConveyorSetMode(ConveyorMode.SHOOTING).withTimeout(SHOOTER_INITIALIZE_DELAY),
+                new ShooterStop(),
                 new IntakeExtend(),
                 new IntakeAcquireForever(),
 
