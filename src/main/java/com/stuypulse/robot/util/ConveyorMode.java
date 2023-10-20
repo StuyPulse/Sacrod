@@ -7,14 +7,15 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.intake.Intake;
 
 public enum ConveyorMode {
+    AUTONINDEXING(conveyor -> {
+        if (conveyor.hasBall() && !conveyor.hasShooterBall()) {
+            conveyor.runForward();
+        } else {
+            conveyor.stop();
+        }
+    }),
     // move intaked cube to intake IR
     INDEXING(conveyor -> {
-        // if (conveyor.hasBall() && !conveyor.hasShooterBall()) {
-        //     conveyor.runForward();
-        // } else {
-        //     conveyor.stop();
-        // }
-
         // TODO: check if this can be replaced with STOP
         if (conveyor.hasBall() && !conveyor.hasIntakeBall()) {
             conveyor.runForward();
