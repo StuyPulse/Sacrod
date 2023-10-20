@@ -1,11 +1,10 @@
 package com.stuypulse.robot.commands.swerve;
 
-import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 
-public class SwerveX extends InstantCommand {
+public class SwerveX extends CommandBase {
     private SwerveDrive swerve;
 
     public SwerveX() {
@@ -14,7 +13,7 @@ public class SwerveX extends InstantCommand {
     }
 
     @Override
-    public void initialize() {
+    public void execute() {
         swerve.setXMode();
     }
 }

@@ -211,7 +211,6 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void setStates(SwerveModuleState... states) {
-        System.out.println(states);
         if (states.length != modules.length) {
             throw new IllegalArgumentException(
                     "Number of desired module states does not match number of modules (" + modules.length + ")");
@@ -269,11 +268,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public Rotation2d getGyroRoll() {
-        if (Settings.ROBOT == Settings.Robot.JIM) {
-            return Rotation2d.fromDegrees(-gyro.getPitch());
-        }
         return Rotation2d.fromDegrees(gyro.getRoll());
-        // return new Rotation2d();
     }
 
     public double getForwardAccelerationGs() {

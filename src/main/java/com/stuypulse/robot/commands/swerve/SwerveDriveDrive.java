@@ -20,8 +20,12 @@ public class SwerveDriveDrive extends CommandBase {
     private VStream speed;
     private IStream turn;
 
+    private Gamepad driver;
+
     public SwerveDriveDrive(Gamepad driver) {
         swerve = SwerveDrive.getInstance();
+        
+        this.driver = driver;
 
         speed = VStream.create(driver::getLeftStick)
             .filtered(
@@ -46,6 +50,10 @@ public class SwerveDriveDrive extends CommandBase {
 
     @Override
     public void execute() {
-        swerve.setStates(speed.get(), turn.get());
+        if (driver.getRawRightButton()) {
+            swerve.setXMode();
+        } else {
+            swerve.setStates(speed.get(), turn.get());
+        }
     }
 }

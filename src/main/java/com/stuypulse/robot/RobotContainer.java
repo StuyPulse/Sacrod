@@ -89,8 +89,6 @@ public class RobotContainer {
       .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
 
     driver.getDPadDown().whileTrue(new SwerveDriveBalance());
-
-    driver.getRightButton().onTrue(new SwerveX());
   }
 
   private void configureOperatorBindings() {
