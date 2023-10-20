@@ -20,6 +20,7 @@ import com.stuypulse.robot.commands.shooter.ShootHigh;
 import com.stuypulse.robot.commands.swerve.SwerveDriveBalance;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
+import com.stuypulse.robot.commands.swerve.SwerveX;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.camera.Camera;
@@ -88,6 +89,8 @@ public class RobotContainer {
       .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
 
     driver.getDPadDown().whileTrue(new SwerveDriveBalance());
+
+    driver.getRightButton().onTrue(new SwerveX());
   }
 
   private void configureOperatorBindings() {

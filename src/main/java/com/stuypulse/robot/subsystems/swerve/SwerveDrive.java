@@ -211,6 +211,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void setStates(SwerveModuleState... states) {
+        System.out.println(states);
         if (states.length != modules.length) {
             throw new IllegalArgumentException(
                     "Number of desired module states does not match number of modules (" + modules.length + ")");
@@ -224,16 +225,14 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void setXMode() {
-        SwerveModuleState[] states = {
+        setStates(
             new SwerveModuleState(0, Rotation2d.fromDegrees(135)),
             new SwerveModuleState(0, Rotation2d.fromDegrees(225)),
             new SwerveModuleState(0, Rotation2d.fromDegrees(315)),
-            new SwerveModuleState(0, Rotation2d.fromDegrees(45)),
-        };
-        for (int i = 0; i < states.length; ++i) {
-            modules[i].setTargetState(states[i]);
-        }
+            new SwerveModuleState(0, Rotation2d.fromDegrees(45))
+        );
     }
+
     public void stop() {
         setStates(new ChassisSpeeds());
     }
@@ -274,6 +273,7 @@ public class SwerveDrive extends SubsystemBase {
             return Rotation2d.fromDegrees(-gyro.getPitch());
         }
         return Rotation2d.fromDegrees(gyro.getRoll());
+        // return new Rotation2d();
     }
 
     public double getForwardAccelerationGs() {
@@ -315,13 +315,13 @@ public class SwerveDrive extends SubsystemBase {
             ));
         }
 
-        getBalanceAngle();
-
         // TODO: log angular velocity and velocity vector
         SmartDashboard.putNumber("Swerve/Pose X", getPose().getTranslation().getX());
         SmartDashboard.putNumber("Swerve/Pose Y", getPose().getTranslation().getY());
         SmartDashboard.putNumber("Swerve/Pose Angle", getAngle().getDegrees());
-        SmartDashboard.putNumber("Swerve/Gyro Angle", gyro.getRotation2d().getDegrees());
+        SmartDashboard.putNumber("Swerve/Gyro Angle", getGyroAngle().getDegrees());
+        SmartDashboard.putNumber("Swerve/Gyro Pitch", getGyroPitch().getDegrees());
+        SmartDashboard.putNumber("Swerve/Gyro Roll", getGyroRoll().getDegrees());
         SmartDashboard.putNumber("Swerve/Balance Angle", getBalanceAngle().getDegrees());
     }
 

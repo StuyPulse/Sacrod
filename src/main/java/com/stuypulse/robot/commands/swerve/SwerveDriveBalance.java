@@ -4,6 +4,7 @@ import com.stuypulse.robot.constants.Settings.AutoBalance;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.stuylib.control.Controller;
 import com.stuypulse.stuylib.control.feedback.PIDController;
+import com.stuypulse.stuylib.math.SLMath;
 import com.stuypulse.stuylib.streams.IStream;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -20,7 +21,7 @@ public class SwerveDriveBalance extends CommandBase {
 
     private Number angleThreshold;
 
-    private Controller control;
+    private final Controller control;
 
     private SwerveDrive swerve;
 
@@ -31,7 +32,6 @@ public class SwerveDriveBalance extends CommandBase {
 
         swerve = SwerveDrive.getInstance();
         control = new PIDController(kP, 0, kD).setOutputFilter(x -> -x);
-        // control = new PIDController(kP, 0, kD);
 
         addRequirements(swerve);
     }
@@ -40,11 +40,13 @@ public class SwerveDriveBalance extends CommandBase {
     public void execute() {
         control.update(0, swerve.getBalanceAngle().getDegrees());
 
-        swerve.setStates(ChassisSpeeds.fromFieldRelativeSpeeds(
-            control.getOutput(), 0, 0, swerve.getAngle()));
-        
-        SmartDashboard.putNumber("Balance/Speed", control.getOutput());
+        double controlOutput = SLMath.clamp(control.getOutput(), -AutoBalance.MAX_SPEED.getAsDouble(), AutoBalance.MAX_SPEED.getAsDouble());
 
+        swerve.setStates(ChassisSpeeds.fromFieldRelativeSpeeds(
+            controlOutput, 0, 0, swerve.getAngle()));
+        
+        SmartDashboard.putNumber("Balance/Speed", controlOutput);
+        SmartDashboard.putBoolean("Balance/Done", control.isDone(angleThreshold.doubleValue()));
     }
 
     @Override
@@ -54,7 +56,6 @@ public class SwerveDriveBalance extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
-        swerve.stop();
         swerve.setXMode();
     }
 
