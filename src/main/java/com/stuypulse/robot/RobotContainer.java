@@ -17,6 +17,7 @@ import com.stuypulse.robot.commands.auton.OnePieceMobilityWire;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShootHigh;
+import com.stuypulse.robot.commands.swerve.SwerveDriveBalance;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
 import com.stuypulse.robot.constants.Ports;
@@ -85,6 +86,8 @@ public class RobotContainer {
     
     driver.getBottomButton()
       .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
+
+    driver.getDPadDown().whileTrue(new SwerveDriveBalance());
   }
 
   private void configureOperatorBindings() {
@@ -123,7 +126,7 @@ public class RobotContainer {
     
     autonChooser.setDefaultOption("MobilityAuton", new MobilityAuton(this, "Mobility"));
     autonChooser.addOption("OnePieceDock", new OnePieceDock(this, "OnePieceDock"));
-    autonChooser.addOption("One Piece Mobility Dock", new OnePieceMobilityDock(this, "OnePieceMobilityDock"));
+    autonChooser.addOption("One Piece Mobility Dock", new OnePieceMobilityDock(this, "OnePieceDock", "OnePieceMobilityDockCS", "OnePieceMobilityUPCSDock"));
     autonChooser.addOption("OnePieceMobilityNonwire", new OnePieceMobilityNonwire(this, "OnePieceMobilityNonwire"));
     autonChooser.addOption("OnePieceMobilityWire", new OnePieceMobilityWire(this, "OnePieceMobilityWire"));
 
