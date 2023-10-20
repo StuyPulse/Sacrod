@@ -5,9 +5,13 @@
 
 package com.stuypulse.robot;
 
+import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.IntakeRetract;
+import com.stuypulse.robot.subsystems.Conveyor;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
+import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
+import com.stuypulse.robot.util.ConveyorMode;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -64,6 +68,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousExit() {
+    SwerveDrive.getInstance().setXMode();
   }
 
   /*******************/
@@ -75,7 +80,8 @@ public class Robot extends TimedRobot {
     if (auto != null) {
       auto.cancel();
     }
-
+    new ConveyorSetMode(ConveyorMode.DEFAULT);
+    // Conveyor.getInstance().setMode(ConveyorMode.INDEXING);
     Intake.getInstance().retract();
     Intake.getInstance().stop();
     Shooter.getInstance().stop();

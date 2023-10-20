@@ -16,9 +16,8 @@ public enum ConveyorMode {
     }),
     // move intaked cube to intake IR
     INDEXING(conveyor -> {
-        // TODO: check if this can be replaced with STOP
         if (conveyor.hasBall() && !conveyor.hasIntakeBall()) {
-            conveyor.runForward();
+            conveyor.runReverse();
         } else {
             conveyor.stop();
         }

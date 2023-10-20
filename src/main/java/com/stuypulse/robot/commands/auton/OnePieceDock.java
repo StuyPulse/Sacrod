@@ -9,6 +9,7 @@ import com.stuypulse.robot.commands.shooter.ShootHigh;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.FollowTrajectory;
 import com.stuypulse.robot.commands.swerve.SwerveDriveBalance;
+import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
 import com.stuypulse.robot.constants.Settings.Swerve.Motion;
 import com.stuypulse.robot.util.ConveyorMode;
 
@@ -24,6 +25,7 @@ public class OnePieceDock extends SequentialCommandGroup{
         PathPlannerTrajectory traj = PathPlanner.loadPath(path, Motion.CONSTRAINTS);
         
         addCommands(
+                new SwerveDriveResetHeading(),
                 new ShootHigh(),
                 new WaitCommand(SHOOTER_INITIALIZE_DELAY),
                 new ConveyorSetMode(ConveyorMode.SHOOTING).withTimeout(SHOOTER_INITIALIZE_DELAY),

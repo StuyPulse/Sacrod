@@ -196,7 +196,7 @@ public interface Settings {
         SmartNumber REVERSE_SPEED = new SmartNumber("Conveyor/Reverse Speed", -0.7);
 
         SmartNumber EMPTY_DEBOUNCE = new SmartNumber("Conveyor/Is Empty Debounce", 0.2);
-        SmartNumber HASBALL_DEBOUNCE = new SmartNumber("Conveyor/Has Ball Debounce", 0.2);
+        SmartNumber HASBALL_DEBOUNCE = new SmartNumber("Conveyor/Has Ball Debounce", 0.5);
     }
 
     public interface Arm {
