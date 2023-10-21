@@ -51,7 +51,7 @@ public interface Settings {
         SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 4); // 5
 
         public interface Drive {
-            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.1);
+            SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.03);
             SmartNumber POWER = new SmartNumber("Driver Settings/Drive/Power", 2);
         }
 
@@ -67,9 +67,9 @@ public interface Settings {
         // 3.71);
         // TUNE VALUES
 
-        SmartNumber CS_RPM = new SmartNumber("Scoring/CS RPM", 2000);
+        SmartNumber CS_RPM = new SmartNumber("Scoring/CS RPM", 2500);
         SmartNumber FAR_RPM = new SmartNumber("Scoring/Far RPM", 3000); // 1750
-        SmartNumber HIGH_RPM = new SmartNumber("Scoring/High RPM", 1000); // 1750
+        SmartNumber HIGH_RPM = new SmartNumber("Scoring/High RPM", 1500); // 1750
         // SmartNumber MID_DISTANCE = new SmartNumber("Scoring/Secondary Distance",
         // 4.55);
         SmartNumber MID_RPM = new SmartNumber("Scoring/Mid RPM", 750); // 2000
