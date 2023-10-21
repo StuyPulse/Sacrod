@@ -22,6 +22,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -159,22 +160,22 @@ public class SwerveDrive extends SubsystemBase {
     // TODO: rewrite this after robo replay
     public void setStates(Vector2D velocity, double omega, boolean fieldRelative) {
         if (fieldRelative) {
-            final Rotation2d correction = new Rotation2d(0.5 * omega * Settings.DT);
+            ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                velocity.y, -velocity.x,
+                -omega,
+                getAngle());
 
-            ChassisSpeeds speeds = ChassisSpeeds.fromFieldRelativeSpeeds(velocity.y,
-                    -velocity.x, -omega,
-                    getAngle().plus(correction));
+                Pose2d robotVel = new Pose2d(
+                    Settings.DT * speeds.vxMetersPerSecond,
+                    Settings.DT * speeds.vyMetersPerSecond,
+                    Rotation2d.fromRadians(Settings.DT * speeds.omegaRadiansPerSecond));
+                Twist2d twistVel = new Pose2d().log(robotVel);
 
-            for (int i = 0; i < 8; ++i) {
-                double saturation = getSaturation(kinematics.toSwerveModuleStates(speeds));
-
-                speeds = ChassisSpeeds.fromFieldRelativeSpeeds(velocity.y, -velocity.x,
-                        -omega,
-                        getAngle().plus(correction.times(1.0 / saturation)));
-            }
-
-            // setStatesRetainAngle(speeds);
-            setStates(speeds);
+                setStates(new ChassisSpeeds(
+                    twistVel.dx / Settings.DT,
+                    twistVel.dy / Settings.DT,
+                    twistVel.dtheta / Settings.DT
+                ));
         } else {
             setStates(new ChassisSpeeds(velocity.y, -velocity.x, -omega));
         }
@@ -196,7 +197,7 @@ public class SwerveDrive extends SubsystemBase {
         }
     }
 
-    public void setStates(Vector2D velocity, double omega) {
+    public void drive(Vector2D velocity, double omega) {
         setStates(velocity, omega, true);
     }
 

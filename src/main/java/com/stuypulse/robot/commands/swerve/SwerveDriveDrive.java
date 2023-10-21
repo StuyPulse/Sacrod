@@ -53,7 +53,7 @@ public class SwerveDriveDrive extends CommandBase {
         if (driver.getRawRightButton()) {
             swerve.setXMode();
         } else {
-            swerve.setStates(speed.get(), turn.get());
+            swerve.drive(speed.get(), turn.get());
         }
     }
 }
