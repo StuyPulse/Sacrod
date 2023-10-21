@@ -5,11 +5,8 @@
 
 package com.stuypulse.robot;
 
-import com.stuypulse.robot.commands.arm.ArmDown;
-import com.stuypulse.robot.commands.arm.ArmUp;
 import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.MobilityAuton;
-import com.stuypulse.robot.commands.auton.MylesAuto;
 import com.stuypulse.robot.commands.auton.OnePieceDock;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityDock;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityNonwire;
@@ -18,10 +15,8 @@ import com.stuypulse.robot.commands.auton.TwoPieceDockWire;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShootHigh;
-import com.stuypulse.robot.commands.swerve.SwerveDriveBalance;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
-import com.stuypulse.robot.commands.swerve.SwerveX;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.*;
 import com.stuypulse.robot.subsystems.camera.Camera;
@@ -35,6 +30,7 @@ import com.stuypulse.robot.commands.shooter.*;
 import com.stuypulse.stuylib.input.Gamepad;
 import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -84,32 +80,44 @@ public class RobotContainer {
 
   private void configureDriverBindings() {
     // reset zero angle (intake away)
-    driver.getDPadUp().onTrue(new SwerveDriveResetHeading());
+    driver.getDPadUp()
+      .onTrue(new SwerveDriveResetHeading());
+
+    // reset zero angle (intake towards)
+    driver.getDPadDown()
+      .onTrue(new SwerveDriveResetHeading(Rotation2d.fromDegrees(180)));
     
+    // shoot
     driver.getBottomButton()
       .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
+    driver.getTopButton()
+      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
+    
+    // right button -> x mode
   }
 
   private void configureOperatorBindings() {
+    // outtake
     operator.getLeftTriggerButton()
       .whileTrue(new IntakeDeacquire())
       .whileTrue(new ConveyorSetMode(ConveyorMode.REVERSE));
 
+    // intake
     operator.getRightTriggerButton()
       .whileTrue(new IntakeAcquire())
       .onTrue(new IntakeExtend())
       .onFalse(new IntakeRetract());
 
+    // shooter rpms
     operator.getDPadUp().onTrue(new ShootHigh());
-    operator.getDPadRight().onTrue(new ShootFar());
     operator.getDPadDown().onTrue(new ShootLow());
-    operator.getDPadLeft()
-        // .onTrue(new ArmDown())
-        .onTrue(new ShootMid());
-        // .onFalse(new ArmUp());
+    operator.getDPadLeft().onTrue(new ShootMid());
+
+    operator.getDPadRight().onTrue(new ShootFar());
 
     operator.getTopButton()
         .onTrue(new ConveyorSetMode(ConveyorMode.INDEXING));
+    // shoot
     operator.getRightButton()
         .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
     operator.getBottomButton()
@@ -122,14 +130,14 @@ public class RobotContainer {
 
   public void configureAutons() {
     autonChooser.addOption("Do Nothing", new DoNothingAuton());
-    autonChooser.addOption("Myles", new MylesAuto(this, "myles"));
+    // autonChooser.addOption("Myles", new MylesAuto("myles"));
     
-    autonChooser.setDefaultOption("MobilityAuton", new MobilityAuton(this, "Mobility"));
-    autonChooser.addOption("OnePieceDock", new OnePieceDock(this, "OnePieceDock"));
-    autonChooser.addOption("One Piece Mobility Dock", new OnePieceMobilityDock(this, "OnePieceDock", "OnePieceMobilityDockCS", "OnePieceMobilityUPCSDock"));
-    autonChooser.addOption("OnePieceMobilityNonwire", new OnePieceMobilityNonwire(this, "OnePieceMobilityNonwire"));
-    autonChooser.addOption("OnePieceMobilityWire", new OnePieceMobilityWire(this, "OnePieceMobilityWire"));
-    autonChooser.addOption("TwoPieceDockWire", new TwoPieceDockWire(this, "OnePieceMobilityWire", "TwoPieceDockWire"));
+    autonChooser.setDefaultOption("Mobility", new MobilityAuton("Mobility"));
+    autonChooser.addOption("1 Piece Dock", new OnePieceDock("OnePieceDock"));
+    autonChooser.addOption("1 Piece Mobility", new OnePieceMobilityNonwire("OnePieceMobilityNonwire"));
+    autonChooser.addOption("1 Piece Mobility Dock", new OnePieceMobilityDock("OnePieceDock", "OnePieceMobilityDockCS", "OnePieceMobilityUPCSDock"));
+    autonChooser.addOption("1.5 Piece Wire", new OnePieceMobilityWire("OnePieceMobilityWire"));
+    autonChooser.addOption("2 Piece Dock Wire", new TwoPieceDockWire("OnePieceMobilityWire", "TwoPieceDockWire"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }

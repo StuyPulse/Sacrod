@@ -3,7 +3,6 @@ package com.stuypulse.robot.commands.auton;
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.shooter.ShootHigh;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
@@ -16,8 +15,9 @@ import com.stuypulse.robot.util.ConveyorMode;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class OnePieceDock extends SequentialCommandGroup{
-    public OnePieceDock(RobotContainer robot, String path) {
+public class OnePieceDock extends SequentialCommandGroup {
+
+    public OnePieceDock(String path) {
 
         // Time it takes for the shooter to reach the target speed
         double SHOOTER_INITIALIZE_DELAY = 0.5;

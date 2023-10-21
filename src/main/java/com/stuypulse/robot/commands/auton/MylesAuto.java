@@ -4,7 +4,6 @@ import java.util.Map;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeExtend;
@@ -27,7 +26,7 @@ public class MylesAuto extends SequentialCommandGroup {
 	// Time we want to give the drivetrain to align
 	private static final double DRIVETRAIN_ALIGN_TIME = 3.0;
 
-	public MylesAuto(RobotContainer robot, String path) {
+	public MylesAuto(String path) {
 		PathPlannerTrajectory traj = PathPlanner.loadPath(path, Motion.CONSTRAINTS);
 
 		addCommands(

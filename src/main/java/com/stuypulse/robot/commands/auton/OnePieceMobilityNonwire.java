@@ -2,7 +2,6 @@ package com.stuypulse.robot.commands.auton;
 
 import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
-import com.stuypulse.robot.RobotContainer;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeExtend;
@@ -15,8 +14,9 @@ import com.stuypulse.robot.util.ConveyorMode;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class OnePieceMobilityNonwire extends SequentialCommandGroup{
-    public OnePieceMobilityNonwire(RobotContainer robot, String path) {
+public class OnePieceMobilityNonwire extends SequentialCommandGroup {
+
+    public OnePieceMobilityNonwire(String path) {
         // Time it takes for the shooter to reach the target speed
         double SHOOTER_INITIALIZE_DELAY = 0.3;
 
@@ -29,7 +29,6 @@ public class OnePieceMobilityNonwire extends SequentialCommandGroup{
             new ShooterStop(),
             new IntakeExtend(),
             new IntakeAcquireForever(),
-
 
 			new FollowTrajectory(traj).robotRelative()
         );
