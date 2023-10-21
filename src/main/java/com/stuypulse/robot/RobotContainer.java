@@ -88,9 +88,9 @@ public class RobotContainer {
       .onTrue(new SwerveDriveResetHeading(Rotation2d.fromDegrees(180)));
     
     // shoot
-    driver.getBottomButton()
+    driver.getLeftTriggerButton()
       .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
-    driver.getTopButton()
+    driver.getRightTriggerButton()
       .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
     
     // right button -> x mode
