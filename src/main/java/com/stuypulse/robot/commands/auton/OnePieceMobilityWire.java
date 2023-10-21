@@ -9,6 +9,7 @@ import com.stuypulse.robot.commands.intake.IntakeExtend;
 import com.stuypulse.robot.commands.shooter.ShootFar;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.FollowTrajectory;
+import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
 import com.stuypulse.robot.util.ConveyorMode;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -23,9 +24,10 @@ public class OnePieceMobilityWire extends SequentialCommandGroup {
         PathPlannerTrajectory traj = PathPlanner.loadPath(path, new PathConstraints(1, 1));
         
         addCommands(
+            new SwerveDriveResetHeading(),
             new ShootFar(),
             new WaitCommand(SHOOTER_INITIALIZE_DELAY),
-            new ConveyorSetMode(ConveyorMode.SHOOTING).withTimeout(SHOOTER_INITIALIZE_DELAY),
+            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
             new ShooterStop(),
             new IntakeExtend(),
             new IntakeAcquireForever(),
