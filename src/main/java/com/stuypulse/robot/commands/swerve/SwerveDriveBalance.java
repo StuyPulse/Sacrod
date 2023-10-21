@@ -45,8 +45,8 @@ public class SwerveDriveBalance extends CommandBase {
         swerve.setStates(ChassisSpeeds.fromFieldRelativeSpeeds(
             controlOutput, 0, 0, swerve.getAngle()));
         
-        SmartDashboard.putNumber("Balance/Speed", controlOutput);
-        SmartDashboard.putBoolean("Balance/Done", control.isDone(angleThreshold.doubleValue()));
+        SmartDashboard.putNumber("Auto Balance/Speed", controlOutput);
+        SmartDashboard.putBoolean("Auto Balance/Done", control.isDone(angleThreshold.doubleValue()));
     }
 
     @Override

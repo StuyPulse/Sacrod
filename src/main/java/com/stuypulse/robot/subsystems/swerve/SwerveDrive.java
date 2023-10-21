@@ -48,13 +48,6 @@ public class SwerveDrive extends SubsystemBase {
                     new SL_SwerveModule(BackLeft.ID, BackLeft.MODULE_OFFSET, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER, BackLeft.ABSOLUTE_OFFSET, Ports.Swerve.BackLeft.DRIVE),
                     new SL_SwerveModule(BackRight.ID, BackRight.MODULE_OFFSET, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER, BackRight.ABSOLUTE_OFFSET, Ports.Swerve.BackRight.DRIVE)
                 });
-    
-                // instance = new SwerveDrive(new SwerveModule[] {
-                //     new SparkMax_Module(FrontRight.ID, FrontRight.MODULE_OFFSET, Ports.Swerve.FrontRight.TURN, Ports.Swerve.FrontRight.ENCODER, FrontRight.ABSOLUTE_OFFSET.getRotation2d(), Ports.Swerve.FrontRight.DRIVE),
-                //     new SparkMax_Module(FrontLeft.ID, FrontLeft.MODULE_OFFSET, Ports.Swerve.FrontLeft.TURN, Ports.Swerve.FrontLeft.ENCODER, FrontLeft.ABSOLUTE_OFFSET.getRotation2d(), Ports.Swerve.FrontLeft.DRIVE),
-                //     new SparkMax_Module(BackLeft.ID, BackLeft.MODULE_OFFSET, Ports.Swerve.BackLeft.TURN, Ports.Swerve.BackLeft.ENCODER, BackLeft.ABSOLUTE_OFFSET.getRotation2d(), Ports.Swerve.BackLeft.DRIVE),
-                //     new SparkMax_Module(BackRight.ID, BackRight.MODULE_OFFSET, Ports.Swerve.BackRight.TURN, Ports.Swerve.BackRight.ENCODER, BackRight.ABSOLUTE_OFFSET.getRotation2d(), Ports.Swerve.BackRight.DRIVE)
-                // });
             } else {
                 instance = new SwerveDrive(new SwerveModule[] {
                     new SL_SimModule(FrontRight.ID, FrontRight.MODULE_OFFSET),
@@ -163,6 +156,7 @@ public class SwerveDrive extends SubsystemBase {
         return sat;
     }
 
+    // TODO: rewrite this after robo replay
     public void setStates(Vector2D velocity, double omega, boolean fieldRelative) {
         if (fieldRelative) {
             final Rotation2d correction = new Rotation2d(0.5 * omega * Settings.DT);
@@ -261,9 +255,6 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public Rotation2d getGyroPitch() {
-        if (Settings.ROBOT == Settings.Robot.JIM) {
-            return Rotation2d.fromDegrees(gyro.getRoll());
-        }
         return Rotation2d.fromDegrees(gyro.getPitch());
     }
 
@@ -272,10 +263,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public double getForwardAccelerationGs() {
-        if (Settings.ROBOT == Settings.Robot.SACROD) {
-            return gyro.getWorldLinearAccelX();
-        }
-        return gyro.getWorldLinearAccelY();
+        return gyro.getWorldLinearAccelX();
     }
 
     public Rotation2d getBalanceAngle() {

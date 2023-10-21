@@ -42,12 +42,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class IntakeImpl extends Intake {
 
-    private WPI_TalonSRX driverMotor;
-    private CANSparkMax deploymentMotor;
-    private RelativeEncoder deploymentEncoder;
+    private final WPI_TalonSRX driverMotor;
+    private final CANSparkMax deploymentMotor;
+    private final RelativeEncoder deploymentEncoder;
 
-    private Controller controller;
-    private SmartNumber targetAngle;
+    private final Controller controller;
+    private final SmartNumber targetAngle;
 
     public IntakeImpl() {
         driverMotor = new WPI_TalonSRX(DRIVER_MOTOR);
@@ -61,6 +61,7 @@ public class IntakeImpl extends Intake {
         controller = new PIDController(kP, kI, kD);
 
         targetAngle = new SmartNumber("Intake/Target Angle", 0.0);
+
         reset(RETRACT_ANGLE.get());
     }
 
@@ -90,16 +91,17 @@ public class IntakeImpl extends Intake {
     }
 
     public void pointAtAngle(double angle) {
-        this.targetAngle.set(MathUtil.clamp(angle, RETRACT_ANGLE.get(), 120));//EXTEND_ANGLE.get()));
+        this.targetAngle.set(MathUtil.clamp(angle, RETRACT_ANGLE.get(), ANGLE_BOUND.get()));
     }
 
     public double getAngle() {
-        return deploymentEncoder.getPosition();// * 360.0 / 28.0;
+        return deploymentEncoder.getPosition();
     }
 
     @Override
     public void periodic() {
         pointAtAngle(targetAngle.get());
+
         deploymentMotor.set(controller.update(targetAngle.get(), getAngle()));
 
         SmartDashboard.putNumber("Intake/Deployment Speed", deploymentMotor.get());

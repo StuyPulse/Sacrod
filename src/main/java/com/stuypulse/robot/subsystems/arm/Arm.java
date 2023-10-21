@@ -29,7 +29,7 @@ public abstract class Arm extends SubsystemBase {
     private static final Arm instance;
 
     static {
-        instance = new ArmImpl();
+        instance = new NoArm();
     }
 
     public static final Arm getInstance() {

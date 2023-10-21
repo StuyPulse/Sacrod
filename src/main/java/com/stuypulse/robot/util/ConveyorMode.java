@@ -7,6 +7,7 @@ import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.subsystems.intake.Intake;
 
 public enum ConveyorMode {
+    // move intaked cube to upper position
     AUTONINDEXING(conveyor -> {
         if (conveyor.hasBall() && !conveyor.hasShooterBall()) {
             conveyor.runForward();
@@ -14,7 +15,8 @@ public enum ConveyorMode {
             conveyor.stop();
         }
     }),
-    // move intaked cube to intake IR
+
+    // move intaked cube to lower position
     INDEXING(conveyor -> {
         if (conveyor.hasBall() && !conveyor.hasIntakeBall()) {
             conveyor.runReverse();

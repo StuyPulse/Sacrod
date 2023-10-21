@@ -195,7 +195,7 @@ public interface Settings {
         SmartNumber FORWARD_SPEED = new SmartNumber("Conveyor/Forward Speed", 0.7);
         SmartNumber REVERSE_SPEED = new SmartNumber("Conveyor/Reverse Speed", -0.7);
 
-        SmartNumber EMPTY_DEBOUNCE = new SmartNumber("Conveyor/Is Empty Debounce", 0.2);
+        SmartNumber EMPTY_DEBOUNCE = new SmartNumber("Conveyor/Is Empty Debounce", 0.4);
         SmartNumber HASBALL_DEBOUNCE = new SmartNumber("Conveyor/Has Ball Debounce", 0.5);
     }
 
@@ -215,6 +215,7 @@ public interface Settings {
     }
 
     public interface Intake {
+        SmartNumber ANGLE_BOUND = new SmartNumber("Intake/Upper Angle Bound", 120);
         SmartNumber EXTEND_ANGLE = new SmartNumber("Intake/Extend Angle", 99);
         SmartNumber RETRACT_ANGLE = new SmartNumber("Intake/Retract Angle", 0);
 

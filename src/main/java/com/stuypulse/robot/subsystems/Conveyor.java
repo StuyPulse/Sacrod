@@ -42,6 +42,7 @@ Logic:
 */
 
 public class Conveyor extends SubsystemBase {
+
     private final WPI_VictorSPX motor;
 
     private final DigitalInput intakeIR;
