@@ -11,6 +11,7 @@ import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.ConveyorMode;
 
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -27,11 +28,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    DataLogManager.start();
+
     robot = new RobotContainer();
   }
 
   @Override
-  public void robotPeriodic() {
+  public void robotPeriodic() { 
     CommandScheduler.getInstance().run();
   }
 

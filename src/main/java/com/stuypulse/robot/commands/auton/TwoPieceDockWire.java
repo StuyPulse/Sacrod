@@ -10,6 +10,7 @@ import com.stuypulse.robot.commands.intake.IntakeRetract;
 import com.stuypulse.robot.commands.intake.IntakeStop;
 import com.stuypulse.robot.commands.shooter.ShootCS;
 import com.stuypulse.robot.commands.shooter.ShootFar;
+import com.stuypulse.robot.commands.shooter.ShootHigh;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.FollowTrajectory;
 import com.stuypulse.robot.commands.swerve.SwerveDriveBalance;
@@ -42,6 +43,7 @@ public class TwoPieceDockWire extends SequentialCommandGroup {
 
         // drive from current position to up cs position, intake cube on the way
         addCommands(
+                new ShootHigh(),
                 new FollowTrajectory(traj).robotRelative(),
                 new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
                 new IntakeRetract()
@@ -50,10 +52,10 @@ public class TwoPieceDockWire extends SequentialCommandGroup {
         // engage and shoot
         addCommands(
                 new FollowTrajectory(csTraj).fieldRelative(),
-                new ShootCS(),
                 new ParallelCommandGroup(
-                    new SwerveDriveBalance(),
-                    new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4)),
+                        new SwerveDriveBalance(),
+                        new WaitCommand(1.5)
+                                .andThen(new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4))),
                 new ShooterStop(),
                 new IntakeStop()
         );
