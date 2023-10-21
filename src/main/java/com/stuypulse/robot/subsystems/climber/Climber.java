@@ -1,6 +1,5 @@
 package com.stuypulse.robot.subsystems.climber;
 
-import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public abstract class Climber extends SubsystemBase {
@@ -8,11 +7,7 @@ public abstract class Climber extends SubsystemBase {
     private static final Climber instance;
 
     static {
-        if (RobotBase.isReal()) {
-            instance = new ClimberImpl();
-        } else {
-            instance = new SimClimber();
-        }
+        instance = new NoClimber();
     }
 
     public static final Climber getInstance() {
