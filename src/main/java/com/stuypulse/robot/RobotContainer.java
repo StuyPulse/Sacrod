@@ -115,6 +115,8 @@ public class RobotContainer {
 
     operator.getDPadRight().onTrue(new ShootFar());
 
+    operator.getLeftBumper().onTrue(new ShooterStop());
+
     operator.getTopButton()
         .onTrue(new ConveyorSetMode(ConveyorMode.INDEXING));
     // shoot
