@@ -12,9 +12,12 @@ import com.stuypulse.robot.commands.auton.OnePieceMobilityDock;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityNonwire;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityWire;
 import com.stuypulse.robot.commands.auton.TwoPieceDockWire;
+import com.stuypulse.robot.commands.auton.TwoPieceMobilityNonwire;
+import com.stuypulse.robot.commands.auton.TwoPieceMobilityWire;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.*;
 import com.stuypulse.robot.commands.shooter.ShootHigh;
+import com.stuypulse.robot.commands.swerve.SwerveDriveBalance;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
 import com.stuypulse.robot.constants.Ports;
@@ -86,14 +89,18 @@ public class RobotContainer {
     // reset zero angle (intake towards)
     driver.getDPadDown()
       .onTrue(new SwerveDriveResetHeading(Rotation2d.fromDegrees(180)));
+
+    driver.getDPadLeft().whileTrue(new SwerveDriveBalance());
     
     // shoot
+    // driver.getLeftTriggerButton()
+    //   .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING).alongWith(new IntakeAcquire()));
+    // driver.getRightTriggerButton()
+    //   .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING).alongWith(new IntakeAcquire()));
     driver.getLeftTriggerButton()
       .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
     driver.getRightTriggerButton()
       .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
-    
-    // right button -> x mode
   }
 
   private void configureOperatorBindings() {
@@ -112,8 +119,9 @@ public class RobotContainer {
     operator.getDPadUp().onTrue(new ShootHigh());
     operator.getDPadDown().onTrue(new ShootLow());
     operator.getDPadLeft().onTrue(new ShootMid());
+    operator.getDPadRight().onTrue(new ShootMid());
 
-    operator.getDPadRight().onTrue(new ShootFar());
+    // operator.getDPadRight().onTrue(new ShootFar());
 
     operator.getLeftBumper().onTrue(new ShooterStop());
 
@@ -136,10 +144,12 @@ public class RobotContainer {
     
     autonChooser.setDefaultOption("Mobility", new MobilityAuton("Mobility"));
     autonChooser.addOption("1 Piece Dock", new OnePieceDock("OnePieceDock"));
-    autonChooser.addOption("1 Piece Mobility", new OnePieceMobilityNonwire("OnePieceMobilityNonwire"));
+    autonChooser.addOption("1.5 Piece Mobility Nonwire", new OnePieceMobilityNonwire("OnePieceMobilityNonwire"));
     autonChooser.addOption("1 Piece Mobility Dock", new OnePieceMobilityDock("OnePieceDock", "OnePieceMobilityDockCS", "OnePieceMobilityUPCSDock"));
     autonChooser.addOption("1.5 Piece Wire", new OnePieceMobilityWire("OnePieceMobilityWire"));
     autonChooser.addOption("2 Piece Dock Wire", new TwoPieceDockWire("OnePieceMobilityWire", "TwoPieceDockWire"));
+    autonChooser.addOption("2 Piece Mobility Wire", new TwoPieceMobilityWire("OnePieceMobilityWire", "TwoPieceMobilityWireBack"));
+    autonChooser.addOption("2 Piece Mobility Nonwire", new TwoPieceMobilityNonwire("OnePieceMobilityNonwire", "TwoPieceMobilityNonwireBack"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }
