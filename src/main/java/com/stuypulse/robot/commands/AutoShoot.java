@@ -97,7 +97,7 @@ public class AutoShoot extends CommandBase {
     public void execute() {
         // shooter.setTargetRPM(getTargetShooterRPM());
 
-        swerve.setStates(
+        swerve.drive(
                 speed.get(),
                 turnController.update(Angle.kZero, getHorizontalOffset()));
 
