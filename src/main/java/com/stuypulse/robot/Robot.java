@@ -67,6 +67,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousExit() {
     SwerveDrive.getInstance().setXMode();
+    Shooter.getInstance().stop();
   }
 
   /*******************/
@@ -83,7 +84,6 @@ public class Robot extends TimedRobot {
 
     Intake.getInstance().retract();
     Intake.getInstance().stop();
-    Shooter.getInstance().stop();
   }
 
   @Override
