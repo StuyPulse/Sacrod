@@ -27,7 +27,7 @@ public class TwoPieceDockWire extends SequentialCommandGroup {
         double INTAKE_ACQUIRE_TIME = 0.5;
 
         PathPlannerTrajectory traj = PathPlanner.loadPath(path, new PathConstraints(4, 3));
-        PathPlannerTrajectory csTraj = PathPlanner.loadPath(cspath, new PathConstraints(1, 1));
+        PathPlannerTrajectory csTraj = PathPlanner.loadPath(cspath, new PathConstraints(2.5, 2));
         // PathPlannerTrajectory upCSTraj = PathPlanner.loadPath(upCSpath, Motion.CONSTRAINTS);
         
         // shoot first piece
@@ -35,7 +35,7 @@ public class TwoPieceDockWire extends SequentialCommandGroup {
                 new SwerveDriveResetHeading(),
                 new ShootFar(),
                 new WaitCommand(SHOOTER_INITIALIZE_DELAY),
-                new ConveyorSetMode(ConveyorMode.SHOOTING).withTimeout(SHOOTER_INITIALIZE_DELAY),
+                new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
                 new IntakeExtend(),
                 new IntakeAcquireForever()
         );
@@ -53,7 +53,7 @@ public class TwoPieceDockWire extends SequentialCommandGroup {
                 new ShootCS(),
                 new ParallelCommandGroup(
                     new SwerveDriveBalance(),
-                    new ConveyorSetMode(ConveyorMode.SHOOTING).withTimeout(SHOOTER_INITIALIZE_DELAY*4)),
+                    new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4)),
                 new ShooterStop(),
                 new IntakeStop()
         );
