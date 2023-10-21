@@ -37,6 +37,7 @@ public enum ConveyorMode {
 
         if (facingGrid) {
             conveyor.runForward();
+            Intake.getInstance().acquire();
         } else {
             conveyor.runReverse();
             Intake.getInstance().deacquire();
