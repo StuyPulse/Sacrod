@@ -88,7 +88,8 @@ public class FollowTrajectory extends PPSwerveControllerCommand {
 			));
 		}
 
-		trajectory.setTrajectory(path);
+		trajectory.setTrajectory(PathPlannerTrajectory.transformTrajectoryForAlliance(
+			path, DriverStation.getAlliance()));
 
 		super.initialize();
 	}
