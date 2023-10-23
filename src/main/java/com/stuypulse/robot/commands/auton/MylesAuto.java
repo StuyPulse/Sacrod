@@ -7,9 +7,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeExtend;
-import com.stuypulse.robot.commands.shooter.ShooterSetRPM;
 import com.stuypulse.robot.commands.swerve.FollowTrajectory;
-import com.stuypulse.robot.constants.Settings.Scoring;
 import com.stuypulse.robot.constants.Settings.Swerve.Motion;
 import com.stuypulse.robot.util.ConveyorMode;
 

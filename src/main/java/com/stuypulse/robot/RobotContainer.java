@@ -11,6 +11,7 @@ import com.stuypulse.robot.commands.auton.OnePieceDock;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityDock;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityNonwire;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityWire;
+import com.stuypulse.robot.commands.auton.ThreePieceMobilityWire;
 import com.stuypulse.robot.commands.auton.TwoPieceDockWire;
 import com.stuypulse.robot.commands.auton.TwoPieceMobilityNonwire;
 import com.stuypulse.robot.commands.auton.TwoPieceMobilityWire;
@@ -31,7 +32,6 @@ import com.stuypulse.robot.subsystems.intake.*;
 import com.stuypulse.robot.subsystems.climber.*;
 import com.stuypulse.robot.commands.shooter.*;
 import com.stuypulse.stuylib.input.Gamepad;
-import com.stuypulse.stuylib.input.gamepads.AutoGamepad;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -150,6 +150,7 @@ public class RobotContainer {
     autonChooser.addOption("2 Piece Dock Wire", new TwoPieceDockWire("OnePieceMobilityWire", "TwoPieceDockWire"));
     autonChooser.addOption("2 Piece Mobility Wire", new TwoPieceMobilityWire("OnePieceMobilityWire", "TwoPieceMobilityWireBack"));
     autonChooser.addOption("2 Piece Mobility Nonwire", new TwoPieceMobilityNonwire("OnePieceMobilityNonwire", "TwoPieceMobilityNonwireBack"));
+    autonChooser.addOption("3 Piece Mobility Wire", new ThreePieceMobilityWire("OnePieceMobilityWire","ThreePieceMobilityWirePiece2","ThreePieceMobilityWirePiece3"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }
