@@ -9,8 +9,10 @@ import com.stuypulse.robot.commands.auton.DoNothingAuton;
 import com.stuypulse.robot.commands.auton.MobilityAuton;
 import com.stuypulse.robot.commands.auton.OnePieceDock;
 import com.stuypulse.robot.commands.auton.OnePieceMobilityDock;
-import com.stuypulse.robot.commands.auton.OnePieceMobilityNonwire;
-import com.stuypulse.robot.commands.auton.OnePieceMobilityWire;
+import com.stuypulse.robot.commands.auton.OnePiecePickupMobilityNonwire;
+import com.stuypulse.robot.commands.auton.OnePiecePickupMobilityWire;
+import com.stuypulse.robot.commands.auton.ThreePieceDockWire;
+import com.stuypulse.robot.commands.auton.ThreePieceMobilityNonwire;
 import com.stuypulse.robot.commands.auton.ThreePieceMobilityWire;
 import com.stuypulse.robot.commands.auton.TwoPieceDockWire;
 import com.stuypulse.robot.commands.auton.TwoPieceMobilityNonwire;
@@ -144,13 +146,15 @@ public class RobotContainer {
     
     autonChooser.setDefaultOption("Mobility", new MobilityAuton("Mobility"));
     autonChooser.addOption("1 Piece Dock", new OnePieceDock("OnePieceDock"));
-    autonChooser.addOption("1.5 Piece Mobility Nonwire", new OnePieceMobilityNonwire("OnePieceMobilityNonwire"));
+    autonChooser.addOption("1.5 Piece Mobility Nonwire", new OnePiecePickupMobilityNonwire("OnePieceMobilityNonwire"));
     autonChooser.addOption("1 Piece Mobility Dock", new OnePieceMobilityDock("OnePieceDock", "OnePieceMobilityDockCS", "OnePieceMobilityUPCSDock"));
-    autonChooser.addOption("1.5 Piece Wire", new OnePieceMobilityWire("OnePieceMobilityWire"));
+    autonChooser.addOption("1.5 Piece Wire", new OnePiecePickupMobilityWire("OnePieceMobilityWire"));
     autonChooser.addOption("2 Piece Dock Wire", new TwoPieceDockWire("OnePieceMobilityWire", "TwoPieceDockWire"));
     autonChooser.addOption("2 Piece Mobility Wire", new TwoPieceMobilityWire("OnePieceMobilityWire", "TwoPieceMobilityWireBack"));
     autonChooser.addOption("2 Piece Mobility Nonwire", new TwoPieceMobilityNonwire("OnePieceMobilityNonwire", "TwoPieceMobilityNonwireBack"));
     autonChooser.addOption("3 Piece Mobility Wire", new ThreePieceMobilityWire("OnePieceMobilityWire","ThreePieceMobilityWirePiece2","ThreePieceMobilityWirePiece3"));
+    autonChooser.addOption("3 Piece Mobility Dock", new ThreePieceDockWire("OnePieceMobilityWire", "ThreePieceMobilityWirePiece2", "ThreePieceMobilityWirePiece3", "Insert path here go to CS"));
+    autonChooser.addOption("3 Piece Mobility NonWire", new ThreePieceMobilityNonwire("OnePieceMobilityNonWire","insert path here","insert path here"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }
