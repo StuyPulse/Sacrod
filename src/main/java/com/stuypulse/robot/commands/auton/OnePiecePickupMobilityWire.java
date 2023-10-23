@@ -15,9 +15,9 @@ import com.stuypulse.robot.util.ConveyorMode;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class OnePieceMobilityWire extends SequentialCommandGroup {
+public class OnePiecePickupMobilityWire extends SequentialCommandGroup {
 
-    public OnePieceMobilityWire(String path) {
+    public OnePiecePickupMobilityWire(String path) {
         // Time it takes for the shooter to reach the target speed
         double SHOOTER_INITIALIZE_DELAY = 0.5;
 
