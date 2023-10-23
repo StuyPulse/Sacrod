@@ -24,20 +24,31 @@ public class ThreePieceMobilityNonwire extends SequentialCommandGroup {
         double SHOOTER_INITIALIZE_DELAY = 0.3;
 
         PathPlannerTrajectory traj = PathPlanner.loadPath(path, Motion.CONSTRAINTS);
-        PathPlannerTrajectory secondpiece = PathPlanner.loadPath(secondpath, Motion.CONSTRAINTS);
+        PathPlannerTrajectory drivetoCS = PathPlanner.loadPath(secondpath, Motion.CONSTRAINTS);
         PathPlannerTrajectory thirdpiece = PathPlanner.loadPath(thirdpath, Motion.CONSTRAINTS);
         
-        addCommands(
+        addCommands( //1.5 
+            new ShootFar(),
+            new WaitCommand(SHOOTER_INITIALIZE_DELAY),
+            new ConveyorSetMode(ConveyorMode.SHOOTING).withTimeout(SHOOTER_INITIALIZE_DELAY),
+            new ShooterStop(),
+            new IntakeExtend(),
+            new IntakeAcquireForever(),
+
+			new FollowTrajectory(traj).robotRelative()
+        );
+        
+        addCommands( //drive to cs
             new SwerveDriveResetHeading(),
-            new ShootCS(),
+            new FollowTrajectory(drivetoCS).robotRelative(),
+            new ShootCS(), //shoot second piece
             new WaitCommand(SHOOTER_INITIALIZE_DELAY),
             new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
             new IntakeExtend(),
             new IntakeAcquireForever(),
-
-			new FollowTrajectory(traj).robotRelative(),
-            new WaitCommand(INTAKE_DELAY),
-            new FollowTrajectory(secondpiece).fieldRelative(),
+            
+            new FollowTrajectory(thirdpiece).fieldRelative(),
+            new ShootCS(), //shoot third piece
             new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4),
             new ShooterStop()
         );
