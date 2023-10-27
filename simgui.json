@@ -76,6 +76,11 @@
           "visible": true
         }
       },
+      "/SmartDashboard/Autonomous": {
+        "window": {
+          "visible": true
+        }
+      },
       "/SmartDashboard/Climber View": {
         "window": {
           "visible": true
