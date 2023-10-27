@@ -18,21 +18,26 @@ import com.stuypulse.robot.commands.auton.TwoPieceDockWire;
 import com.stuypulse.robot.commands.auton.TwoPieceMobilityNonwire;
 import com.stuypulse.robot.commands.auton.TwoPieceMobilityWire;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
-import com.stuypulse.robot.commands.intake.*;
+import com.stuypulse.robot.commands.intake.IntakeAcquire;
+import com.stuypulse.robot.commands.intake.IntakeDeacquire;
+import com.stuypulse.robot.commands.intake.IntakeExtend;
+import com.stuypulse.robot.commands.intake.IntakeRetract;
 import com.stuypulse.robot.commands.shooter.ShootHigh;
+import com.stuypulse.robot.commands.shooter.ShootLow;
+import com.stuypulse.robot.commands.shooter.ShootMid;
+import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.SwerveDriveBalance;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
 import com.stuypulse.robot.constants.Ports;
-import com.stuypulse.robot.subsystems.*;
+import com.stuypulse.robot.subsystems.Conveyor;
 import com.stuypulse.robot.subsystems.camera.Camera;
-import com.stuypulse.robot.subsystems.shooter.*;
+import com.stuypulse.robot.subsystems.climber.Climber;
+import com.stuypulse.robot.subsystems.intake.Intake;
+import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
 import com.stuypulse.robot.util.BootlegXbox;
 import com.stuypulse.robot.util.ConveyorMode;
-import com.stuypulse.robot.subsystems.intake.*;
-import com.stuypulse.robot.subsystems.climber.*;
-import com.stuypulse.robot.commands.shooter.*;
 import com.stuypulse.stuylib.input.Gamepad;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -153,8 +158,8 @@ public class RobotContainer {
     autonChooser.addOption("2 Piece Mobility Wire", new TwoPieceMobilityWire("OnePieceMobilityWire", "TwoPieceMobilityWireBack"));
     autonChooser.addOption("2 Piece Mobility Nonwire", new TwoPieceMobilityNonwire("OnePieceMobilityNonwire", "TwoPieceMobilityNonwireBack"));
     autonChooser.addOption("3 Piece Mobility Wire", new ThreePieceMobilityWire("OnePieceMobilityWire","ThreePieceMobilityWirePiece2","ThreePieceMobilityWirePiece3"));
-    autonChooser.addOption("3 Piece Mobility Dock", new ThreePieceDockWire("OnePieceMobilityWire", "ThreePieceMobilityWirePiece2", "ThreePieceMobilityWirePiece3", "Insert path here go to CS"));
-    autonChooser.addOption("3 Piece Mobility NonWire", new ThreePieceMobilityNonwire("OnePieceMobilityNonWire","insert path here","insert path here"));
+    autonChooser.addOption("3 Piece Mobility Wire Dock", new ThreePieceDockWire("OnePieceMobilityWire", "ThreePieceMobilityWirePiece2", "ThreePieceMobilityWirePiece3", "ThreePieceDockWire"));
+    autonChooser.addOption("3 Piece Mobility NonWire", new ThreePieceMobilityNonwire("OnePieceMobilityNonWire","ThreePieceMobilityNonwirePiece2","ThreePieceMobilityNonwirePiece3"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }
