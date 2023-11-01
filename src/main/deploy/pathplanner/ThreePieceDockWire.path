@@ -45,12 +45,5 @@
       }
     }
   ],
-  "markers": [
-    {
-      "position": -1.0,
-      "names": [
-        "event"
-      ]
-    }
-  ]
+  "markers": []
 }
