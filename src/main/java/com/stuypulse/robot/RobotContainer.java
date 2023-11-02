@@ -105,9 +105,9 @@ public class RobotContainer {
     // driver.getRightTriggerButton()
     //   .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING).alongWith(new IntakeAcquire()));
     driver.getLeftTriggerButton()
-      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
+      .whileTrue(new ConveyorSetMode(ConveyorMode.FORWARD));
     driver.getRightTriggerButton()
-      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
+      .whileTrue(new ConveyorSetMode(ConveyorMode.FORWARD));
   }
 
   private void configureOperatorBindings() {
@@ -159,7 +159,7 @@ public class RobotContainer {
     autonChooser.addOption("2 Piece Mobility Nonwire", new TwoPieceMobilityNonwire("OnePieceMobilityNonwire", "TwoPieceMobilityNonwireBack"));
     autonChooser.addOption("3 Piece Mobility Wire", new ThreePieceMobilityWire("OnePieceMobilityWire","ThreePieceMobilityWirePiece2","ThreePieceMobilityWirePiece3"));
     autonChooser.addOption("3 Piece Mobility Wire Dock", new ThreePieceDockWire("OnePieceMobilityWire", "ThreePieceMobilityWirePiece2", "ThreePieceMobilityWirePiece3", "ThreePieceDockWire"));
-    autonChooser.addOption("3 Piece Mobility NonWire", new ThreePieceMobilityNonwire("OnePieceMobilityNonWire","ThreePieceMobilityNonwirePiece2","ThreePieceMobilityNonwirePiece3"));
+    autonChooser.addOption("3 Piece Mobility Nonwire", new ThreePieceMobilityNonwire("OnePieceMobilityNonwire","ThreePieceMobilityNonwirePiece2","ThreePieceMobilityNonwirePiece3"));
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }

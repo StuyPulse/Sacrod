@@ -20,7 +20,7 @@ public class ThreePieceMobilityNonwire extends SequentialCommandGroup {
 
     public ThreePieceMobilityNonwire(String path, String secondpath, String thirdpath) {
         // Time it takes for the shooter to reach the target speed
-        double INTAKE_DELAY = 0.5;
+        double INTAKE_ACQUIRE_TIME = 0.5;
         double SHOOTER_INITIALIZE_DELAY = 0.3;
 
         PathPlannerTrajectory traj = PathPlanner.loadPath(path, Motion.CONSTRAINTS);
@@ -41,6 +41,7 @@ public class ThreePieceMobilityNonwire extends SequentialCommandGroup {
         addCommands( //drive to cs
             new SwerveDriveResetHeading(),
             new FollowTrajectory(drivetoCS).robotRelative(),
+            new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
             new ShootCS(), //shoot second piece
             new WaitCommand(SHOOTER_INITIALIZE_DELAY),
             new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
@@ -48,8 +49,8 @@ public class ThreePieceMobilityNonwire extends SequentialCommandGroup {
             new IntakeAcquireForever(),
             
             new FollowTrajectory(thirdpiece).fieldRelative(),
-            new ShootCS(), //shoot third piece
             new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4),
+            new ShootCS(), //shoot third piece
             new ShooterStop()
         );
     }

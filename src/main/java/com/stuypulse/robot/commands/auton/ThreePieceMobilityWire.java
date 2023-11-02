@@ -45,11 +45,12 @@ public class ThreePieceMobilityWire extends SequentialCommandGroup {
         // drive from current position to up cs position, intake cube on the way
         addCommands(
                 new FollowTrajectory(secondpiece).fieldRelative(), //drive to CS
+                new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
                 new ShootCS(), //shoot second piece after intaking it
                 new WaitCommand(SHOOTER_INITIALIZE_DELAY),
                 new FollowTrajectory(thirdpiece).fieldRelative(),
-                new ShootCS(),
                 new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
+                new ShootCS(),
                 new IntakeRetract()
         );
     }
