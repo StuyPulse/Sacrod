@@ -42,15 +42,17 @@ public class ThreePieceMobilityWire extends SequentialCommandGroup {
         // Drive to CS, shoot second piece
         addCommands(
             new FollowTrajectory(secondpiece).fieldRelative(),
-            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY)
+            new IntakeRetract(),
+            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
+            new IntakeExtend()
         );
 
         // Intake and shoot third piece
         addCommands(
             new FollowTrajectory(thirdpiece).fieldRelative(),
             new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
-            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
-            new IntakeRetract()
+            new IntakeRetract(),
+            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY)
         );
     }
 

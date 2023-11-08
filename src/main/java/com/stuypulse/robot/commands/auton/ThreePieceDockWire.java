@@ -27,6 +27,7 @@ public class ThreePieceDockWire extends SequentialCommandGroup {
     public ThreePieceDockWire() {
         
         double SHOOTER_INITIALIZE_DELAY = 0.5;
+        double SHOOT_TIME = 2.0;
         double INTAKE_ACQUIRE_TIME = 0.5;
 
         PathPlannerTrajectory traj = PathPlanner.loadPath("OnePieceMobilityWire", new PathConstraints(4, 3));
@@ -50,26 +51,27 @@ public class ThreePieceDockWire extends SequentialCommandGroup {
 
         // Shoot second piece
         addCommands(
-            new FollowTrajectory(secondpiece).fieldRelative(),
-            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY)
+            new FollowTrajectory(secondpiece).fieldRelative().withStop(),
+            new IntakeRetract(),
+            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOT_TIME),
+            new IntakeExtend()
         );
 
         // Intake third piece
         addCommands(
-            new FollowTrajectory(thirdpiece).fieldRelative(),
-            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
-            new IntakeRetract()
+            new FollowTrajectory(thirdpiece).fieldRelative()
         );
 
         // Engage and shoot
         addCommands(
             new FollowTrajectory(cstraj).fieldRelative(),
+            new IntakeStop(),
             new ParallelCommandGroup(
                 new SwerveDriveBalance(),
                 new WaitCommand(1.5)
-                    .andThen(new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4))),
-            new ShooterStop(),
-            new IntakeStop()
+                    .andThen(new IntakeRetract())
+                    .andThen(new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOT_TIME))),
+            new ShooterStop()
         );
     }
     

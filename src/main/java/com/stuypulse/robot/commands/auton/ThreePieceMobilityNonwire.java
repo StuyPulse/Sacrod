@@ -5,6 +5,7 @@ import com.pathplanner.lib.PathPlannerTrajectory;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.IntakeAcquireForever;
 import com.stuypulse.robot.commands.intake.IntakeExtend;
+import com.stuypulse.robot.commands.intake.IntakeRetract;
 import com.stuypulse.robot.commands.shooter.ShootCS;
 import com.stuypulse.robot.commands.shooter.ShootFar;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
@@ -58,6 +59,7 @@ public class ThreePieceMobilityNonwire extends SequentialCommandGroup {
             new IntakeAcquireForever(),
             
             new FollowTrajectory(thirdpiece).fieldRelative(),
+            new IntakeRetract(),
             new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4),
             new ShooterStop()
         );
