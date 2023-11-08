@@ -10,10 +10,10 @@ public class MobilityAuton extends SequentialCommandGroup {
     
     private static final PathConstraints CONSTRAINTS = new PathConstraints(1, 1);
     
-    public MobilityAuton(String path) {
+    public MobilityAuton() {
         addCommands(
             new FollowTrajectory(
-                PathPlanner.loadPath(path, CONSTRAINTS)
+                PathPlanner.loadPath("Mobility", CONSTRAINTS)
             ).robotRelative()
         );
     }

@@ -15,7 +15,7 @@ import com.stuypulse.robot.commands.auton.ThreePieceDockWire;
 import com.stuypulse.robot.commands.auton.ThreePieceMobilityNonwire;
 import com.stuypulse.robot.commands.auton.ThreePieceMobilityWire;
 import com.stuypulse.robot.commands.auton.TwoPieceDockWire;
-import com.stuypulse.robot.commands.auton.TwoPieceMobilityNonwire;
+import com.stuypulse.robot.commands.auton.TwoPieceMobilityNonWire;
 import com.stuypulse.robot.commands.auton.TwoPieceMobilityWire;
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
@@ -100,14 +100,10 @@ public class RobotContainer {
     driver.getDPadLeft().whileTrue(new SwerveDriveBalance());
     
     // shoot
-    // driver.getLeftTriggerButton()
-    //   .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING).alongWith(new IntakeAcquire()));
-    // driver.getRightTriggerButton()
-    //   .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING).alongWith(new IntakeAcquire()));
     driver.getLeftTriggerButton()
-      .whileTrue(new ConveyorSetMode(ConveyorMode.FORWARD));
+      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING).alongWith(new IntakeAcquire()));
     driver.getRightTriggerButton()
-      .whileTrue(new ConveyorSetMode(ConveyorMode.FORWARD));
+      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING).alongWith(new IntakeAcquire()));
   }
 
   private void configureOperatorBindings() {
@@ -149,17 +145,17 @@ public class RobotContainer {
     autonChooser.addOption("Do Nothing", new DoNothingAuton());
     // autonChooser.addOption("Myles", new MylesAuto("myles"));
     
-    autonChooser.setDefaultOption("Mobility", new MobilityAuton("Mobility"));
-    autonChooser.addOption("1 Piece Dock", new OnePieceDock("OnePieceDock"));
-    autonChooser.addOption("1.5 Piece Mobility Nonwire", new OnePiecePickupMobilityNonwire("OnePieceMobilityNonwire"));
-    autonChooser.addOption("1 Piece Mobility Dock", new OnePieceMobilityDock("OnePieceDock", "OnePieceMobilityDockCS", "OnePieceMobilityUPCSDock"));
-    autonChooser.addOption("1.5 Piece Wire", new OnePiecePickupMobilityWire("OnePieceMobilityWire"));
-    autonChooser.addOption("2 Piece Dock Wire", new TwoPieceDockWire("OnePieceMobilityWire", "TwoPieceDockWire"));
-    autonChooser.addOption("2 Piece Mobility Wire", new TwoPieceMobilityWire("OnePieceMobilityWire", "TwoPieceMobilityWireBack"));
-    autonChooser.addOption("2 Piece Mobility Nonwire", new TwoPieceMobilityNonwire("OnePieceMobilityNonwire", "TwoPieceMobilityNonwireBack"));
-    autonChooser.addOption("3 Piece Mobility Wire", new ThreePieceMobilityWire("OnePieceMobilityWire","ThreePieceMobilityWirePiece2","ThreePieceMobilityWirePiece3"));
-    autonChooser.addOption("3 Piece Mobility Wire Dock", new ThreePieceDockWire("OnePieceMobilityWire", "ThreePieceMobilityWirePiece2", "ThreePieceMobilityWirePiece3", "ThreePieceDockWire"));
-    autonChooser.addOption("3 Piece Mobility Nonwire", new ThreePieceMobilityNonwire("OnePieceMobilityNonwire","ThreePieceMobilityNonwirePiece2","ThreePieceMobilityNonwirePiece3"));
+    autonChooser.setDefaultOption("Mobility", new MobilityAuton());
+    autonChooser.addOption("1 Piece Dock", new OnePieceDock());
+    autonChooser.addOption("1.5 Piece Mobility Nonwire", new OnePiecePickupMobilityNonwire());
+    autonChooser.addOption("1 Piece Mobility Dock", new OnePieceMobilityDock());
+    autonChooser.addOption("1.5 Piece Wire", new OnePiecePickupMobilityWire());
+    autonChooser.addOption("2 Piece Dock Wire", new TwoPieceDockWire());
+    autonChooser.addOption("2 Piece Mobility Wire", new TwoPieceMobilityWire());
+    autonChooser.addOption("2 Piece Mobility Nonwire", new TwoPieceMobilityNonWire());
+    autonChooser.addOption("3 Piece Mobility Wire", new ThreePieceMobilityWire());
+    autonChooser.addOption("3 Piece Mobility Wire Dock", new ThreePieceDockWire());
+    autonChooser.addOption("3 Piece Mobility Nonwire", new ThreePieceMobilityNonwire());
 
     SmartDashboard.putData("Autonomous", autonChooser);
   }

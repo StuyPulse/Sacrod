@@ -6,6 +6,7 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
+import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
@@ -57,6 +58,8 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     auto = robot.getAutonomousCommand();
+
+    new SwerveDriveResetHeading().schedule();
 
     if (auto != null) {
       auto.schedule();

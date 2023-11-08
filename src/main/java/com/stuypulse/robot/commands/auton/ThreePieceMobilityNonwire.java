@@ -18,39 +18,47 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class ThreePieceMobilityNonwire extends SequentialCommandGroup {
 
-    public ThreePieceMobilityNonwire(String path, String secondpath, String thirdpath) {
+    public ThreePieceMobilityNonwire() {
+
         // Time it takes for the shooter to reach the target speed
         double INTAKE_ACQUIRE_TIME = 0.5;
         double SHOOTER_INITIALIZE_DELAY = 0.3;
 
-        PathPlannerTrajectory traj = PathPlanner.loadPath(path, Motion.CONSTRAINTS);
-        PathPlannerTrajectory drivetoCS = PathPlanner.loadPath(secondpath, Motion.CONSTRAINTS);
-        PathPlannerTrajectory thirdpiece = PathPlanner.loadPath(thirdpath, Motion.CONSTRAINTS);
+        PathPlannerTrajectory traj = PathPlanner.loadPath("OnePieceMobilityNonwire", Motion.CONSTRAINTS);
+        PathPlannerTrajectory drivetoCS = PathPlanner.loadPath("ThreePieceMobilityNonwirePiece2", Motion.CONSTRAINTS);
+        PathPlannerTrajectory thirdpiece = PathPlanner.loadPath("ThreePieceMobilityNonwirePiece3", Motion.CONSTRAINTS);
         
-        addCommands( //1.5 
+        // Shoot first piece
+        addCommands(
             new ShootFar(),
             new WaitCommand(SHOOTER_INITIALIZE_DELAY),
             new ConveyorSetMode(ConveyorMode.SHOOTING).withTimeout(SHOOTER_INITIALIZE_DELAY),
-            new ShooterStop(),
+            new ShooterStop()
+        );
+
+        // Intake second piece
+        addCommands(
             new IntakeExtend(),
             new IntakeAcquireForever(),
 
 			new FollowTrajectory(traj).robotRelative()
         );
         
-        addCommands( //drive to cs
+        // Drive to CS, shoot second piece
+        addCommands(
             new SwerveDriveResetHeading(),
+            new ShootCS(),
             new FollowTrajectory(drivetoCS).robotRelative(),
-            new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
-            new ShootCS(), //shoot second piece
-            new WaitCommand(SHOOTER_INITIALIZE_DELAY),
-            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
+            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY)
+        );
+
+        // Intake and shoot third piece
+        addCommands(
             new IntakeExtend(),
             new IntakeAcquireForever(),
             
             new FollowTrajectory(thirdpiece).fieldRelative(),
             new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4),
-            new ShootCS(), //shoot third piece
             new ShooterStop()
         );
     }

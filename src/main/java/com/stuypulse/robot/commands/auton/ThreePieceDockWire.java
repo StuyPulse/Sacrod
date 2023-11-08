@@ -24,47 +24,52 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class ThreePieceDockWire extends SequentialCommandGroup {
 
-    public ThreePieceDockWire(String path, String secondpath, String thirdpath, String cspath) {
+    public ThreePieceDockWire() {
+        
         double SHOOTER_INITIALIZE_DELAY = 0.5;
         double INTAKE_ACQUIRE_TIME = 0.5;
 
-        PathPlannerTrajectory traj = PathPlanner.loadPath(path, new PathConstraints(4, 3));
-        PathPlannerTrajectory secondpiece = PathPlanner.loadPath(secondpath, new PathConstraints(2.5, 2));
-        PathPlannerTrajectory thirdpiece = PathPlanner.loadPath(thirdpath, new PathConstraints(2.5, 2));
-        PathPlannerTrajectory cstraj = PathPlanner.loadPath(cspath, Motion.CONSTRAINTS);
+        PathPlannerTrajectory traj = PathPlanner.loadPath("OnePieceMobilityWire", new PathConstraints(4, 3));
+        PathPlannerTrajectory secondpiece = PathPlanner.loadPath("ThreePieceMobilityWirePiece2", new PathConstraints(2.5, 2));
+        PathPlannerTrajectory thirdpiece = PathPlanner.loadPath("ThreePieceMobilityWirePiece3", new PathConstraints(2.5, 2));
+        PathPlannerTrajectory cstraj = PathPlanner.loadPath("ThreePieceDockWire", Motion.CONSTRAINTS);
         
-        // shoot first piece
+        // Shoot first piece
         addCommands(
-                new SwerveDriveResetHeading(),
-                new ShootFar(),
-                new WaitCommand(SHOOTER_INITIALIZE_DELAY),
-                new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
-                new IntakeExtend(),
-                new IntakeAcquireForever(),
-                new FollowTrajectory(traj).robotRelative() //drive to second piece
+            new ShootFar(),
+            new WaitCommand(SHOOTER_INITIALIZE_DELAY),
+            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY)
+        );
+        
+        // Intake second piece
+        addCommands(
+            new IntakeExtend(),
+            new IntakeAcquireForever(),
+            new FollowTrajectory(traj).robotRelative()
         );
 
-        // drive from current position to up cs position, intake cube on the way
+        // Shoot second piece
         addCommands(
-                new FollowTrajectory(secondpiece).fieldRelative(), //drive to CS
-                new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
-                new ShootCS(), //shoot second piece after intaking it
-                new WaitCommand(SHOOTER_INITIALIZE_DELAY),
-                new FollowTrajectory(thirdpiece).fieldRelative(),
-                new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
-                new ShootCS(),
-                new IntakeRetract()
+            new FollowTrajectory(secondpiece).fieldRelative(),
+            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY)
         );
 
-        // engage and shoot
+        // Intake third piece
         addCommands(
-                new FollowTrajectory(cstraj).fieldRelative(),
-                new ParallelCommandGroup(
-                        new SwerveDriveBalance(),
-                        new WaitCommand(1.5)
-                                .andThen(new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4))),
-                new ShooterStop(),
-                new IntakeStop()
+            new FollowTrajectory(thirdpiece).fieldRelative(),
+            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
+            new IntakeRetract()
+        );
+
+        // Engage and shoot
+        addCommands(
+            new FollowTrajectory(cstraj).fieldRelative(),
+            new ParallelCommandGroup(
+                new SwerveDriveBalance(),
+                new WaitCommand(1.5)
+                    .andThen(new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4))),
+            new ShooterStop(),
+            new IntakeStop()
         );
     }
     

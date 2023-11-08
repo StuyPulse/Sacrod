@@ -16,17 +16,23 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class OnePiecePickupMobilityNonwire extends SequentialCommandGroup {
 
-    public OnePiecePickupMobilityNonwire(String path) {
+    public OnePiecePickupMobilityNonwire() {
+
         // Time it takes for the shooter to reach the target speed
         double SHOOTER_INITIALIZE_DELAY = 0.3;
 
-        PathPlannerTrajectory traj = PathPlanner.loadPath(path, Motion.CONSTRAINTS);
+        PathPlannerTrajectory traj = PathPlanner.loadPath("OnePieceMobilityNonwire", Motion.CONSTRAINTS);
         
+        // Shoot
         addCommands(
             new ShootFar(),
             new WaitCommand(SHOOTER_INITIALIZE_DELAY),
             new ConveyorSetMode(ConveyorMode.SHOOTING).withTimeout(SHOOTER_INITIALIZE_DELAY),
-            new ShooterStop(),
+            new ShooterStop()
+        );
+        
+        // Intake second piece
+        addCommands(
             new IntakeExtend(),
             new IntakeAcquireForever(),
 

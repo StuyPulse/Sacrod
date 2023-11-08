@@ -13,7 +13,6 @@ import com.stuypulse.robot.commands.shooter.ShootHigh;
 import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.FollowTrajectory;
 import com.stuypulse.robot.commands.swerve.SwerveDriveBalance;
-import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
 import com.stuypulse.robot.util.ConveyorMode;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -22,41 +21,40 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class TwoPieceDockWire extends SequentialCommandGroup {
 
-    public TwoPieceDockWire(String path, String cspath) {
+    public TwoPieceDockWire() {
+
         double SHOOTER_INITIALIZE_DELAY = 0.5;
         double INTAKE_ACQUIRE_TIME = 0.5;
-
-        PathPlannerTrajectory traj = PathPlanner.loadPath(path, new PathConstraints(4, 3));
-        PathPlannerTrajectory csTraj = PathPlanner.loadPath(cspath, new PathConstraints(2.5, 2));
-        // PathPlannerTrajectory upCSTraj = PathPlanner.loadPath(upCSpath, Motion.CONSTRAINTS);
         
-        // shoot first piece
+        PathPlannerTrajectory traj = PathPlanner.loadPath("OnePieceMobilityWire", new PathConstraints(4, 3));
+        PathPlannerTrajectory csTraj = PathPlanner.loadPath("TwoPieceDockWire", new PathConstraints(2.5, 2));
+        
+        // Shoot first piece
         addCommands(
-                new SwerveDriveResetHeading(),
-                new ShootFar(),
-                new WaitCommand(SHOOTER_INITIALIZE_DELAY),
-                new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY),
-                new IntakeExtend(),
-                new IntakeAcquireForever()
+            new ShootFar(),
+            new WaitCommand(SHOOTER_INITIALIZE_DELAY),
+            new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY)
         );
 
-        // drive from current position to up cs position, intake cube on the way
+        // Drive to up cs position, intake second piece
         addCommands(
-                new ShootHigh(),
-                new FollowTrajectory(traj).robotRelative(),
-                new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
-                new IntakeRetract()
+            new IntakeExtend(),
+            new IntakeAcquireForever(),
+            new ShootHigh(),
+            new FollowTrajectory(traj).robotRelative(),
+            new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
+            new IntakeRetract()
         );
 
-        // engage and shoot
+        // Engage and shoot
         addCommands(
-                new FollowTrajectory(csTraj).fieldRelative(),
-                new ParallelCommandGroup(
-                        new SwerveDriveBalance(),
-                        new WaitCommand(1.5)
-                                .andThen(new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4))),
-                new ShooterStop(),
-                new IntakeStop()
+            new FollowTrajectory(csTraj).fieldRelative(),
+            new ParallelCommandGroup(
+                new SwerveDriveBalance(),
+                new WaitCommand(1.5)
+                    .andThen(new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4))),
+            new ShooterStop(),
+            new IntakeStop()
         );
     }
     
