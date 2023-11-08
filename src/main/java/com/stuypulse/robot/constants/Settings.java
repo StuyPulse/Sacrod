@@ -68,7 +68,7 @@ public interface Settings {
         // TUNE VALUES
 
         SmartNumber CS_RPM = new SmartNumber("Scoring/CS RPM", 2200);
-        SmartNumber FAR_RPM = new SmartNumber("Scoring/Far RPM", 3000); // 1750
+        SmartNumber FAR_RPM = new SmartNumber("Scoring/Far RPM", 2500); // 2300
         SmartNumber HIGH_RPM = new SmartNumber("Scoring/High RPM", 1000); // 1750
         // SmartNumber MID_DISTANCE = new SmartNumber("Scoring/Secondary Distance",
         // 4.55);
