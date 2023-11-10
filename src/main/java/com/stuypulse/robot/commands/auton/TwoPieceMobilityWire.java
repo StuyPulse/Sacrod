@@ -38,7 +38,6 @@ public class TwoPieceMobilityWire extends SequentialCommandGroup {
         addCommands(
             new IntakeExtend(),
             new IntakeAcquireForever(),
-
             new FollowTrajectory(traj).robotRelative(),
             new WaitCommand(INTAKE_DELAY)
         );

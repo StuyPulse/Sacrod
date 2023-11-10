@@ -153,7 +153,7 @@ public class RobotContainer {
     autonChooser.addOption("2 Piece Dock Wire", new TwoPieceDockWire());
     autonChooser.addOption("2 Piece Mobility Wire", new TwoPieceMobilityWire());
     autonChooser.addOption("2 Piece Mobility Nonwire", new TwoPieceMobilityNonWire());
-    autonChooser.addOption("3 Piece Mobility Wire", new ThreePieceMobilityWire());
+    // autonChooser.addOption("3 Piece Mobility Wire", new ThreePieceMobilityWire());
     autonChooser.addOption("3 Piece Mobility Wire Dock", new ThreePieceDockWire());
     autonChooser.addOption("3 Piece Mobility Nonwire", new ThreePieceMobilityNonwire());
 

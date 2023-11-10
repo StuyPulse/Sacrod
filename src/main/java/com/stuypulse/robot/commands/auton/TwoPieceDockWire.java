@@ -43,7 +43,7 @@ public class TwoPieceDockWire extends SequentialCommandGroup {
             new ShootHigh(),
             new FollowTrajectory(traj).robotRelative(),
             new ConveyorSetMode(ConveyorMode.AUTONINDEXING).withTimeout(INTAKE_ACQUIRE_TIME),
-            new IntakeRetract()
+            new IntakeStop()
         );
 
         // Engage and shoot
@@ -52,9 +52,9 @@ public class TwoPieceDockWire extends SequentialCommandGroup {
             new ParallelCommandGroup(
                 new SwerveDriveBalance(),
                 new WaitCommand(1.5)
-                    .andThen(new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(SHOOTER_INITIALIZE_DELAY*4))),
-            new ShooterStop(),
-            new IntakeStop()
+                    .andThen(new IntakeRetract())
+                    .andThen(new ConveyorSetMode(ConveyorMode.FORWARD).withTimeout(3))),
+            new ShooterStop()
         );
     }
     
