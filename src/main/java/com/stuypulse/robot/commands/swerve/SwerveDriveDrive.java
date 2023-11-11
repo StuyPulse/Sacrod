@@ -33,8 +33,8 @@ public class SwerveDriveDrive extends CommandBase {
                 x -> x.clamp(1.0),
                 x -> Settings.vpow(x, Settings.Driver.Drive.POWER.get()),
                 x -> x.mul(Settings.Driver.MAX_TELEOP_SPEED.get()),
-                new VLowPassFilter(Settings.Driver.Drive.RC),
-                new VRateLimit(Settings.Driver.MAX_ACCELERATION)
+                new VRateLimit(Settings.Driver.MAX_ACCELERATION),
+                new VLowPassFilter(Settings.Driver.Drive.RC)
             );
 
         turn = IStream.create(driver::getRightX)
