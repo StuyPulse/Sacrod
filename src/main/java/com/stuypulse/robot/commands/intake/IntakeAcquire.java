@@ -1,6 +1,8 @@
 package com.stuypulse.robot.commands.intake;
 
+import com.stuypulse.robot.subsystems.Conveyor;
 import com.stuypulse.robot.subsystems.intake.Intake;
+import com.stuypulse.stuylib.input.Gamepad;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -30,9 +32,13 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
  * intake
  */
 public class IntakeAcquire extends CommandBase {
+    private final Gamepad driver;
+    private final Gamepad operator;
     private final Intake intake;
     
-    public IntakeAcquire() {
+    public IntakeAcquire(Gamepad driver, Gamepad operator) {
+        this.driver = driver;
+        this.operator = operator;
         intake = Intake.getInstance();
         addRequirements(intake);
     }
@@ -48,11 +54,13 @@ public class IntakeAcquire extends CommandBase {
     
     @Override
     public boolean isFinished() {
-        return false;
+        return Conveyor.getInstance().hasIntakeBall();
     }
 
     @Override
     public void end(boolean interrupted) {
+        driver.setRumble(0.5);
+        operator.setRumble(0.5);
         intake.stop();
     }
 }
