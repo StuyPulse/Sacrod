@@ -6,7 +6,9 @@
 package com.stuypulse.robot;
 
 import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
+import com.stuypulse.robot.commands.intake.IntakeReset;
 import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
+import com.stuypulse.robot.constants.Settings;
 import com.stuypulse.robot.subsystems.intake.Intake;
 import com.stuypulse.robot.subsystems.shooter.Shooter;
 import com.stuypulse.robot.subsystems.swerve.SwerveDrive;
@@ -14,6 +16,7 @@ import com.stuypulse.robot.util.ConveyorMode;
 
 import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -60,14 +63,20 @@ public class Robot extends TimedRobot {
     auto = robot.getAutonomousCommand();
 
     new SwerveDriveResetHeading().schedule();
+    new IntakeReset().schedule();
 
     if (auto != null) {
       auto.schedule();
     }
+
+    Intake.getInstance().reset(Settings.Intake.RETRACT_ANGLE.get());
   }
 
   @Override
   public void autonomousPeriodic() {
+    if (Timer.getMatchTime() < 0.1) {
+        SwerveDrive.getInstance().setXMode();
+    }
   }
 
   @Override

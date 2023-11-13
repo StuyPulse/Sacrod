@@ -21,6 +21,7 @@ import com.stuypulse.robot.commands.conveyor.ConveyorSetMode;
 import com.stuypulse.robot.commands.intake.IntakeAcquire;
 import com.stuypulse.robot.commands.intake.IntakeDeacquire;
 import com.stuypulse.robot.commands.intake.IntakeExtend;
+import com.stuypulse.robot.commands.intake.IntakeReset;
 import com.stuypulse.robot.commands.intake.IntakeRetract;
 import com.stuypulse.robot.commands.shooter.ShootHigh;
 import com.stuypulse.robot.commands.shooter.ShootLow;
@@ -29,6 +30,7 @@ import com.stuypulse.robot.commands.shooter.ShooterStop;
 import com.stuypulse.robot.commands.swerve.SwerveDriveBalance;
 import com.stuypulse.robot.commands.swerve.SwerveDriveDrive;
 import com.stuypulse.robot.commands.swerve.SwerveDriveResetHeading;
+import com.stuypulse.robot.commands.swerve.SwerveX;
 import com.stuypulse.robot.constants.Ports;
 import com.stuypulse.robot.subsystems.Conveyor;
 import com.stuypulse.robot.subsystems.camera.Camera;
@@ -44,6 +46,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 
 public class RobotContainer {
 
@@ -98,12 +101,20 @@ public class RobotContainer {
       .onTrue(new SwerveDriveResetHeading(Rotation2d.fromDegrees(180)));
 
     driver.getDPadLeft().whileTrue(new SwerveDriveBalance());
+
+    driver.getRightButton().whileTrue(new SwerveX());
     
     // shoot
     driver.getLeftTriggerButton()
-      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING).alongWith(new IntakeAcquire()));
+      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING)
+      .alongWith(new IntakeAcquire(driver, operator)))
+      .onFalse(new InstantCommand(() -> driver.setRumble(0)))
+      .onFalse(new InstantCommand(() -> operator.setRumble(0)));
     driver.getRightTriggerButton()
-      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING).alongWith(new IntakeAcquire()));
+      .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING)
+      .alongWith(new IntakeAcquire(driver, operator)))
+      .onFalse(new InstantCommand(() -> driver.setRumble(0)))
+      .onFalse(new InstantCommand(() -> operator.setRumble(0)));
   }
 
   private void configureOperatorBindings() {
@@ -114,9 +125,11 @@ public class RobotContainer {
 
     // intake
     operator.getRightTriggerButton()
-      .whileTrue(new IntakeAcquire())
+      .whileTrue(new IntakeAcquire(driver, operator))
       .onTrue(new IntakeExtend())
-      .onFalse(new IntakeRetract());
+      .onFalse(new IntakeRetract())
+      .onFalse(new InstantCommand(() -> driver.setRumble(0)))
+      .onFalse(new InstantCommand(() -> operator.setRumble(0)));
 
     // shooter rpms
     operator.getDPadUp().onTrue(new ShootHigh());
@@ -135,6 +148,8 @@ public class RobotContainer {
         .whileTrue(new ConveyorSetMode(ConveyorMode.SHOOTING));
     operator.getBottomButton()
         .onTrue(new ConveyorSetMode(ConveyorMode.STOP));
+
+    operator.getLeftButton().onTrue(new IntakeReset());
   }
 
   /**************/

@@ -36,4 +36,6 @@ public abstract class Intake extends SubsystemBase {
     public abstract void retract();
 
     public abstract void extend();
+
+    public abstract void reset(double position);
 }

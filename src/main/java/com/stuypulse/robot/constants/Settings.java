@@ -48,7 +48,7 @@ public interface Settings {
         SmartNumber DEADBAND = new SmartNumber("Driver Settings/Deadband", 0.05);
         SmartNumber MAX_TELEOP_SPEED = new SmartNumber("Driver Settings/Max Speed", 4); // 4.2
         SmartNumber MAX_TELEOP_TURNING = new SmartNumber("Driver Settings/Max Turning", 4); // 6.1
-        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 4); // 5
+        SmartNumber MAX_ACCELERATION = new SmartNumber("Driver Settings/Max Acceleration", 15); // 5
 
         public interface Drive {
             SmartNumber RC = new SmartNumber("Driver Settings/Drive/RC", 0.03);
@@ -129,7 +129,7 @@ public interface Settings {
         SmartNumber ANGLE_THRESHOLD = new SmartNumber("Auto Balance/Dual PID/Angle Thrshold", 10); // 12 originally
 
         SmartNumber MAX_TILT = new SmartNumber("Auto Balance/Max Tilt (deg)", 15.0);
-        SmartNumber MAX_SPEED = new SmartNumber("Auto Balance/Max Engage Speed (m per s)", 0.4);
+        SmartNumber MAX_SPEED = new SmartNumber("Auto Balance/Max Engage Speed (m per s)", 0.3);
 
         SmartNumber kT_u = new SmartNumber("Auto Balance/With Plant/Tu", 0.2);  // from Zieger-Nichols tuning method
 
